@@ -1,5 +1,6 @@
 package com.mercadopago.android.px.internal.features.review_and_confirm;
 
+import android.support.annotation.NonNull;
 import com.mercadopago.android.px.configuration.DynamicDialogConfiguration;
 import com.mercadopago.android.px.internal.callbacks.FailureRecovery;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecoratorMapper;
@@ -11,6 +12,7 @@ import com.mercadopago.android.px.model.GenericPayment;
 import com.mercadopago.android.px.model.IPayment;
 import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentResult;
+import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.CheckoutPreference;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -95,6 +98,58 @@ public class ReviewAndConfirmPresenterTest {
         verify(businessModelMapper).map(payment);
         verifyNoMoreInteractions(view);
         verifyNoMoreInteractions(paymentRepository);
+    }
+
+    @Test
+    public void whenPaymentErrorIsPaymentProcessingThenShowResult() {
+        final MercadoPagoError mercadoPagoError = mock(MercadoPagoError.class);
+
+        when(mercadoPagoError.isPaymentProcessing()).thenReturn(true);
+
+        verifyOnPaymentError(mercadoPagoError);
+
+        verify(view).showResult(any(PaymentResult.class));
+        verifyNoMoreInteractions(view);
+    }
+
+    @Test
+    public void whenPaymentErrorIsInternalServerErrorThenShowErrorSnackBar() {
+        final MercadoPagoError mercadoPagoError = mock(MercadoPagoError.class);
+
+        when(mercadoPagoError.isInternalServerError()).thenReturn(true);
+
+        verifyOnPaymentError(mercadoPagoError);
+
+        verify(view).showErrorSnackBar(mercadoPagoError);
+        verifyNoMoreInteractions(view);
+    }
+
+    @Test
+    public void whenPaymentErrorIsNoConnectivityErrorThenShowErrorSnackBar() {
+        final MercadoPagoError mercadoPagoError = mock(MercadoPagoError.class);
+
+        when(mercadoPagoError.isNoConnectivityError()).thenReturn(true);
+
+        verifyOnPaymentError(mercadoPagoError);
+
+        verify(view).showErrorSnackBar(mercadoPagoError);
+        verifyNoMoreInteractions(view);
+    }
+
+    @Test
+    public void whenPaymentErrorThenShowErrorScreen() {
+        final MercadoPagoError mercadoPagoError = mock(MercadoPagoError.class);
+
+        verifyOnPaymentError(mercadoPagoError);
+
+        verify(view).showErrorScreen(mercadoPagoError);
+        verifyNoMoreInteractions(view);
+    }
+
+    private void verifyOnPaymentError(@NonNull final MercadoPagoError mercadoPagoError) {
+        reviewAndConfirmPresenter.onPaymentError(mercadoPagoError);
+        verify(view).cancelLoadingButton();
+        verify(view).showConfirmButton();
     }
 
     private void whenIPaymentAndAnimationIsFinishedThenShowResult(final IPayment payment) {
