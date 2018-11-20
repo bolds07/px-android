@@ -69,7 +69,9 @@ import java.util.List;
 
     protected void onValidStart() {
         initializeTracking();
-        getView().setPropPaymentResult(paymentSettings.getCheckoutPreference().getSite().getCurrencyId(), paymentResult,
+        getView().setPropPaymentResult(paymentSettings.getCheckoutPreference().getSite().getCurrencyId(),
+            paymentSettings.getCheckoutPreference().getItems(),
+            paymentResult,
             paymentResult.isOffPayment());
         checkGetInstructions();
     }

@@ -69,7 +69,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps, Void> 
             .setBackground(getBackground(props.paymentResult))
             .setStatusBarColor(getStatusBarColor(props.paymentResult))
             .setIconImage(getIconImage(props))
-            .setIconUrl(getIconUrl(props))
+            .setIconUrl(props.iconUrl)
             .setBadgeImage(getBadgeImage(props))
             .setTitle(getTitle(props))
             .setLabel(getLabel(props))
@@ -166,15 +166,6 @@ public class PaymentResultContainer extends Component<PaymentResultProps, Void> 
         } else {
             return DEFAULT_STATUS_BAR_COLOR;
         }
-    }
-
-    @Nullable
-    private String getIconUrl(@NonNull final PaymentResultProps props) {
-        final PaymentResultScreenConfiguration paymentResultScreenConfiguration =
-            props.getPaymentResultScreenPreference();
-        final String paymentStatus = props.paymentResult.getPaymentStatus();
-        final String paymentStatusDetail = props.paymentResult.getPaymentStatusDetail();
-        return paymentResultScreenConfiguration.getPreferenceUrlIcon(paymentStatus, paymentStatusDetail);
     }
 
     private int getIconImage(@NonNull final PaymentResultProps props) {

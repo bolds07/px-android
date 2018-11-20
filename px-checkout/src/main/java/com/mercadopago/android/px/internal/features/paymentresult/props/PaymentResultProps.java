@@ -15,6 +15,7 @@ public class PaymentResultProps {
     public final boolean loading;
     public final String processingMode;
     public final String currencyId;
+    public final String iconUrl;
     @NonNull private final PaymentResultScreenConfiguration paymentResultScreenPreferences;
 
     /* default */ PaymentResultProps(@NonNull final Builder builder) {
@@ -24,6 +25,7 @@ public class PaymentResultProps {
         loading = builder.loading;
         processingMode = builder.processingMode;
         currencyId = builder.currencyId;
+        iconUrl = builder.iconUrl;
         paymentResultScreenPreferences = builder.paymentResultScreenConfiguration;
     }
 
@@ -34,6 +36,7 @@ public class PaymentResultProps {
             .setHeaderMode(headerMode)
             .setInstruction(instruction)
             .setLoading(loading)
+            .setIconUrl(iconUrl)
             .setProcessingMode(processingMode);
     }
 
@@ -166,9 +169,15 @@ public class PaymentResultProps {
         /* default */ boolean loading = true;
         /* default */ String processingMode;
         /* default */ String currencyId;
+        /* default */ String iconUrl;
 
         public Builder(@NonNull final PaymentResultScreenConfiguration paymentResultScreenConfiguration) {
             this.paymentResultScreenConfiguration = paymentResultScreenConfiguration;
+        }
+
+        public Builder setIconUrl(@Nullable final String iconUrl) {
+            this.iconUrl = iconUrl;
+            return this;
         }
 
         public Builder setPaymentResult(@NonNull final PaymentResult paymentResult) {

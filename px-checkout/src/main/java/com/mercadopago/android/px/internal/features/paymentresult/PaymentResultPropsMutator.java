@@ -6,7 +6,9 @@ import com.mercadopago.android.px.internal.features.paymentresult.props.PaymentR
 import com.mercadopago.android.px.internal.view.Mutator;
 import com.mercadopago.android.px.internal.view.MutatorPropsListener;
 import com.mercadopago.android.px.model.Instruction;
+import com.mercadopago.android.px.model.Item;
 import com.mercadopago.android.px.model.PaymentResult;
+import java.util.List;
 
 public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsView {
 
@@ -26,12 +28,14 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
 
     @Override
     public void setPropPaymentResult(@NonNull final String currencyId,
+        @NonNull final List<Item> items,
         @NonNull final PaymentResult paymentResult,
         final boolean showLoading) {
 
         props = props.toBuilder()
             .setPaymentResult(paymentResult)
             .setCurrencyId(currencyId)
+            .setIconUrl(items.size() == 1 ? items.get(0).getPictureUrl() : null)
             .setHeaderMode(HeaderProps.HEADER_MODE_WRAP)
             .setLoading(showLoading)
             .build();
