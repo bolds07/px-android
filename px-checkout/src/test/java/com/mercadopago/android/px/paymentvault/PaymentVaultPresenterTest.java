@@ -202,7 +202,6 @@ public class PaymentVaultPresenterTest {
         presenter.initialize();
 
         verify(paymentVaultView).showAmount(discountRepository, checkoutPreference.getTotalAmount(), mockSite);
-        verify(paymentVaultView).onSuccessCodeDiscountCallback(discountRepository.getDiscount());
         verify(paymentVaultProvider).trackInitialScreen(paymentMethodSearch,mockSite.getId());
         verify(paymentVaultView).setTitle(paymentVaultProvider.getTitle());
         verify(paymentVaultView).startCardFlow(true);
@@ -690,21 +689,6 @@ public class PaymentVaultPresenterTest {
 
         @Override
         public void showDetailDialog() {
-            //Do nothing
-        }
-
-        @Override
-        public void showDiscountInputDialog() {
-            //Do nothing
-        }
-
-        @Override
-        public void onSuccessCodeDiscountCallback(Discount discount) {
-            //Do nothing
-        }
-
-        @Override
-        public void onFailureCodeDiscountCallback() {
             //Do nothing
         }
 

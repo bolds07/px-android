@@ -113,19 +113,19 @@ public class InstallmentsPresenter extends MvpPresenter<InstallmentsActivityView
         final Integer differentialPricingId = differentialPricing == null ? null : differentialPricing.getId();
         getResourcesProvider()
             .getInstallments(bin, amountRepository.getAmountToPay(), userSelectionRepository.getIssuer().getId(),
-            userSelectionRepository.getPaymentMethod().getId(),
+                userSelectionRepository.getPaymentMethod().getId(),
                 differentialPricingId, new TaggedCallback<List<Installment>>(ApiUtil.RequestOrigin.GET_INSTALLMENTS) {
-                @Override
-                public void onSuccess(final List<Installment> installments) {
-                    if (installments.size() == 0) {
-                        getView().showError(getResourcesProvider().getNoInstallmentsFoundError(), "");
-                    } else if (installments.size() == 1) {
-                        resolvePayerCosts(installments.get(0).getPayerCosts());
-                        getView().onSuccessCodeDiscountCallback(discountRepository.getDiscount());
-                    } else {
-                        getView().showError(getResourcesProvider().getMultipleInstallmentsFoundForAnIssuerError(), "");
+                    @Override
+                    public void onSuccess(final List<Installment> installments) {
+                        if (installments.size() == 0) {
+                            getView().showError(getResourcesProvider().getNoInstallmentsFoundError(), "");
+                        } else if (installments.size() == 1) {
+                            resolvePayerCosts(installments.get(0).getPayerCosts());
+                        } else {
+                            getView()
+                                .showError(getResourcesProvider().getMultipleInstallmentsFoundForAnIssuerError(), "");
+                        }
                     }
-                }
 
                     @Override
                     public void onFailure(final MercadoPagoError mercadoPagoError) {
@@ -137,7 +137,6 @@ public class InstallmentsPresenter extends MvpPresenter<InstallmentsActivityView
                             }
                         });
                         getView().showError(mercadoPagoError, ApiUtil.RequestOrigin.GET_INSTALLMENTS);
-                        getView().onFailureCodeDiscountCallback();
                     }
                 });
     }
@@ -209,15 +208,5 @@ public class InstallmentsPresenter extends MvpPresenter<InstallmentsActivityView
     @Override
     public void onDetailClicked() {
         getView().showDetailDialog();
-    }
-
-    @Override
-    public void onInputRequestClicked() {
-        getView().showDiscountInputDialog();
-    }
-
-    public void onDiscountRetrieved() {
-        getInstallmentsAsync();
-        initializeAmountRow();
     }
 }
