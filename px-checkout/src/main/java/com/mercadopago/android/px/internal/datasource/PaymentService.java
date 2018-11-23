@@ -272,6 +272,12 @@ public class PaymentService implements PaymentRepository {
         return paymentData;
     }
 
+    /**
+     * Transforms IPayment into a {@link PaymentResult}
+     *
+     * @param payment
+     * @return
+     */
     @NonNull
     @Override
     public PaymentResult createPaymentResult(
