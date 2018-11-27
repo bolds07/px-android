@@ -38,7 +38,7 @@ import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
 import java.util.List;
 
-import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorView.Model.SELECTED_PAYER_COST_NONE;
+import static com.mercadopago.android.px.internal.view.PaymentMethodDescriptorView.Model.SELECTED_PAYER_COST_NONE;
 
 /* default */ class ExpressPaymentPresenter extends MvpPresenter<ExpressPayment.View, ResourcesProvider>
     implements ExpressPayment.Actions {
