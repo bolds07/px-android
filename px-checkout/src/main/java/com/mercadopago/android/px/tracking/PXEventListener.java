@@ -1,6 +1,7 @@
 package com.mercadopago.android.px.tracking;
 
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ public interface PXEventListener<T> {
      * @param screenId Id of the screen that is shown. Screen Ids start with prefixes that are described
      * in TrackingUtil.java, under the key SCREEN_ID.
      * Example:
-     * {@link com.mercadopago.android.px.tracking.internal.utils.TrackingUtil#VIEW_PATH_PAYMENT_RESULT_APPROVED}
+     * {@link TrackingUtil.View#PATH_PAYMENT_RESULT_APPROVED}
      * @param extraParams Map containing information that the screen is showing. It also contains information
      * about errors if the screen launched is the Error screen.
      * The keys of the map are the ones described under the key PROPERTY in TrackingUtil.java.

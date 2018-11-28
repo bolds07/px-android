@@ -15,7 +15,6 @@ import com.mercadopago.android.px.internal.features.providers.GuessingCardProvid
 import com.mercadopago.android.px.internal.features.uicontrollers.card.CardView;
 import com.mercadopago.android.px.internal.features.uicontrollers.card.FrontCardView;
 import com.mercadopago.android.px.internal.tracker.FlowHandler;
-import com.mercadopago.android.px.internal.tracker.MPTrackingContext;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.internal.util.MPCardMaskUtil;
@@ -38,6 +37,7 @@ import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.CardTokenException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.tracking.internal.MPTracker;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -120,12 +120,12 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
             session.getCardAssociationService(), session.getMercadoPagoESC(), session.getGatewayService());
     }
 
-    private MPTrackingContext getTrackingContext() {
+    private MPTracker getTrackingContext() {
         return getResourcesProvider().getTrackingContext();
     }
 
     protected void trackCardIdentification() {
-        final String screenId = String.format(Locale.US, "%s%s%s", TrackingUtil.VIEW_PATH_CARD_FORM, getPaymentTypeId(),
+        final String screenId = String.format(Locale.US, "%s%s%s", TrackingUtil.View.PATH_CARD_FORM, getPaymentTypeId(),
             TrackingUtil.CARD_HOLDER_IDENTIFICATION);
         final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
@@ -140,7 +140,7 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
     }
 
     protected void trackCardNumber() {
-        final String screenId = String.format(Locale.US, "%s%s%s", TrackingUtil.VIEW_PATH_CARD_FORM, getPaymentTypeId(),
+        final String screenId = String.format(Locale.US, "%s%s%s", TrackingUtil.View.PATH_CARD_FORM, getPaymentTypeId(),
             TrackingUtil.CARD_NUMBER);
         final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
@@ -151,7 +151,7 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
     }
 
     protected void trackCardHolderName() {
-        final String screenId = String.format(Locale.US, "%s%s%s", TrackingUtil.VIEW_PATH_CARD_FORM, getPaymentTypeId(),
+        final String screenId = String.format(Locale.US, "%s%s%s", TrackingUtil.View.PATH_CARD_FORM, getPaymentTypeId(),
             TrackingUtil.CARD_HOLDER_NAME);
         final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
@@ -163,7 +163,7 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
 
     protected void trackCardExpiryDate() {
         final String screenId = String
-            .format(Locale.US, "%s%s%s", TrackingUtil.VIEW_PATH_CARD_FORM, getPaymentTypeId(),
+            .format(Locale.US, "%s%s%s", TrackingUtil.View.PATH_CARD_FORM, getPaymentTypeId(),
                 TrackingUtil.CARD_EXPIRATION_DATE);
         final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
@@ -175,7 +175,7 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
 
     protected void trackCardSecurityCode() {
         final String screenId = String
-            .format(Locale.US, "%s%s%s", TrackingUtil.VIEW_PATH_CARD_FORM, getPaymentTypeId(),
+            .format(Locale.US, "%s%s%s", TrackingUtil.View.PATH_CARD_FORM, getPaymentTypeId(),
                 TrackingUtil.CARD_SECURITY_CODE);
         final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())

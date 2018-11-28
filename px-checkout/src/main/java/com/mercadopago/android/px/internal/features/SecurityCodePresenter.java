@@ -255,7 +255,8 @@ public class SecurityCodePresenter extends MvpPresenter<SecurityCodeActivityView
                 public void onSuccess(Token token) {
                     mToken = token;
                     paymentSettingRepository.configure(mToken);
-                    MPTracker.getInstance().trackToken(mToken.getId());
+                    MPTracker.getInstance().trackTokenId(mToken.getId(), paymentSettingRepository.getPublicKey(),
+                        paymentSettingRepository.getCheckoutPreference().getSite());
                     putSecurityCode();
                 }
 

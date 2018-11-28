@@ -2,14 +2,12 @@ package com.mercadopago.android.px.internal.features.providers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentMethodSearchItem;
-import com.mercadopago.android.px.tracking.internal.MPTracker;
 
 public class PaymentVaultProviderImpl implements PaymentVaultProvider {
 
@@ -56,19 +54,13 @@ public class PaymentVaultProviderImpl implements PaymentVaultProvider {
         return context.getString(R.string.px_no_payment_methods_found);
     }
 
-    public void initializeMPTracker(String siteId) {
-        MPTracker.getInstance().initTracker(merchantPublicKey, siteId, BuildConfig.VERSION_NAME, context);
-    }
-
     public void trackInitialScreen(PaymentMethodSearch paymentMethodSearch, String siteId) {
-        initializeMPTracker(siteId);
         Tracker
             .trackPaymentVaultScreen(context, paymentMethodSearch, mercadoPagoESC.getESCCardIds());
     }
 
     public void trackChildrenScreen(@NonNull final PaymentMethodSearchItem paymentMethodSearchItem,
-        final @NonNull String siteId) {
-        initializeMPTracker(siteId);
+        @NonNull final String siteId) {
         Tracker.trackPaymentVaultChildrenScreen(context, paymentMethodSearchItem);
     }
 }

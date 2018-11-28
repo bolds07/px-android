@@ -37,8 +37,7 @@ public class DiscountDetailDialog extends MeliDialog {
         } else {
             dismiss();
         }
-        Tracker.trackScreen(TrackingUtil.VIEW_PATH_APPLIED_DISCOUNT, TrackingUtil.VIEW_PATH_APPLIED_DISCOUNT,
-            getContext());
+        Tracker.trackScreen(TrackingUtil.View.PATH_APPLIED_DISCOUNT, TrackingUtil.View.PATH_APPLIED_DISCOUNT);
     }
 
     @Override

@@ -40,8 +40,7 @@ public class ReviewPaymentMethodsActivity extends MercadoPagoBaseActivity implem
         setListeners();
         mPresenter.initialize();
 
-        Tracker.trackScreen(TrackingUtil.VIEW_PATH_EXCLUDED_CARD, TrackingUtil.VIEW_PATH_EXCLUDED_CARD,
-            getApplicationContext());
+        Tracker.trackScreen(TrackingUtil.View.PATH_EXCLUDED_CARD, TrackingUtil.View.PATH_EXCLUDED_CARD);
     }
 
     protected void createPresenter() {
