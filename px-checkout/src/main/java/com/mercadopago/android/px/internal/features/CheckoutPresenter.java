@@ -539,7 +539,9 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     }
 
     private void saveIsExpressCheckout(final PaymentMethodSearch paymentMethodSearch) {
-        state.isExpressCheckout = paymentMethodSearch.hasExpressCheckoutMetadata();
+        state.isExpressCheckout = false;
+        //TODO cambiar
+//        state.isExpressCheckout = paymentMethodSearch.hasExpressCheckoutMetadata();
     }
 
     /**

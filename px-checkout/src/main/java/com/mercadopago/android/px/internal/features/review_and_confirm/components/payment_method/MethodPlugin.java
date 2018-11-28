@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.di.Session;
-import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
+import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentPluginModel;
 import com.mercadopago.android.px.internal.repository.PluginRepository;
 import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.internal.view.CompactComponent;
@@ -24,8 +24,8 @@ class MethodPlugin extends CompactComponent<MethodPlugin.Props, Void> {
         }
 
         /* default */
-        static Props createFrom(final PaymentModel props) {
-            return new Props(props.paymentMethodId);
+        static Props createFrom(final PaymentPluginModel props) {
+            return new Props(props.getPaymentMethodId());
         }
     }
 

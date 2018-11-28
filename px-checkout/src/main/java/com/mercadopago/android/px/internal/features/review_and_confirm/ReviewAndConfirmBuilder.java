@@ -9,6 +9,7 @@ import com.mercadopago.android.px.internal.di.ConfigurationModule;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.ItemsModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.LineSeparatorType;
+import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentCardModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.SummaryModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.TermsAndConditionsModel;
@@ -86,7 +87,8 @@ public class ReviewAndConfirmBuilder {
                 resources.getString(R.string.px_discount_terms_and_conditions_linked_message),
                 LineSeparatorType.BOTTOM_LINE_SEPARATOR) : null;
 
-        final PaymentModel paymentModel = new PaymentModel(paymentMethod, token, issuer, hasExtraPaymentMethods);
+        // TODO: we should obtain each model according to the context
+        final PaymentModel paymentModel = new PaymentCardModel(paymentMethod, token, issuer, hasExtraPaymentMethods);
 
         final SummaryModel summaryModel =
             new SummaryModel(amountRepository.getAmountToPay(), paymentMethod, site,

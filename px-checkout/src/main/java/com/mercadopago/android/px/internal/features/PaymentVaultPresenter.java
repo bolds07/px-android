@@ -37,7 +37,7 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     private static final String MISMATCHING_PAYMENT_METHOD_ERROR = "Payment method in search not found";
 
     @NonNull
-    private final PaymentSettingRepository configuration;
+    private final PaymentSettingRepository paymentSettingRepository;
     @NonNull
     private final UserSelectionRepository userSelectionRepository;
     @NonNull
@@ -54,12 +54,12 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     /* default */ PaymentMethodSearch paymentMethodSearch;
     private FailureRecovery failureRecovery;
 
-    public PaymentVaultPresenter(@NonNull final PaymentSettingRepository configuration,
+    public PaymentVaultPresenter(@NonNull final PaymentSettingRepository paymentSettingRepository,
         @NonNull final UserSelectionRepository userSelectionRepository,
         @NonNull final PluginRepository pluginService,
         @NonNull final DiscountRepository discountRepository,
         @NonNull final GroupsRepository groupsRepository) {
-        this.configuration = configuration;
+        this.paymentSettingRepository = paymentSettingRepository;
         this.userSelectionRepository = userSelectionRepository;
         pluginRepository = pluginService;
         this.discountRepository = discountRepository;
@@ -117,8 +117,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     public void initializeAmountRow() {
         if (isViewAttached()) {
             getView().showAmount(discountRepository,
-                configuration.getCheckoutPreference().getTotalAmount(),
-                configuration.getCheckoutPreference().getSite());
+                paymentSettingRepository.getCheckoutPreference().getTotalAmount(),
+                paymentSettingRepository.getCheckoutPreference().getSite());
         }
     }
 
@@ -127,7 +127,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     private void validateParameters() throws IllegalStateException {
-        final PaymentPreference paymentPreference = configuration.getCheckoutPreference().getPaymentPreference();
+        final PaymentPreference paymentPreference =
+            paymentSettingRepository.getCheckoutPreference().getPaymentPreference();
         if (!paymentPreference.validMaxInstallments()) {
             throw new IllegalStateException(getResourcesProvider().getInvalidMaxInstallmentsErrorMessage());
         }
@@ -175,7 +176,7 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
             } else if (paymentMethodSearch.getCustomSearchItems() != null
                 && !paymentMethodSearch.getCustomSearchItems().isEmpty()) {
                 if (PaymentTypes.CREDIT_CARD.equals(paymentMethodSearch.getCustomSearchItems().get(0).getType())) {
-                    selectCard(paymentMethodSearch.getCustomSearchItems().get(0));
+                    selectCustomOption(paymentMethodSearch.getCustomSearchItems().get(0));
                 }
             }
         } else {
@@ -231,17 +232,23 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         return new OnSelectedCallback<CustomSearchItem>() {
             @Override
             public void onSelected(final CustomSearchItem searchItem) {
-                selectCard(searchItem);
+                selectCustomOption(searchItem);
             }
         };
     }
 
-    private void selectCard(final CustomSearchItem item) {
+    private void selectCustomOption(final CustomSearchItem item) {
         if (PaymentTypes.isCardPaymentType(item.getType())) {
             final Card card = getCardWithPaymentMethod(item);
             userSelectionRepository.select(card);
             //TODO ver que pasa si selectedCard es null
             getView().startSavedCardFlow(card);
+        } else {
+            //Account money
+            final PaymentMethod paymentMethod = paymentMethodSearch.getAccountMoney().getPaymentMethod();
+            userSelectionRepository.select(paymentMethod);
+            paymentSettingRepository.configureAccountMoneyToken(paymentMethodSearch.getAccountMoney().getToken());
+            getView().finishPaymentMethodSelection(paymentMethod);
         }
     }
 
@@ -278,7 +285,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
                 userSelectionRepository.select(itemId);
                 getView().startCardFlow(automaticSelection);
             } else {
-                getView().startPaymentMethodsSelection(configuration.getCheckoutPreference().getPaymentPreference());
+                getView().startPaymentMethodsSelection(
+                    paymentSettingRepository.getCheckoutPreference().getPaymentPreference());
             }
         } else {
             resumeItem = item;
@@ -306,7 +314,7 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     private void handleCollectPayerInformation() {
-        new DefaultPayerInformationDriver(configuration.getCheckoutPreference().getPayer())
+        new DefaultPayerInformationDriver(paymentSettingRepository.getCheckoutPreference().getPayer())
             .drive(
                 new DefaultPayerInformationDriver.PayerInformationDriverCallback() {
                     @Override
@@ -402,7 +410,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
 
     public void trackInitialScreen() {
         getResourcesProvider()
-            .trackInitialScreen(paymentMethodSearch, configuration.getCheckoutPreference().getSite().getId());
+            .trackInitialScreen(paymentMethodSearch,
+                paymentSettingRepository.getCheckoutPreference().getSite().getId());
     }
 
     /**
@@ -412,14 +421,15 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     public void trackChildrenScreen() {
         if (selectedSearchItem != null) {
             getResourcesProvider()
-                .trackChildrenScreen(selectedSearchItem, configuration.getCheckoutPreference().getSite().getId());
+                .trackChildrenScreen(selectedSearchItem,
+                    paymentSettingRepository.getCheckoutPreference().getSite().getId());
         } else {
             groupsRepository.getGroups().enqueue(new Callback<PaymentMethodSearch>() {
                 @Override
                 public void success(final PaymentMethodSearch paymentMethodSearch) {
                     if (paymentMethodSearch.hasSearchItems()) {
                         getResourcesProvider().trackChildrenScreen(paymentMethodSearch.getGroups().get(0),
-                            configuration.getCheckoutPreference().getSite().getId());
+                            paymentSettingRepository.getCheckoutPreference().getSite().getId());
                     } else {
                         throw new IllegalStateException("No payment method available to track");
                     }

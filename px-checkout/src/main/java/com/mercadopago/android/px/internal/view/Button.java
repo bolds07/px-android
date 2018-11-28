@@ -2,6 +2,7 @@ package com.mercadopago.android.px.internal.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import com.mercadolibre.android.ui.widgets.MeliButton;
@@ -19,7 +20,7 @@ public abstract class Button extends CompactComponent<Button.Props, Button.Actio
         public final Action action;
         public final String label;
 
-        public Props(final String label, final Action action) {
+        public Props(final String label, @Nullable final Action action) {
             this.action = action;
             this.label = label;
         }

@@ -7,6 +7,7 @@ import android.support.v4.util.Pair;
 import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.core.PaymentMethodPlugin;
 import com.mercadopago.android.px.internal.di.Session;
+import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentCardModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.SummaryModel;
 import com.mercadopago.android.px.internal.util.JsonUtil;
@@ -141,8 +142,11 @@ public final class Tracker {
         final Collection<Pair<String, String>> properties = new ArrayList<>();
         properties.add(new Pair<>(TrackingUtil.PROPERTY_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE));
         properties.add(new Pair<>(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, paymentModel.getPaymentType()));
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.paymentMethodId));
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_ISSUER_ID, String.valueOf(paymentModel.issuerId)));
+        properties.add(new Pair<>(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.getPaymentMethodId()));
+        if (paymentModel instanceof PaymentCardModel) {
+            properties.add(new Pair<>(TrackingUtil.PROPERTY_ISSUER_ID,
+                String.valueOf(((PaymentCardModel) paymentModel).issuerId)));
+        }
 
         trackScreen(TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM,
             TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM,
@@ -175,7 +179,7 @@ public final class Tracker {
             .setScreenId(TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM)
             .setScreenName(TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM)
             .addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, paymentModel.getPaymentType())
-            .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.paymentMethodId)
+            .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.getPaymentMethodId())
             .addProperty(TrackingUtil.PROPERTY_PURCHASE_AMOUNT, summaryModel.getAmountToPay().toString());
 
         if (PaymentTypes.isCreditCardPaymentType(summaryModel.getPaymentTypeId())) {
@@ -183,9 +187,8 @@ public final class Tracker {
         }
 
         //If is saved card
-        final String cardId = paymentModel.getCardId();
-        if (cardId != null) {
-            builder.addProperty(TrackingUtil.PROPERTY_CARD_ID, cardId);
+        if (paymentModel instanceof PaymentCardModel && ((PaymentCardModel) paymentModel).getCardId() != null) {
+            builder.addProperty(TrackingUtil.PROPERTY_CARD_ID, ((PaymentCardModel) paymentModel).getCardId());
         }
 
         final ActionEvent actionEvent = builder.build();

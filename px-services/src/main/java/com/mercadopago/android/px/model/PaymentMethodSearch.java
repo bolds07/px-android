@@ -3,6 +3,7 @@ package com.mercadopago.android.px.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
+import com.mercadopago.android.px.internal.util.TextUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +141,7 @@ public class PaymentMethodSearch implements Serializable {
         return groups != null && !groups.isEmpty();
     }
 
+    @Nullable
     public PaymentMethod getPaymentMethodBySearchItem(final PaymentMethodSearchItem item) {
         PaymentMethod requiredPaymentMethod = null;
         if (paymentMethods != null && item != null && item.getId() != null) {
@@ -153,10 +155,10 @@ public class PaymentMethodSearch implements Serializable {
         return requiredPaymentMethod;
     }
 
-    private String getPaymentTypeIdFromItem(PaymentMethodSearchItem item, PaymentMethod paymentMethod) {
+    private String getPaymentTypeIdFromItem(final PaymentMethodSearchItem item, final PaymentMethod paymentMethod) {
         //Remove payment method id from item id and the splitter
-        String paymentType;
-        String itemIdWithoutPaymentMethod = item.getId().replaceFirst(paymentMethod.getId(), "");
+        final String paymentType;
+        final String itemIdWithoutPaymentMethod = item.getId().replaceFirst(paymentMethod.getId(), "");
         if (itemIdWithoutPaymentMethod.isEmpty()) {
             paymentType = paymentMethod.getPaymentTypeId();
         } else {
@@ -165,11 +167,12 @@ public class PaymentMethodSearch implements Serializable {
         return paymentType;
     }
 
-    private boolean itemMatchesPaymentMethod(PaymentMethodSearchItem item, PaymentMethod paymentMethod) {
+    private boolean itemMatchesPaymentMethod(final PaymentMethodSearchItem item, final PaymentMethod paymentMethod) {
         return item.getId().startsWith(paymentMethod.getId());
     }
 
-    public PaymentMethodSearchItem getSearchItemByPaymentMethod(PaymentMethod selectedPaymentMethod) {
+    @Nullable
+    public PaymentMethodSearchItem getSearchItemByPaymentMethod(final PaymentMethod selectedPaymentMethod) {
         PaymentMethodSearchItem requiredItem = null;
         if (selectedPaymentMethod != null) {
 
@@ -178,11 +181,14 @@ public class PaymentMethodSearch implements Serializable {
         return requiredItem;
     }
 
-    private PaymentMethodSearchItem searchItemMatchingPaymentMethod(PaymentMethod paymentMethod) {
+    @Nullable
+    private PaymentMethodSearchItem searchItemMatchingPaymentMethod(final PaymentMethod paymentMethod) {
         return searchItemInList(groups, paymentMethod);
     }
 
-    private PaymentMethodSearchItem searchItemInList(List<PaymentMethodSearchItem> list, PaymentMethod paymentMethod) {
+    @Nullable
+    private PaymentMethodSearchItem searchItemInList(final List<PaymentMethodSearchItem> list,
+        final PaymentMethod paymentMethod) {
         PaymentMethodSearchItem requiredItem = null;
         for (final PaymentMethodSearchItem currentItem : list) {
 
@@ -195,7 +201,7 @@ public class PaymentMethodSearch implements Serializable {
             //Case like "bancomer_ticket", with the payment type in the item id
             else if (itemMatchesPaymentMethod(currentItem, paymentMethod)) {
                 //Remove payment method id from item id
-                String potentialPaymentType = currentItem.getId().replaceFirst(paymentMethod.getId(), "");
+                final String potentialPaymentType = currentItem.getId().replaceFirst(paymentMethod.getId(), "");
                 if (potentialPaymentType.endsWith(paymentMethod.getPaymentTypeId())) {
                     requiredItem = currentItem;
                     break;
@@ -211,7 +217,7 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     @Nullable
-    public PaymentMethod getPaymentMethodById(@Nullable String paymentMethodId) {
+    public PaymentMethod getPaymentMethodById(@Nullable final String paymentMethodId) {
         PaymentMethod foundPaymentMethod = null;
         if (paymentMethods != null) {
             for (final PaymentMethod paymentMethod : paymentMethods) {
