@@ -25,13 +25,9 @@ public class PaymentMethodSearch implements Serializable {
 
     private List<Card> cards;
 
-    //region deprecated
-    /**
-     * old account money support that no longer exists.
-     * we will delete this attr on px v5
-     */
-    @Deprecated
     private AccountMoney accountMoney;
+
+    //region deprecated
 
     /**
      * @deprecated use new {{@link #express}}
@@ -89,16 +85,6 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     /**
-     * old account money support that no longer exists.
-     *
-     * @deprecated we will delete this method on px v5
-     */
-    @Deprecated
-    public AccountMoney getAccountMoney() {
-        return accountMoney;
-    }
-
-    /**
      * @deprecated we will delete this method on px v5
      */
     @Deprecated
@@ -137,6 +123,10 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     //endregion deprecated
+
+    public AccountMoney getAccountMoney() {
+        return accountMoney;
+    }
 
     public List<PaymentMethodSearchItem> getGroups() {
         return groups;

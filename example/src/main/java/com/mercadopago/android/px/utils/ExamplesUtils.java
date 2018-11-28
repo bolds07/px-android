@@ -99,6 +99,7 @@ public final class ExamplesUtils {
 
     public static List<Pair<String, Builder>> getOptions() {
         final List<Pair<String, Builder>> options = new ArrayList<>(BusinessSamples.getAll());
+        AccountMoneySamples.addAll(options);
         OneTapSamples.addAll(options);
         ChargesSamples.addAll(options);
         DiscountSamples.addAll(options);

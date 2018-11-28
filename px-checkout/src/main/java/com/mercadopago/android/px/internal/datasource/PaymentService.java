@@ -137,17 +137,15 @@ public class PaymentService implements PaymentRepository {
             public void success(final PaymentMethodSearch paymentMethodSearch) {
 
                 final String paymentTypeId = expressMetadata.getPaymentTypeId();
-                final String paymentMethodId = expressMetadata.getPaymentMethodId();
 
                 if (PaymentTypes.isCardPaymentType(paymentTypeId)) {
                     // Saved card.
                     final Card card = new CardMapper(paymentMethodSearch).map(expressMetadata);
                     userSelectionRepository.select(card);
                     userSelectionRepository.select(payerCost);
-                } else if (PaymentTypes.isPlugin(paymentTypeId)) {
-                    // Account money plugin / No second factor.
-                    userSelectionRepository
-                        .select(pluginRepository.getPluginAsPaymentMethod(paymentMethodId, paymentTypeId));
+                } else if (PaymentTypes.isAccountMoney(paymentTypeId)) {
+                    userSelectionRepository.select(paymentMethodSearch.getAccountMoney().getPaymentMethod());
+                    paymentSettingRepository.configureAccountMoneyToken(paymentMethodSearch.getAccountMoney().getToken());
                 } else {
                     throw new IllegalStateException("payment method selected can not be used for express payment");
                 }
@@ -266,6 +264,7 @@ public class PaymentService implements PaymentRepository {
         paymentData.setPayerCost(userSelectionRepository.getPayerCost());
         paymentData.setIssuer(userSelectionRepository.getIssuer());
         paymentData.setToken(paymentSettingRepository.getToken());
+        paymentData.setAccountMoneyTokenId(paymentSettingRepository.getAccountMoneyTokenId());
         paymentData.setCampaign(discountRepository.getCampaign());
         paymentData.setDiscount(discountRepository.getDiscount());
         paymentData

@@ -32,7 +32,7 @@ public class BusinessModelMapper extends Mapper<BusinessPayment, BusinessPayment
     public BusinessPaymentModel map(@NonNull final BusinessPayment val) {
         final PaymentData paymentData = paymentRepository.getPaymentData();
         final String lastFourDigits =
-            paymentData.getToken() != null ? paymentData.getToken().getLastFourDigits() : null;
+            paymentData.containsCardInfo() ? paymentData.getToken().getLastFourDigits() : null;
 
         return new BusinessPaymentModel(val, discountRepository.getDiscount(), paymentData.getPaymentMethod(),
             paymentData.getPayerCost(),

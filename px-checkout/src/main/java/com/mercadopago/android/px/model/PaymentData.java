@@ -11,6 +11,7 @@ public class PaymentData implements Serializable {
     private Issuer issuer;
     private PayerCost payerCost;
     private Token token;
+    private String accountMoneyTokenId;
     private Payer payer;
     private String couponCode;
 
@@ -48,6 +49,11 @@ public class PaymentData implements Serializable {
 
     public Token getToken() {
         return token;
+    }
+
+    @Nullable
+    public String getTokenId() {
+        return token == null ? accountMoneyTokenId : token.getId();
     }
 
     public void setToken(Token token) {
@@ -93,5 +99,9 @@ public class PaymentData implements Serializable {
 
     public void setCampaign(@Nullable final Campaign campaign) {
         this.campaign = campaign;
+    }
+
+    public void setAccountMoneyTokenId(@Nullable final String accountMoneyTokenId) {
+        this.accountMoneyTokenId = accountMoneyTokenId;
     }
 }

@@ -21,6 +21,7 @@ public class PaymentSettingService implements PaymentSettingRepository {
     private static final String PREF_PUBLIC_KEY = "PREF_PUBLIC_KEY";
     private static final String PREF_PRIVATE_KEY = "PREF_PRIVATE_KEY";
     private static final String PREF_TOKEN = "PREF_TOKEN";
+    private static final String PREF_ACCOUNT_MONEY_TOKEN = "PREF_ACCOUNT_MONEY_TOKEN";
 
     @NonNull private final SharedPreferences sharedPreferences;
     @NonNull private final JsonUtil jsonUtil;
@@ -48,6 +49,13 @@ public class PaymentSettingService implements PaymentSettingRepository {
     public void configure(@NonNull final Token token) {
         final SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(PREF_TOKEN, jsonUtil.toJson(token));
+        edit.apply();
+    }
+
+    @Override
+    public void configureAccountMoneyToken(@NonNull final String accountMoneyToken) {
+        final SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(PREF_ACCOUNT_MONEY_TOKEN, jsonUtil.toJson(accountMoneyToken));
         edit.apply();
     }
 
@@ -131,6 +139,12 @@ public class PaymentSettingService implements PaymentSettingRepository {
     @Override
     public Token getToken() {
         return jsonUtil.fromJson(sharedPreferences.getString(PREF_TOKEN, ""), Token.class);
+    }
+
+    @Nullable
+    @Override
+    public String getAccountMoneyTokenId() {
+        return sharedPreferences.getString(PREF_ACCOUNT_MONEY_TOKEN, "");
     }
 
     @Override

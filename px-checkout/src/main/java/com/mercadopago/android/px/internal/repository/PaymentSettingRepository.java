@@ -23,6 +23,8 @@ public interface PaymentSettingRepository {
 
     void configure(@NonNull Token token);
 
+    void configureAccountMoneyToken(@NonNull String accountMoneyToken);
+
     void configurePreferenceId(@Nullable String preferenceId);
 
     void configurePrivateKey(@Nullable final String privateKey);
@@ -53,6 +55,9 @@ public interface PaymentSettingRepository {
 
     @Nullable
     Token getToken();
+
+    @Nullable
+    String getAccountMoneyTokenId();
 
     boolean hasToken();
 }
