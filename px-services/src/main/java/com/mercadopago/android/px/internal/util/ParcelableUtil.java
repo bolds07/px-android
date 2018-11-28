@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import java.math.BigDecimal;
-import java.util.Map;
 
 public final class ParcelableUtil {
 

@@ -64,6 +64,14 @@ public class CustomSearchItem implements Serializable, Parcelable {
         return paymentMethodId;
     }
 
+    public String getSelectedAmountConfiguration() {
+        return selectedAmountConfiguration;
+    }
+
+    public PayerCostConfiguration getPayerCostConfiguration() {
+        return payerCostConfiguration;
+    }
+
     @Override
     public int describeContents() {
         return 0;

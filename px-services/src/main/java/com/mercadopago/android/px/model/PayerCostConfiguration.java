@@ -12,6 +12,14 @@ public class PayerCostConfiguration implements Serializable, Parcelable {
     private final Map<String, List<PayerCost>> configuration = new HashMap<>();
     private final int selectedPayerCostIndex;
 
+    public Map<String, List<PayerCost>> getConfiguration() {
+        return configuration;
+    }
+
+    public int getSelectedPayerCostIndex() {
+        return selectedPayerCostIndex;
+    }
+
     protected PayerCostConfiguration(final Parcel in) {
         selectedPayerCostIndex = in.readInt();
         in.readMap(configuration, PayerCost.class.getClassLoader());
