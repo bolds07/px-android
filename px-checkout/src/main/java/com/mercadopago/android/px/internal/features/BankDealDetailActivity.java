@@ -111,9 +111,8 @@ public class BankDealDetailActivity extends AppCompatActivity implements Callbac
     }
 
     protected void trackScreen() {
-        Tracker.trackScreen(TrackingUtil.VIEW_PATH_PROMOTIONS_TERMS_AND_CONDITIONS,
-            TrackingUtil.VIEW_PATH_PROMOTIONS_TERMS_AND_CONDITIONS,
-            getApplicationContext());
+        Tracker.trackScreen(TrackingUtil.View.PATH_PROMOTIONS_TERMS_AND_CONDITIONS,
+            TrackingUtil.View.PATH_PROMOTIONS_TERMS_AND_CONDITIONS);
     }
 
     private void initView(final BankDealDetailModel model) {

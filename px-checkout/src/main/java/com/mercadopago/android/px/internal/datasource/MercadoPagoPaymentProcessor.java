@@ -76,7 +76,7 @@ public class MercadoPagoPaymentProcessor implements PaymentProcessor {
 
     private void trackOffPayment(@NonNull final Payment payment) {
         if (!payment.isCardPaymentType(payment.getPaymentTypeId())) {
-            MPTracker.getInstance().trackPayment(payment.getId(), payment.getPaymentTypeId());
+            MPTracker.getInstance().trackPayment(payment.getId());
         }
     }
 }

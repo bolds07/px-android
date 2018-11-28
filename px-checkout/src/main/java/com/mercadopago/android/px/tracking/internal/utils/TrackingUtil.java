@@ -2,52 +2,56 @@ package com.mercadopago.android.px.tracking.internal.utils;
 
 public final class TrackingUtil {
 
+    public static final class View {
+
+        //View Paths
+        public static final String PATH_PAYMENT_VAULT = "/px_checkout/payments/select_method";
+        public static final String PATH_PAYMENT_VAULT_TICKET = "/px_checkout/payments/select_method/ticket";
+        public static final String PATH_PAYMENT_VAULT_CARDS =
+            "/px_checkout/payments/select_method/select_card_type";
+        public static final String PATH_BOLBRADESCO_CPF = "/px_checkout/select_method/ticket/cpf";
+        public static final String PATH_BOLBRADESCO_NAME = "/px_checkout/select_method/ticket/name";
+        public static final String PATH_BOLBRADESCO_LASTNAME = "/px_checkout/select_method/ticket/lastname";
+        public static final String PATH_CARD_FORM = "/px_checkout/add_payment_method/";
+        public static final String PATH_ISSUERS = "/px_checkout/payments/card_issuer";
+        public static final String PATH_INSTALLMENTS = "/px_checkout/payments/installments";
+        public static final String PATH_APPLIED_DISCOUNT = "/px_checkout/payments/select_method/applied_discount";
+        public static final String PATH_PROMOTIONS = "/px_checkout/add_payment_method/promotions";
+        public static final String PATH_PROMOTIONS_TERMS_AND_CONDITIONS =
+            "/px_checkout/add_payment_method/promotions/terms_and_conditions";
+        public static final String PATH_EXCLUDED_CARD =
+            "/px_checkout/add_payment_method/credit_card/number/error_more_info";
+        public static final String PATH_REVIEW_AND_CONFIRM = "/px_checkout/review/traditional";
+        public static final String PATH_REVIEW_TERMS_AND_CONDITIONS =
+            "/px_checkout/review/traditional/terms_and_conditions";
+        public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
+        public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
+        public static final String PATH_EXPRESS_REVIEW_VIEW = "/px_checkout/review/one_tap";
+        public static final String PATH_EXPRESS_DISCOUNT_VIEW = "/px_checkout/review/one_tap/applied_discount";
+        public static final String PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
+        public static final String PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
+        public static final String PATH_PAYMENT_RESULT_REJECTED = "/px_checkout/result/error";
+
+        private View() {
+        }
+    }
+
+    public static final class Event {
+        //Event Paths
+        public static final String EVENT_PATH_REVIEW_CONFIRM = "/px_checkout/review/confirm";
+        public static final String EVENT_PATH_SWIPE_EXPRESS = "/px_checkout/review/one_tap/swipe";
+        public static final String EVENT_PATH_ABORT_EXPRESS = "/px_checkout/review/one_tap/abort";
+        public static final String EVENT_PATH_FRICTION = "/friction";
+        public static final String EVENT_PATH_GENERIC_ERROR = "/px_checkout/generic_error";
+        public static final String EVENT_PATH_GENERIC_ERROR_ID = "px_generic_error";
+        public static final String EVENT_PATH_GENERIC_ERROR_ATTRIBUTABLE_TO = "mercadopago";
+
+        private Event() {
+        }
+    }
+
     //Action IDs
     public static final String ACTION_CHECKOUT_CONFIRMED = "/checkout_confirmed";
-
-    //View Paths
-    public static final String VIEW_PATH_PAYMENT_VAULT = "/px_checkout/payments/select_method";
-    public static final String VIEW_PATH_PAYMENT_VAULT_TICKET = "/px_checkout/payments/select_method/ticket";
-    public static final String VIEW_PATH_PAYMENT_VAULT_CARDS = "/px_checkout/payments/select_method/select_card_type";
-
-    public static final String VIEW_PATH_BOLBRADESCO_CPF = "/px_checkout/select_method/ticket/cpf";
-    public static final String VIEW_PATH_BOLBRADESCO_NAME = "/px_checkout/select_method/ticket/name";
-    public static final String VIEW_PATH_BOLBRADESCO_LASTNAME = "/px_checkout/select_method/ticket/lastname";
-
-    public static final String VIEW_PATH_CARD_FORM = "/px_checkout/add_payment_method/";
-    public static final String VIEW_PATH_ISSUERS = "/px_checkout/payments/card_issuer";
-    public static final String VIEW_PATH_INSTALLMENTS = "/px_checkout/payments/installments";
-
-    public static final String VIEW_PATH_APPLIED_DISCOUNT = "/px_checkout/payments/select_method/applied_discount";
-    public static final String VIEW_PATH_PROMOTIONS = "/px_checkout/add_payment_method/promotions";
-    public static final String VIEW_PATH_PROMOTIONS_TERMS_AND_CONDITIONS =
-        "/px_checkout/add_payment_method/promotions/terms_and_conditions";
-    public static final String VIEW_PATH_EXCLUDED_CARD =
-        "/px_checkout/add_payment_method/credit_card/number/error_more_info";
-
-    public static final String VIEW_PATH_REVIEW_AND_CONFIRM = "/px_checkout/review/traditional";
-    public static final String VIEW_PATH_REVIEW_TERMS_AND_CONDITIONS =
-        "/px_checkout/review/traditional/terms_and_conditions";
-
-    public static final String VIEW_PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
-    public static final String VIEW_PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
-    public static final String VIEW_PATH_EXPRESS_REVIEW_VIEW = "/px_checkout/review/one_tap";
-    public static final String VIEW_PATH_EXPRESS_DISCOUNT_VIEW = "/px_checkout/review/one_tap/applied_discount";
-
-    public static final String VIEW_PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
-    public static final String VIEW_PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
-    public static final String VIEW_PATH_PAYMENT_RESULT_REJECTED = "/px_checkout/result/error";
-
-    //Event Paths
-    public static final String EVENT_PATH_REVIEW_CONFIRM = "/px_checkout/review/confirm";
-
-    public static final String EVENT_PATH_SWIPE_EXPRESS = "/px_checkout/review/one_tap/swipe";
-    public static final String EVENT_PATH_ABORT_EXPRESS = "/px_checkout/review/one_tap/abort";
-
-    public static final String EVENT_PATH_FRICTION = "/friction";
-    public static final String EVENT_PATH_GENERIC_ERROR = "/px_checkout/generic_error";
-    public static final String EVENT_PATH_GENERIC_ERROR_ID = "px_generic_error";
-    public static final String EVENT_PATH_GENERIC_ERROR_ATTRIBUTABLE_TO = "mercadopago";
 
     //Card Association result screen
     public static final String SCREEN_ID_CARD_ASSOCIATION_SUCCESS = "/px_checkout/card_association_result/success";
@@ -87,7 +91,6 @@ public final class TrackingUtil {
     public static final String PROPERTY_INSTALLMENTS = "installments";
     public static final String PROPERTY_PURCHASE_AMOUNT = "purchase_amount";
     public static final String PROPERTY_REVIEW_TYPE_ONE_TAP = "one_tap";
-    public static final String PROPERTY_SCREEN_ID = "screen_id";
 
     //Default values
     public static final String HAS_SHIPPING_DEFAULT_VALUE = "false";

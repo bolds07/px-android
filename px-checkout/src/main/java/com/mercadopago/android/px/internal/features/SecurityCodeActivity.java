@@ -18,7 +18,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.callbacks.card.CardSecurityCodeEditTextCallback;
 import com.mercadopago.android.px.internal.controllers.CheckoutTimer;
@@ -29,7 +28,6 @@ import com.mercadopago.android.px.internal.features.uicontrollers.card.CardRepre
 import com.mercadopago.android.px.internal.features.uicontrollers.card.CardView;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.tracker.FlowHandler;
-import com.mercadopago.android.px.internal.tracker.MPTrackingContext;
 import com.mercadopago.android.px.internal.util.ErrorUtil;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.internal.util.ResourceUtil;
@@ -45,6 +43,7 @@ import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.CardTokenException;
 import com.mercadopago.android.px.model.exceptions.ExceptionHandler;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.tracking.internal.MPTracker;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 
 public class SecurityCodeActivity extends MercadoPagoBaseActivity implements SecurityCodeActivityView {
@@ -281,15 +280,12 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
 
     @Override
     public void trackScreen() {
-        final String publicKey = Session.getSession(this).getConfigurationModule().getPaymentSettings().getPublicKey();
-        final MPTrackingContext mpTrackingContext = new MPTrackingContext.Builder(this, publicKey)
-            .setVersion(BuildConfig.VERSION_NAME)
-            .build();
+        final MPTracker mpTrackingContext = MPTracker.getInstance();
 
         final String screenId =
-            TrackingUtil.VIEW_PATH_PAYMENT_VAULT + "/" + mSecurityCodePresenter.getPaymentMethod().getPaymentTypeId() +
+            TrackingUtil.View.PATH_PAYMENT_VAULT + "/" + mSecurityCodePresenter.getPaymentMethod().getPaymentTypeId() +
                 TrackingUtil.CARD_SECURITY_CODE;
-        ScreenViewEvent event = new ScreenViewEvent.Builder()
+        final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
             .setScreenId(screenId)
             .setScreenName(screenId)

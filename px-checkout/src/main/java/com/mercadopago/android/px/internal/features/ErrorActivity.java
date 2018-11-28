@@ -101,7 +101,7 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
 
     private void trackScreen() {
         final String errorMessage = titleMessageTextView.getText() + " " + message;
-        Tracker.trackGenericError(TrackingUtil.EVENT_PATH_GENERIC_ERROR, ErrorView.ErrorType.SCREEN, mMercadoPagoError,
+        Tracker.trackGenericError(TrackingUtil.Event.EVENT_PATH_GENERIC_ERROR, ErrorView.ErrorType.SCREEN, mMercadoPagoError,
             errorMessage);
     }
 

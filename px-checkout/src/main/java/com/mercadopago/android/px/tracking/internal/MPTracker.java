@@ -1,11 +1,9 @@
 package com.mercadopago.android.px.tracking.internal;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.mercadopago.android.px.model.AppInformation;
-import com.mercadopago.android.px.model.DeviceInfo;
+import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.model.Event;
 import com.mercadopago.android.px.model.PaymentIntent;
 import com.mercadopago.android.px.model.ScreenViewEvent;
@@ -44,9 +42,7 @@ public final class MPTracker {
     @Nullable private String flowName;
 
     private String mPublicKey;
-    private String mSdkVersion;
     private String mSiteId;
-    private Context mContext;
 
     private static final String SDK_PLATFORM = "Android";
     private static final String SDK_TYPE = "native";
@@ -115,15 +111,14 @@ public final class MPTracker {
 
     /**
      * @param paymentId The payment id of a payment method off. Cannot be {@code null}.
-     * @param typeId The payment type id. It has to be a card type.
      */
-    public PaymentIntent trackPayment(final Long paymentId, final String typeId) {
+    public PaymentIntent trackPayment(final Long paymentId) {
 
         PaymentIntent paymentIntent = null;
 
         if (trackerInitialized) {
             paymentIntent = new PaymentIntent(mPublicKey, paymentId.toString(), DEFAULT_FLAVOUR, SDK_PLATFORM, SDK_TYPE,
-                mSdkVersion, mSiteId);
+                BuildConfig.VERSION_NAME, mSiteId);
             initializeMPTrackingService();
             mMPTrackingService.trackPaymentId(paymentIntent);
         }
@@ -137,7 +132,8 @@ public final class MPTracker {
         TrackingIntent trackingIntent = null;
         if (trackerInitialized && !isEmpty(token)) {
             trackingIntent =
-                new TrackingIntent(mPublicKey, token, DEFAULT_FLAVOUR, SDK_PLATFORM, SDK_TYPE, mSdkVersion, mSiteId);
+                new TrackingIntent(mPublicKey, token, DEFAULT_FLAVOUR, SDK_PLATFORM, SDK_TYPE, BuildConfig.VERSION_NAME,
+                    mSiteId);
             initializeMPTrackingService();
             mMPTrackingService.trackToken(trackingIntent);
         }
@@ -147,41 +143,13 @@ public final class MPTracker {
     /**
      * This method tracks a list of events in one request
      *
-     * @param appInformation Info about this application and SDK integration
-     * @param deviceInfo Info about the device that is using the app
      * @param event Event to track
-     * @param context Application context
      * @deprecated Old tracking listener.
      */
     @Deprecated
-    public void trackEvent(final String publicKey,
-        final AppInformation appInformation,
-        final DeviceInfo deviceInfo,
-        final Event event,
-        final Context context) {
-        trackEvent(publicKey, appInformation, deviceInfo, event, context, StrategyMode.NOOP_STRATEGY);
-    }
-
-    /**
-     * This method tracks a list of events in one request
-     *
-     * @param appInformation Info about this application and SDK integration
-     * @param deviceInfo Info about the device that is using the app
-     * @param event Event to track
-     * @param context Application context
-     * @deprecated Old tracking listener.
-     */
-    @Deprecated
-    public void trackEvent(final String publicKey,
-        final AppInformation appInformation,
-        final DeviceInfo deviceInfo,
-        final Event event,
-        final Context context,
-        final String trackingStrategy) {
+    public void trackEvent(final Event event) {
 
         initializeMPTrackingService();
-
-        mContext = context;
 
         if (event.getType().equals(Event.TYPE_SCREEN_VIEW)) {
             final ScreenViewEvent screenViewEvent = (ScreenViewEvent) event;
@@ -216,7 +184,7 @@ public final class MPTracker {
 
         if (pxTrackingListener != null) {
             // Event friction case needs to add flow detail in a different way. We ignore this case for now.
-            if (!TrackingUtil.EVENT_PATH_FRICTION.equals(path)) {
+            if (!TrackingUtil.Event.EVENT_PATH_FRICTION.equals(path)) {
                 addAdditionalFlowInfo(data);
             }
             pxTrackingListener.onEvent(path, data);
@@ -231,21 +199,15 @@ public final class MPTracker {
     /**
      * @param publicKey The public key of the merchant. Cannot be {@code null}.
      * @param siteId The site that comes in the preference. Cannot be {@code null}.
-     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}.
-     * @param context Reference to Android Context. Cannot be {@code null}.
      */
     public void initTracker(final String publicKey,
-        final String siteId,
-        final String sdkVersion,
-        final Context context) {
+        final String siteId) {
 
         if (!isTrackerInitialized()) {
-            if (areInitParametersValid(publicKey, siteId, sdkVersion, context)) {
+            if (areInitParametersValid(publicKey, siteId)) {
                 trackerInitialized = true;
                 mPublicKey = publicKey;
                 mSiteId = siteId;
-                mSdkVersion = sdkVersion;
-                mContext = context.getApplicationContext();
             }
         }
     }
@@ -253,16 +215,10 @@ public final class MPTracker {
     /**
      * @param publicKey The public key of the merchant. Cannot be {@code null}.
      * @param siteId The site that comes in the preference. Cannot be {@code null}.
-     * @param sdkVersion The Mercado Pago sdk version. Cannot be {@code null}.
-     * @param context Reference to Android Context. Cannot be {@code null}.
      * @return True if all parameters are valid. False if any parameter is invalid
      */
-    private boolean areInitParametersValid(final String publicKey,
-        final String siteId,
-        final String sdkVersion,
-        final Context context) {
-
-        return !isEmpty(publicKey) && !isEmpty(sdkVersion) && !isEmpty(siteId) && context != null;
+    private boolean areInitParametersValid(@NonNull final String publicKey, @NonNull final String siteId) {
+        return !isEmpty(publicKey) && !isEmpty(siteId);
     }
 
     /**
@@ -271,6 +227,6 @@ public final class MPTracker {
      * @return True if is initialized. False if is not initialized.
      */
     private boolean isTrackerInitialized() {
-        return mPublicKey != null && mSdkVersion != null && mSiteId != null && mContext != null;
+        return mPublicKey != null && mSiteId != null;
     }
 }

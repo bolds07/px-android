@@ -2,7 +2,6 @@ package com.mercadopago.android.px.internal.features.providers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
 import com.mercadopago.android.px.internal.di.Session;
@@ -57,7 +56,7 @@ public class PaymentVaultProviderImpl implements PaymentVaultProvider {
     }
 
     public void initializeMPTracker(String siteId) {
-        MPTracker.getInstance().initTracker(merchantPublicKey, siteId, BuildConfig.VERSION_NAME, context);
+        MPTracker.getInstance().initTracker(merchantPublicKey, siteId);
     }
 
     public void trackInitialScreen(PaymentMethodSearch paymentMethodSearch, String siteId) {

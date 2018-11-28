@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import com.google.gson.reflect.TypeToken;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.adapters.InstallmentsAdapter;
 import com.mercadopago.android.px.internal.callbacks.OnCodeDiscountCallback;
@@ -31,7 +30,6 @@ import com.mercadopago.android.px.internal.features.uicontrollers.card.FrontCard
 import com.mercadopago.android.px.internal.repository.DiscountRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.tracker.FlowHandler;
-import com.mercadopago.android.px.internal.tracker.MPTrackingContext;
 import com.mercadopago.android.px.internal.util.ErrorUtil;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.internal.util.ScaleUtil;
@@ -47,6 +45,7 @@ import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.PaymentPreference;
+import com.mercadopago.android.px.tracking.internal.MPTracker;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -197,15 +196,12 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity
     }
 
     protected void trackScreen() {
-        final String publicKey = Session.getSession(this).getConfigurationModule().getPaymentSettings().getPublicKey();
-        final MPTrackingContext mTrackingContext = new MPTrackingContext.Builder(this, publicKey)
-            .setVersion(BuildConfig.VERSION_NAME)
-            .build();
+        final MPTracker mTrackingContext = MPTracker.getInstance();
 
-        ScreenViewEvent event = new ScreenViewEvent.Builder()
+        final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(TrackingUtil.VIEW_PATH_INSTALLMENTS)
-            .setScreenName(TrackingUtil.VIEW_PATH_INSTALLMENTS)
+            .setScreenId(TrackingUtil.View.PATH_INSTALLMENTS)
+            .setScreenName(TrackingUtil.View.PATH_INSTALLMENTS)
             .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, presenter.getPaymentMethod().getId())
             .build();
 

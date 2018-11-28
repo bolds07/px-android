@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.core.PaymentMethodPlugin;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
@@ -23,8 +22,8 @@ import com.mercadopago.android.px.model.ScreenViewEvent;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
 import com.mercadopago.android.px.tracking.internal.model.ErrorView;
-import com.mercadopago.android.px.tracking.internal.model.ExpressInstallmentsView;
 import com.mercadopago.android.px.tracking.internal.model.ExpressConfirmEvent;
+import com.mercadopago.android.px.tracking.internal.model.ExpressInstallmentsView;
 import com.mercadopago.android.px.tracking.internal.model.ExpressReviewView;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.math.BigDecimal;
@@ -34,8 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.mercadopago.android.px.tracking.internal.StrategyMode.NOOP_STRATEGY;
 
 public final class Tracker {
 
@@ -48,17 +45,17 @@ public final class Tracker {
         final ExpressConfirmEvent expressConfirmEvent =
             ExpressConfirmEvent.createFrom(expressMetadata, selectedPayerCost, currencyId);
         final Map<String, Object> map = JsonUtil.getInstance().getMapFromObject(expressConfirmEvent);
-        MPTracker.getInstance().trackEvent(TrackingUtil.EVENT_PATH_REVIEW_CONFIRM, map);
+        MPTracker.getInstance().trackEvent(TrackingUtil.Event.EVENT_PATH_REVIEW_CONFIRM, map);
     }
 
     public static void trackSwipeExpress() {
         MPTracker.getInstance()
-            .trackEvent(TrackingUtil.EVENT_PATH_SWIPE_EXPRESS, new HashMap<String, Object>());
+            .trackEvent(TrackingUtil.Event.EVENT_PATH_SWIPE_EXPRESS, new HashMap<String, Object>());
     }
 
     public static void trackAbortExpress() {
         MPTracker.getInstance()
-            .trackEvent(TrackingUtil.EVENT_PATH_ABORT_EXPRESS, new HashMap<String, Object>());
+            .trackEvent(TrackingUtil.Event.EVENT_PATH_ABORT_EXPRESS, new HashMap<String, Object>());
     }
 
     public static void trackExpressInstallmentsView(@NonNull final ExpressMetadata expressMetadata,
@@ -66,7 +63,7 @@ public final class Tracker {
         final ExpressInstallmentsView expressInstallmentsView =
             ExpressInstallmentsView.createFrom(expressMetadata, currencyId, totalAmount);
         final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(expressInstallmentsView);
-        MPTracker.getInstance().trackView(TrackingUtil.VIEW_PATH_EXPRESS_INSTALLMENTS_VIEW, data);
+        MPTracker.getInstance().trackView(TrackingUtil.View.PATH_EXPRESS_INSTALLMENTS_VIEW, data);
     }
 
     public static void trackExpressView(@NonNull final BigDecimal totalAmount, @NonNull final String currencyId,
@@ -75,19 +72,19 @@ public final class Tracker {
         final ExpressReviewView expressReviewView =
             ExpressReviewView.createFrom(expressMetadataList, totalAmount, currencyId, discount, campaign, items);
         final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(expressReviewView);
-        MPTracker.getInstance().trackView(TrackingUtil.VIEW_PATH_EXPRESS_REVIEW_VIEW, data);
+        MPTracker.getInstance().trackView(TrackingUtil.View.PATH_EXPRESS_REVIEW_VIEW, data);
     }
 
     public static void trackExpressDiscountView() {
         MPTracker.getInstance()
-            .trackView(TrackingUtil.VIEW_PATH_EXPRESS_DISCOUNT_VIEW, new HashMap<String, Object>());
+            .trackView(TrackingUtil.View.PATH_EXPRESS_DISCOUNT_VIEW, new HashMap<String, Object>());
     }
 
     public static void trackGenericError(@Nullable final String path, @NonNull final ErrorView.ErrorType errorType,
         @NonNull final MercadoPagoError mercadoPagoError, @NonNull final String visibleMessage) {
         final ErrorView errorView = ErrorView.createFrom(path, mercadoPagoError, errorType, visibleMessage);
         final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(errorView);
-        MPTracker.getInstance().trackEvent(TrackingUtil.EVENT_PATH_FRICTION, data);
+        MPTracker.getInstance().trackEvent(TrackingUtil.Event.EVENT_PATH_FRICTION, data);
     }
 
     private static void addProperties(final ScreenViewEvent.Builder builder,
@@ -99,31 +96,17 @@ public final class Tracker {
         }
     }
 
-    private static MPTrackingContext getTrackerContext(@NonNull final Context context) {
-        final String publicKey =
-            Session.getSession(context).getConfigurationModule().getPaymentSettings().getPublicKey();
-        final MPTrackingContext.Builder builder =
-            new MPTrackingContext.Builder(context.getApplicationContext(), publicKey)
-                .setVersion(BuildConfig.VERSION_NAME);
+    public static void trackScreen(final String screenId,
+        final String screenName) {
 
-        builder.setTrackingStrategy(NOOP_STRATEGY);
-
-        return builder.build();
+        trackScreen(screenId, screenName, new ArrayList<Pair<String, String>>());
     }
 
     public static void trackScreen(final String screenId,
         final String screenName,
-        final Context context) {
-
-        trackScreen(screenId, screenName, context, new ArrayList<Pair<String, String>>());
-    }
-
-    public static void trackScreen(final String screenId,
-        final String screenName,
-        final Context context,
         @Nullable final Iterable<Pair<String, String>> properties) {
 
-        final MPTrackingContext mpTrackingContext = getTrackerContext(context);
+        final MPTracker mpTrackingContext = MPTracker.getInstance();
 
         final ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
@@ -144,36 +127,34 @@ public final class Tracker {
         properties.add(new Pair<>(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.paymentMethodId));
         properties.add(new Pair<>(TrackingUtil.PROPERTY_ISSUER_ID, String.valueOf(paymentModel.issuerId)));
 
-        trackScreen(TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM,
-            TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM,
-            context, properties);
+        trackScreen(TrackingUtil.View.PATH_REVIEW_AND_CONFIRM,
+            TrackingUtil.View.PATH_REVIEW_AND_CONFIRM,
+            properties);
     }
 
-    public static void trackReviewAndConfirmTermsAndConditions(@NonNull final Context context) {
+    public static void trackReviewAndConfirmTermsAndConditions() {
 
-        final MPTrackingContext mpTrackingContext =
-            getTrackerContext(context);
+        final MPTracker mpTrackingContext = MPTracker.getInstance();
 
         final ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(TrackingUtil.VIEW_PATH_REVIEW_TERMS_AND_CONDITIONS)
-            .setScreenName(TrackingUtil.VIEW_PATH_REVIEW_TERMS_AND_CONDITIONS);
+            .setScreenId(TrackingUtil.View.PATH_REVIEW_TERMS_AND_CONDITIONS)
+            .setScreenName(TrackingUtil.View.PATH_REVIEW_TERMS_AND_CONDITIONS);
 
         mpTrackingContext.trackEvent(builder.build());
     }
 
-    public static void trackCheckoutConfirm(final Context context,
+    public static void trackCheckoutConfirm(
         final PaymentModel paymentModel,
         final SummaryModel summaryModel) {
 
-        final MPTrackingContext mpTrackingContext =
-            getTrackerContext(context);
+        final MPTracker mpTrackingContext = MPTracker.getInstance();
 
         final ActionEvent.Builder builder = new ActionEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())
             .setAction(TrackingUtil.ACTION_CHECKOUT_CONFIRMED)
-            .setScreenId(TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM)
-            .setScreenName(TrackingUtil.VIEW_PATH_REVIEW_AND_CONFIRM)
+            .setScreenId(TrackingUtil.View.PATH_REVIEW_AND_CONFIRM)
+            .setScreenName(TrackingUtil.View.PATH_REVIEW_AND_CONFIRM)
             .addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, paymentModel.getPaymentType())
             .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.paymentMethodId)
             .addProperty(TrackingUtil.PROPERTY_PURCHASE_AMOUNT, summaryModel.getAmountToPay().toString());
@@ -200,9 +181,9 @@ public final class Tracker {
         properties.add(new Pair<>(TrackingUtil.PROPERTY_OPTIONS,
             getFormattedPaymentMethodsForTracking(context, paymentMethodSearch, escCardIds)));
 
-        trackScreen(TrackingUtil.VIEW_PATH_PAYMENT_VAULT,
-            TrackingUtil.VIEW_PATH_PAYMENT_VAULT,
-            context, properties);
+        trackScreen(TrackingUtil.View.PATH_PAYMENT_VAULT,
+            TrackingUtil.View.PATH_PAYMENT_VAULT,
+            properties);
     }
 
     public static void trackPaymentVaultChildrenScreen(@NonNull final Context context,
@@ -211,11 +192,13 @@ public final class Tracker {
         final String selectedItemId = selectedItem.getId();
 
         if (TrackingUtil.GROUP_CARDS.equals(selectedItemId)) {
-            trackScreen(TrackingUtil.VIEW_PATH_PAYMENT_VAULT_CARDS, TrackingUtil.VIEW_PATH_PAYMENT_VAULT_CARDS,
-                context, null);
+            trackScreen(TrackingUtil.View.PATH_PAYMENT_VAULT_CARDS,
+                TrackingUtil.View.PATH_PAYMENT_VAULT_CARDS,
+                null);
         } else {
-            trackScreen(TrackingUtil.VIEW_PATH_PAYMENT_VAULT_TICKET, TrackingUtil.VIEW_PATH_PAYMENT_VAULT_TICKET,
-                context, null);
+            trackScreen(TrackingUtil.View.PATH_PAYMENT_VAULT_TICKET,
+                TrackingUtil.View.PATH_PAYMENT_VAULT_TICKET,
+                null);
         }
     }
 
@@ -228,8 +211,7 @@ public final class Tracker {
     }
 
     public static void trackBusinessPaymentResultScreen(@NonNull final String paymentStatus,
-        @NonNull final String paymentStatusDetail,
-        @NonNull final Context context) {
+        @NonNull final String paymentStatusDetail) {
         final PaymentResult paymentResult =
             new PaymentResult.Builder()
                 .setPaymentStatus(paymentStatus)
@@ -237,17 +219,17 @@ public final class Tracker {
                 .build();
         final String screenId = getScreenIdByPaymentResult(paymentResult);
 
-        trackScreen(screenId, screenId, context);
+        trackScreen(screenId, screenId);
     }
 
     @NonNull
     public static String getScreenIdByPaymentResult(@NonNull final PaymentResult paymentResult) {
         if (paymentResult.isApproved() || paymentResult.isInstructions()) {
-            return TrackingUtil.VIEW_PATH_PAYMENT_RESULT_APPROVED;
+            return TrackingUtil.View.PATH_PAYMENT_RESULT_APPROVED;
         } else if (paymentResult.isRejected()) {
-            return TrackingUtil.VIEW_PATH_PAYMENT_RESULT_REJECTED;
+            return TrackingUtil.View.PATH_PAYMENT_RESULT_REJECTED;
         } else if (paymentResult.isPending()) {
-            return TrackingUtil.VIEW_PATH_PAYMENT_RESULT_PENDING;
+            return TrackingUtil.View.PATH_PAYMENT_RESULT_PENDING;
         }
         return "";
     }

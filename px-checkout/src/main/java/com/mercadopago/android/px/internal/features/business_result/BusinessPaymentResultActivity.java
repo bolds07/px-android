@@ -40,8 +40,7 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
 
         Tracker.trackBusinessPaymentResultScreen(
             model.payment.getPaymentStatus(),
-            model.payment.getPaymentStatusDetail(),
-            getApplicationContext());
+            model.payment.getPaymentStatusDetail());
     }
 
     @Nullable

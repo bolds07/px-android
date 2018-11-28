@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoESCImpl;
 import com.mercadopago.android.px.internal.di.ConfigurationModule;
@@ -201,8 +200,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     public void initializeMPTracker() {
         //Initialize tracker before creating a token
         MPTracker.getInstance()
-            .initTracker(merchantPublicKey, presenter.getCheckoutPreference().getSite().getId(),
-                BuildConfig.VERSION_NAME, getApplicationContext());
+            .initTracker(merchantPublicKey, presenter.getCheckoutPreference().getSite().getId());
     }
 
     @Override

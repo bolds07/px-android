@@ -3,19 +3,17 @@ package com.mercadopago.android.px.internal.features.providers;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.callbacks.TaggedCallback;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoServicesAdapter;
 import com.mercadopago.android.px.internal.di.Session;
-import com.mercadopago.android.px.internal.tracker.MPTrackingContext;
 import com.mercadopago.android.px.model.BankDeal;
 import com.mercadopago.android.px.model.CardToken;
 import com.mercadopago.android.px.model.IdentificationType;
 import com.mercadopago.android.px.model.Installment;
 import com.mercadopago.android.px.model.Issuer;
-import com.mercadopago.android.px.model.SavedESCCardToken;
 import com.mercadopago.android.px.model.Token;
+import com.mercadopago.android.px.tracking.internal.MPTracker;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -23,22 +21,18 @@ public class GuessingCardProviderImpl implements GuessingCardProvider {
 
     private final Context context;
     private final MercadoPagoServicesAdapter mercadoPago;
-    private final String publicKey;
-    private MPTrackingContext trackingContext;
+    private MPTracker trackingContext;
 
     public GuessingCardProviderImpl(@NonNull final Context context) {
         this.context = context;
         final Session session = Session.getSession(context);
-        publicKey = session.getConfigurationModule().getPaymentSettings().getPublicKey();
         mercadoPago = session.getMercadoPagoServiceAdapter();
     }
 
     @Override
-    public MPTrackingContext getTrackingContext() {
+    public MPTracker getTrackingContext() {
         if (trackingContext == null) {
-            trackingContext = new MPTrackingContext.Builder(context, publicKey)
-                .setVersion(BuildConfig.VERSION_NAME)
-                .build();
+            trackingContext = MPTracker.getInstance();
         }
         return trackingContext;
     }

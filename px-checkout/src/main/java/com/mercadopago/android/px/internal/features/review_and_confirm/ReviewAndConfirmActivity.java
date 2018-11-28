@@ -386,7 +386,7 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
             final PaymentModel paymentModel = extras.getParcelable(EXTRA_PAYMENT_MODEL);
             final SummaryModel summaryModel = extras.getParcelable(EXTRA_SUMMARY_MODEL);
             if (paymentModel != null && summaryModel != null) {
-                Tracker.trackCheckoutConfirm(getApplicationContext(), paymentModel, summaryModel);
+                Tracker.trackCheckoutConfirm(paymentModel, summaryModel);
             }
         }
     }

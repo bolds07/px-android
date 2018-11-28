@@ -395,7 +395,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void showErrorSnackBar(@NonNull final MercadoPagoError error) {
-        Tracker.trackGenericError(TrackingUtil.VIEW_PATH_EXPRESS_CHECKOUT, ErrorView.ErrorType.SNACKBAR, error,
+        Tracker.trackGenericError(TrackingUtil.View.PATH_EXPRESS_CHECKOUT, ErrorView.ErrorType.SNACKBAR, error,
             error.getMessage());
         if (getView() != null && getActivity() != null) {
             MeliSnackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG,
