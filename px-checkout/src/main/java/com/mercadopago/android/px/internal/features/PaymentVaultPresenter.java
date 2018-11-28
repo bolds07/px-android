@@ -325,9 +325,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
 
         if (paymentMethodSearch != null && paymentMethodSearch.hasSearchItems()) {
             groupCount = paymentMethodSearch.getGroups().size();
-        }
-
-        if (paymentMethodSearch != null && paymentMethodSearch.hasCustomSearchItems()) {
             customCount = paymentMethodSearch.getCustomSearchItems().size();
         }
 

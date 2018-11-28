@@ -13,17 +13,79 @@ public class PaymentMethodSearch implements Serializable {
      * express list contains the list of
      * user related payment methods to offer inside ExpressCheckout
      */
-    @Nullable
-    private List<ExpressMetadata> express;
+    @Nullable private List<ExpressMetadata> express;
 
+    /*
+        {
+            "id": "visa",
+            "name": "Visa",
+            "payment_type_id": "credit_card",
+            "status": "active",
+            "secure_thumbnail": "https://www.mercadopago.com/org-img/MP3/API/logos/visa.gif",
+            "deferred_capture": "supported",
+            "accreditation_time": 2880,
+            ...
+        }
+     */
+    private List<PaymentMethod> paymentMethods;
+
+    /* Group like off, cards.
+        {
+            "id": "cards",
+            "type": "group",
+            "description": "Nueva tarjeta",
+            "children": [
+                {
+                    "id": "credit_card",
+                    "type": "payment_type",
+                    "description": "Nueva tarjeta de \ncrédito",
+                    "comment": "",
+                    "show_icon": true,
+                    "icon": 0
+                },
+                {
+                    "id": "debit_card",
+                    "type": "payment_type",
+                    "description": "Nueva tarjeta de \ndébito",
+                    "comment": "",
+                    "show_icon": true,
+                    "icon": 0
+                }
+            ],
+            "children_header": "¿Con qué tarjeta?",
+            "show_icon": true,
+            "icon": 0
+        }
+    */
     private List<PaymentMethodSearchItem> groups;
 
+    /* Node that contains card information:
+        {
+            "id": "8248XXXXXX",
+            "issuer": {
+                "id": 1,
+                "name": "Visa Argentina S.A."
+            },
+            "last_four_digits": "8XXX"
+        }
+     */
+    private List<Card> cards;
+
+    /* Node that contains custom info - used for cards information:
+        {
+            "description": "Terminada en 8XXX",
+            "id": "8620XXXXXX",
+            "payment_type_id": "debit_card",
+            "payment_method_id": "debcabal"
+        }
+     */
     @SerializedName("custom_options")
     private List<CustomSearchItem> customSearchItems;
 
-    private List<PaymentMethod> paymentMethods;
-
-    private List<Card> cards;
+    /**
+     * amount management
+     **/
+    private int selectedAmountConfiguration;
 
     //region deprecated
     /**
@@ -115,8 +177,8 @@ public class PaymentMethodSearch implements Serializable {
             customSearchItems = new ArrayList<>();
             this.cards = new ArrayList<>();
 
-            for (Card card : cards) {
-                CustomSearchItem searchItem = new CustomSearchItem();
+            for (final Card card : cards) {
+                final CustomSearchItem searchItem = new CustomSearchItem();
                 searchItem.setDescription(lastFourDigitsText + " " + card.getLastFourDigits());
                 searchItem.setType(card.getPaymentMethod().getPaymentTypeId());
                 searchItem.setId(card.getId());
@@ -138,16 +200,13 @@ public class PaymentMethodSearch implements Serializable {
 
     //endregion deprecated
 
+    @NonNull
     public List<PaymentMethodSearchItem> getGroups() {
-        return groups;
+        return groups == null ? new ArrayList<PaymentMethodSearchItem>() : groups;
     }
 
     public List<PaymentMethod> getPaymentMethods() {
         return paymentMethods;
-    }
-
-    public boolean hasSearchItems() {
-        return groups != null && !groups.isEmpty();
     }
 
     public PaymentMethod getPaymentMethodBySearchItem(final PaymentMethodSearchItem item) {
@@ -248,18 +307,14 @@ public class PaymentMethodSearch implements Serializable {
         return foundCard;
     }
 
-    @Nullable
+    @NonNull
     public List<CustomSearchItem> getCustomSearchItems() {
-        return customSearchItems;
+        return customSearchItems == null ? new ArrayList<CustomSearchItem>() : customSearchItems;
     }
 
-    @Nullable
+    @NonNull
     public List<Card> getCards() {
-        return cards;
-    }
-
-    public boolean hasCustomSearchItems() {
-        return customSearchItems != null && !customSearchItems.isEmpty();
+        return cards == null ? new ArrayList<Card>() : cards;
     }
 
     /**
@@ -277,6 +332,14 @@ public class PaymentMethodSearch implements Serializable {
         return express != null && !express.isEmpty();
     }
 
+    public boolean hasCustomSearchItems() {
+        return !getCustomSearchItems().isEmpty();
+    }
+
+    public boolean hasSearchItems() {
+        return !getGroups().isEmpty();
+    }
+
     @Nullable
     public Issuer getIssuer(@NonNull final String cardId) {
         final Card foundCard = getCardById(cardId);
@@ -287,5 +350,9 @@ public class PaymentMethodSearch implements Serializable {
     public String getLastFourDigits(@NonNull final String cardId) {
         final Card foundCard = getCardById(cardId);
         return foundCard == null ? null : foundCard.getLastFourDigits();
+    }
+
+    public int getSelectedAmountConfiguration() {
+        return selectedAmountConfiguration;
     }
 }
