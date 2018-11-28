@@ -34,7 +34,6 @@ import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.PaymentResult;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
-import com.mercadopago.android.px.tracking.internal.MPTracker;
 
 import static com.mercadopago.android.px.core.MercadoPagoCheckout.EXTRA_ERROR;
 import static com.mercadopago.android.px.core.MercadoPagoCheckout.EXTRA_PAYMENT_RESULT;
@@ -194,13 +193,6 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     @Override
     public void hideProgress() {
         ViewUtils.showRegularLayout(this);
-    }
-
-    @Override
-    public void initializeMPTracker() {
-        //Initialize tracker before creating a token
-        MPTracker.getInstance()
-            .initTracker(merchantPublicKey, presenter.getCheckoutPreference().getSite().getId());
     }
 
     @Override

@@ -17,7 +17,6 @@ import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.CardInfo;
 import com.mercadopago.android.px.model.DifferentialPricing;
 import com.mercadopago.android.px.model.Installment;
-import com.mercadopago.android.px.model.Issuer;
 import com.mercadopago.android.px.model.PayerCost;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentRecovery;
@@ -420,7 +419,9 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
                         CardVaultPresenter.this.token = token;
                         CardVaultPresenter.this.token.setLastFourDigits(card.getLastFourDigits());
                         paymentSettingRepository.configure(CardVaultPresenter.this.token);
-                        MPTracker.getInstance().trackToken(CardVaultPresenter.this.token.getId());
+                        MPTracker.getInstance().trackTokenId(CardVaultPresenter.this.token.getId(),
+                            paymentSettingRepository.getPublicKey(),
+                            paymentSettingRepository.getCheckoutPreference().getSite());
                         mercadoPagoESC.saveESC(token.getCardId(), token.getEsc());
 
                         finishWithResult();

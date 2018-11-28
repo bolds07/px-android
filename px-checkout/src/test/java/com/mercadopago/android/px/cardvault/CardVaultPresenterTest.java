@@ -22,6 +22,7 @@ import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.SavedESCCardToken;
+import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
@@ -41,6 +42,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -63,6 +65,7 @@ public class CardVaultPresenterTest {
     public void setUp() {
         //Simulation no charge - no discount
         when(paymentSettingRepository.getCheckoutPreference()).thenReturn(checkoutPreference);
+        when(checkoutPreference.getSite()).thenReturn(mock(Site.class));
         when(checkoutPreference.getPaymentPreference()).thenReturn(new PaymentPreference());
         when(amountRepository.getAmountToPay()).thenReturn(new BigDecimal(1000));
         presenter = new CardVaultPresenter(amountRepository, userSelectionRepository, paymentSettingRepository,

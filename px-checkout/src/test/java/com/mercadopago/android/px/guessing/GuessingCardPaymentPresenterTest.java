@@ -34,6 +34,7 @@ import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.PaymentType;
 import com.mercadopago.android.px.model.PaymentTypes;
+import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.CardTokenException;
@@ -78,11 +79,13 @@ public class GuessingCardPaymentPresenterTest {
     @Mock private PaymentSettingRepository paymentSettingRepository;
     @Mock private CheckoutPreference checkoutPreference;
     @Mock private PaymentPreference paymentPreference;
+    @Mock private Site site;
 
     @Before
     public void setUp() {
         // No charge initialization.
         when(paymentSettingRepository.getCheckoutPreference()).thenReturn(checkoutPreference);
+        when(checkoutPreference.getSite()).thenReturn(site);
         when(checkoutPreference.getPaymentPreference()).thenReturn(paymentPreference);
         final List<PaymentMethod> pm = PaymentMethods.getPaymentMethodListMLA();
         when(groupsRepository.getGroups()).thenReturn(new StubSuccessMpCall<>(paymentMethodSearch));
