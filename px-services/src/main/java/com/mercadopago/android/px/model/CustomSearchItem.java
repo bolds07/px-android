@@ -19,6 +19,9 @@ public class CustomSearchItem implements Serializable, Parcelable {
 
     @Nullable private String discountInfo;
 
+    private String selectedAmountConfiguration;
+    private PayerCostConfiguration payerCostConfiguration;
+
     @Deprecated
     public CustomSearchItem() {
     }
@@ -29,6 +32,8 @@ public class CustomSearchItem implements Serializable, Parcelable {
         type = in.readString();
         paymentMethodId = in.readString();
         discountInfo = in.readString();
+        selectedAmountConfiguration = in.readString();
+        payerCostConfiguration = in.readParcelable(PayerCostConfiguration.class.getClassLoader());
     }
 
     public static final Creator<CustomSearchItem> CREATOR = new Creator<CustomSearchItem>() {
@@ -71,6 +76,8 @@ public class CustomSearchItem implements Serializable, Parcelable {
         dest.writeString(type);
         dest.writeString(paymentMethodId);
         dest.writeString(discountInfo);
+        dest.writeString(selectedAmountConfiguration);
+        dest.writeParcelable(payerCostConfiguration, flags);
     }
 
     @Deprecated
