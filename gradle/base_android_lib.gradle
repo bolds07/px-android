@@ -40,6 +40,8 @@ android {
             testCoverageEnabled true
         }
         debug {
+            // This is due to the following issue: https://issuetracker.google.com/issues/37008153
+            // that prevents us from debugging certain parameters.
             testCoverageEnabled false
         }
     }
