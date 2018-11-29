@@ -26,6 +26,8 @@ public class PaymentMethodComponent extends CompactComponent<PaymentModel, Payme
     CompactComponent resolveComponent() {
         if (PaymentTypes.isCardPaymentType(props.getPaymentType())) {
             return new MethodCard(MethodCard.Props.createFrom(props));
+        } else if (PaymentTypes.isAccountMoney(props.getPaymentType())) {
+            return new MethodAccountMoney(MethodAccountMoney.Props.createFrom(props));
         } else if (PaymentTypes.isPlugin(props.getPaymentType())) {
             return new MethodPlugin(MethodPlugin.Props.createFrom(props));
         } else {

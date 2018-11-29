@@ -18,6 +18,7 @@ import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.repository.UserSelectionRepository;
 import com.mercadopago.android.px.internal.util.TextUtil;
 import com.mercadopago.android.px.internal.viewmodel.PostPaymentAction;
+import com.mercadopago.android.px.model.AccountMoney;
 import com.mercadopago.android.px.model.Campaign;
 import com.mercadopago.android.px.model.Discount;
 import com.mercadopago.android.px.model.Issuer;
@@ -62,6 +63,8 @@ public class ReviewAndConfirmBuilder {
         final DiscountRepository discountRepository = session.getDiscountRepository();
         final Discount discount = discountRepository.getDiscount();
         final Campaign campaign = discountRepository.getCampaign();
+        final AccountMoney accountMoney = paymentSettings.getAccountMoney();
+        final boolean invested = accountMoney != null && accountMoney.isInvested();
 
         final List<Item> items = checkoutPreference.getItems();
 
@@ -86,7 +89,8 @@ public class ReviewAndConfirmBuilder {
                 resources.getString(R.string.px_discount_terms_and_conditions_linked_message),
                 LineSeparatorType.BOTTOM_LINE_SEPARATOR) : null;
 
-        final PaymentModel paymentModel = new PaymentModel(paymentMethod, token, issuer, hasExtraPaymentMethods);
+        final PaymentModel paymentModel =
+            new PaymentModel(paymentMethod, token, issuer, hasExtraPaymentMethods, invested);
 
         final SummaryModel summaryModel =
             new SummaryModel(amountRepository.getAmountToPay(), paymentMethod, site,

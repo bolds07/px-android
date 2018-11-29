@@ -31,8 +31,8 @@ public class PaymentBody {
         final Payer payer = paymentData.getPayer();
         setPayer(payer);
 
-        if (paymentData.getTokenId() != null) {
-            setTokenId(paymentData.getTokenId());
+        if (paymentData.getToken() != null) {
+            setTokenId(paymentData.getToken().getId());
         }
         if (paymentData.getPayerCost() != null) {
             setInstallments(paymentData.getPayerCost().getInstallments());

@@ -7,6 +7,7 @@ import com.mercadopago.android.px.configuration.AdvancedConfiguration;
 import com.mercadopago.android.px.configuration.PaymentConfiguration;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.util.JsonUtil;
+import com.mercadopago.android.px.model.AccountMoney;
 import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.commission.ChargeRule;
 import com.mercadopago.android.px.preferences.CheckoutPreference;
@@ -21,7 +22,7 @@ public class PaymentSettingService implements PaymentSettingRepository {
     private static final String PREF_PUBLIC_KEY = "PREF_PUBLIC_KEY";
     private static final String PREF_PRIVATE_KEY = "PREF_PRIVATE_KEY";
     private static final String PREF_TOKEN = "PREF_TOKEN";
-    private static final String PREF_ACCOUNT_MONEY_TOKEN = "PREF_ACCOUNT_MONEY_TOKEN";
+    private static final String PREF_ACCOUNT_MONEY = "PREF_ACCOUNT_MONEY";
 
     @NonNull private final SharedPreferences sharedPreferences;
     @NonNull private final JsonUtil jsonUtil;
@@ -53,9 +54,9 @@ public class PaymentSettingService implements PaymentSettingRepository {
     }
 
     @Override
-    public void configureAccountMoneyToken(@NonNull final String accountMoneyToken) {
+    public void configure(@NonNull final AccountMoney accountMoney) {
         final SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putString(PREF_ACCOUNT_MONEY_TOKEN, jsonUtil.toJson(accountMoneyToken));
+        edit.putString(PREF_ACCOUNT_MONEY, jsonUtil.toJson(accountMoney));
         edit.apply();
     }
 
@@ -143,8 +144,8 @@ public class PaymentSettingService implements PaymentSettingRepository {
 
     @Nullable
     @Override
-    public String getAccountMoneyTokenId() {
-        return sharedPreferences.getString(PREF_ACCOUNT_MONEY_TOKEN, "");
+    public AccountMoney getAccountMoney() {
+        return jsonUtil.fromJson(sharedPreferences.getString(PREF_ACCOUNT_MONEY, ""), AccountMoney.class);
     }
 
     @Override

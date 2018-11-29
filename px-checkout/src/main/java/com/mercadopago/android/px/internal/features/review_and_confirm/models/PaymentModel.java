@@ -17,11 +17,13 @@ public class PaymentModel implements Parcelable {
     private final String paymentType;
     public final long issuerId;
     private final String cardId;
+    private final boolean invested;
 
-    public PaymentModel(PaymentMethod paymentMethod,
-        Token token,
-        Issuer issuer,
-        boolean moreThanOnePaymentMethod) {
+    public PaymentModel(final PaymentMethod paymentMethod,
+        final Token token,
+        final Issuer issuer,
+        final boolean moreThanOnePaymentMethod,
+        final boolean invested) {
 
         paymentMethodId = paymentMethod.getId();
         paymentMethodName = paymentMethod.getName();
@@ -33,6 +35,7 @@ public class PaymentModel implements Parcelable {
         issuerName = issuer != null ? issuer.getName() : null;
         issuerId = issuer != null ? issuer.getId() : 0L;
         this.moreThanOnePaymentMethod = moreThanOnePaymentMethod;
+        this.invested = invested;
     }
 
     protected PaymentModel(Parcel in) {
@@ -45,6 +48,7 @@ public class PaymentModel implements Parcelable {
         }
         issuerName = in.readString();
         moreThanOnePaymentMethod = in.readByte() != 0;
+        invested = in.readByte() != 0;
         paymentMethodName = in.readString();
         paymentType = in.readString();
         issuerId = in.readLong();
@@ -75,6 +79,10 @@ public class PaymentModel implements Parcelable {
         return cardId;
     }
 
+    public boolean isInvested() {
+        return invested;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -92,6 +100,7 @@ public class PaymentModel implements Parcelable {
         }
         dest.writeString(issuerName);
         dest.writeByte((byte) (moreThanOnePaymentMethod ? 1 : 0));
+        dest.writeByte((byte) (invested ? 1 : 0));
         dest.writeString(paymentMethodName);
         dest.writeString(paymentType);
         dest.writeLong(issuerId);

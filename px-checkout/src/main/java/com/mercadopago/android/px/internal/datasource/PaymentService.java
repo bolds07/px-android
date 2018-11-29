@@ -145,7 +145,7 @@ public class PaymentService implements PaymentRepository {
                     userSelectionRepository.select(payerCost);
                 } else if (PaymentTypes.isAccountMoney(paymentTypeId)) {
                     userSelectionRepository.select(paymentMethodSearch.getAccountMoney().getPaymentMethod());
-                    paymentSettingRepository.configureAccountMoneyToken(paymentMethodSearch.getAccountMoney().getToken());
+                    paymentSettingRepository.configure(paymentMethodSearch.getAccountMoney());
                 } else {
                     throw new IllegalStateException("payment method selected can not be used for express payment");
                 }
@@ -264,7 +264,6 @@ public class PaymentService implements PaymentRepository {
         paymentData.setPayerCost(userSelectionRepository.getPayerCost());
         paymentData.setIssuer(userSelectionRepository.getIssuer());
         paymentData.setToken(paymentSettingRepository.getToken());
-        paymentData.setAccountMoneyTokenId(paymentSettingRepository.getAccountMoneyTokenId());
         paymentData.setCampaign(discountRepository.getCampaign());
         paymentData.setDiscount(discountRepository.getDiscount());
         paymentData
