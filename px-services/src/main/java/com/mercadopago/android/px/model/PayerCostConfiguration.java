@@ -2,6 +2,7 @@ package com.mercadopago.android.px.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +13,8 @@ public class PayerCostConfiguration implements Serializable, Parcelable {
     private final Map<String, List<PayerCost>> configuration = new HashMap<>();
     private final int selectedPayerCostIndex;
 
-    public Map<String, List<PayerCost>> getConfiguration() {
-        return configuration;
+    public List<PayerCost> getPayerCosts(@NonNull final String key) {
+        return configuration.get(key);
     }
 
     public int getSelectedPayerCostIndex() {
