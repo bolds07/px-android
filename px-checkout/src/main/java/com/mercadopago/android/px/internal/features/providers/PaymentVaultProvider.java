@@ -18,8 +18,6 @@ public interface PaymentVaultProvider extends ResourcesProvider {
 
     String getEmptyPaymentMethodsErrorMessage();
 
-    void trackInitialScreen(PaymentMethodSearch paymentMethodSearch, String siteId);
-
     void trackChildrenScreen(@NonNull PaymentMethodSearchItem paymentMethodSearchItem, @NonNull String siteId);
 
 }

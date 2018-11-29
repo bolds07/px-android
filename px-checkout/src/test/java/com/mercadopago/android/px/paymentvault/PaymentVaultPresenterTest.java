@@ -3,6 +3,7 @@ package com.mercadopago.android.px.paymentvault;
 import android.support.annotation.NonNull;
 import com.mercadopago.android.px.core.PaymentMethodPlugin;
 import com.mercadopago.android.px.internal.callbacks.OnSelectedCallback;
+import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
 import com.mercadopago.android.px.internal.features.PaymentVaultPresenter;
 import com.mercadopago.android.px.internal.features.PaymentVaultView;
 import com.mercadopago.android.px.internal.features.hooks.Hook;
@@ -20,7 +21,6 @@ import com.mercadopago.android.px.model.Payer;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentMethodSearchItem;
-import com.mercadopago.android.px.model.PaymentMethods;
 import com.mercadopago.android.px.model.PaymentTypes;
 import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.exceptions.ApiException;
@@ -31,12 +31,10 @@ import com.mercadopago.android.px.utils.Discounts;
 import com.mercadopago.android.px.utils.StubFailMpCall;
 import com.mercadopago.android.px.utils.StubSuccessMpCall;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -90,7 +88,7 @@ public class PaymentVaultPresenterTest {
         final PaymentVaultProvider provider) {
 
         presenter = new PaymentVaultPresenter(paymentSettingRepository, userSelectionRepository,
-            pluginRepository, discountRepository, groupsRepository);
+            pluginRepository, discountRepository, groupsRepository, mock(MercadoPagoESC.class));
         presenter.attachView(view);
         presenter.attachResourcesProvider(provider);
 
@@ -131,7 +129,7 @@ public class PaymentVaultPresenterTest {
         when(groupsRepository.getGroups()).thenReturn(new StubSuccessMpCall<>(mockPaymentOptions));
 
         presenter = new PaymentVaultPresenter(paymentSettingRepository, userSelectionRepository,
-            pluginRepository, discountRepository, groupsRepository);
+            pluginRepository, discountRepository, groupsRepository, mock(MercadoPagoESC.class));
 
         presenter.attachView(mockView);
         presenter.attachResourcesProvider(mockProvider);
@@ -203,7 +201,6 @@ public class PaymentVaultPresenterTest {
 
         verify(paymentVaultView).showAmount(discountRepository, checkoutPreference.getTotalAmount(), mockSite);
         verify(paymentVaultView).onSuccessCodeDiscountCallback(discountRepository.getDiscount());
-        verify(paymentVaultProvider).trackInitialScreen(paymentMethodSearch,mockSite.getId());
         verify(paymentVaultView).setTitle(paymentVaultProvider.getTitle());
         verify(paymentVaultView).startCardFlow(true);
         verify(paymentSettingRepository, atLeastOnce()).getCheckoutPreference();
@@ -559,11 +556,6 @@ public class PaymentVaultPresenterTest {
         @Override
         public String getEmptyPaymentMethodsErrorMessage() {
             return EMPTY_PAYMENT_METHODS;
-        }
-
-        @Override
-        public void trackInitialScreen(PaymentMethodSearch paymentMethodSearch, String siteId) {
-
         }
 
         @Override

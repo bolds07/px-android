@@ -281,9 +281,10 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     @Override
     public void trackScreen() {
         final MPTracker mpTrackingContext = MPTracker.getInstance();
+        //TODO
 
         final String screenId =
-            TrackingUtil.View.PATH_PAYMENT_VAULT + "/" + mSecurityCodePresenter.getPaymentMethod().getPaymentTypeId() +
+            "/px_checkout/payments/select_method/" + mSecurityCodePresenter.getPaymentMethod().getPaymentTypeId() +
                 TrackingUtil.CARD_SECURITY_CODE;
         final ScreenViewEvent event = new ScreenViewEvent.Builder()
             .setFlowId(FlowHandler.getInstance().getFlowId())

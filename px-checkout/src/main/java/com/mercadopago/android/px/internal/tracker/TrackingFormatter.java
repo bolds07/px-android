@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.mercadopago.android.px.core.PaymentMethodPlugin;
 import com.mercadopago.android.px.model.CustomSearchItem;
 import com.mercadopago.android.px.model.PaymentMethod;
-import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentTypes;
 import java.util.List;
 import java.util.Set;
@@ -22,25 +21,6 @@ public final class TrackingFormatter {
     private static final String ESC_PREFIX = "ESC";
 
     private TrackingFormatter() {
-    }
-
-    public static String getFormattedPaymentMethodsForTracking(@Nullable final PaymentMethodSearch paymentMethodSearch,
-        @NonNull final Iterable<PaymentMethodPlugin> plugins, final Set<String> escCardIds) {
-
-        StringBuilder formatted = new StringBuilder(MAX_LENGTH);
-
-        externPrefix = "";
-
-        if (paymentMethodSearch != null) {
-            final List<PaymentMethod> paymentMethods = paymentMethodSearch.getPaymentMethods();
-            formatted = formatPaymentMethods(formatted, paymentMethods);
-            final List<CustomSearchItem> customSearchItems = paymentMethodSearch.getCustomSearchItems();
-            formatted = formatSavedCards(formatted, customSearchItems, escCardIds);
-        }
-
-        formatted = formatPaymentMethodPlugins(formatted, plugins);
-
-        return formatted.toString();
     }
 
     private static StringBuilder formatSavedCards(@NonNull final StringBuilder formatted,

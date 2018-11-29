@@ -4,17 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
-import com.mercadopago.android.px.core.PaymentMethodPlugin;
-import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.SummaryModel;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.model.ActionEvent;
-import com.mercadopago.android.px.model.Campaign;
-import com.mercadopago.android.px.model.Discount;
 import com.mercadopago.android.px.model.ExpressMetadata;
-import com.mercadopago.android.px.model.Item;
-import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentMethodSearchItem;
 import com.mercadopago.android.px.model.PaymentResult;
 import com.mercadopago.android.px.model.PaymentTypes;
@@ -22,30 +16,17 @@ import com.mercadopago.android.px.model.ScreenViewEvent;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
 import com.mercadopago.android.px.tracking.internal.model.ErrorView;
-import com.mercadopago.android.px.tracking.internal.model.ExpressConfirmEvent;
 import com.mercadopago.android.px.tracking.internal.model.ExpressInstallmentsView;
-import com.mercadopago.android.px.tracking.internal.model.ExpressReviewView;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public final class Tracker {
 
     private Tracker() {
-    }
-
-    public static void trackConfirmExpress(@NonNull final ExpressMetadata expressMetadata,
-        final int selectedPayerCost,
-        @NonNull final String currencyId) {
-        final ExpressConfirmEvent expressConfirmEvent =
-            ExpressConfirmEvent.createFrom(expressMetadata, selectedPayerCost, currencyId);
-        final Map<String, Object> map = JsonUtil.getInstance().getMapFromObject(expressConfirmEvent);
-        MPTracker.getInstance().trackEvent(TrackingUtil.Event.EVENT_PATH_REVIEW_CONFIRM, map);
     }
 
     public static void trackSwipeExpress() {
@@ -64,15 +45,6 @@ public final class Tracker {
             ExpressInstallmentsView.createFrom(expressMetadata, currencyId, totalAmount);
         final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(expressInstallmentsView);
         MPTracker.getInstance().trackView(TrackingUtil.View.PATH_EXPRESS_INSTALLMENTS_VIEW, data);
-    }
-
-    public static void trackExpressView(@NonNull final BigDecimal totalAmount, @NonNull final String currencyId,
-        @Nullable final Discount discount, @Nullable final Campaign campaign, @NonNull final Iterable<Item> items,
-        @NonNull final List<ExpressMetadata> expressMetadataList) {
-        final ExpressReviewView expressReviewView =
-            ExpressReviewView.createFrom(expressMetadataList, totalAmount, currencyId, discount, campaign, items);
-        final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(expressReviewView);
-        MPTracker.getInstance().trackView(TrackingUtil.View.PATH_EXPRESS_REVIEW_VIEW, data);
     }
 
     public static void trackExpressDiscountView() {
@@ -173,19 +145,6 @@ public final class Tracker {
         mpTrackingContext.trackEvent(actionEvent);
     }
 
-    public static void trackPaymentVaultScreen(final Context context,
-        final PaymentMethodSearch paymentMethodSearch,
-        final Set<String> escCardIds) {
-
-        final Collection<Pair<String, String>> properties = new ArrayList<>();
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_OPTIONS,
-            getFormattedPaymentMethodsForTracking(context, paymentMethodSearch, escCardIds)));
-
-        trackScreen(TrackingUtil.View.PATH_PAYMENT_VAULT,
-            TrackingUtil.View.PATH_PAYMENT_VAULT,
-            properties);
-    }
-
     public static void trackPaymentVaultChildrenScreen(@NonNull final Context context,
         @NonNull final PaymentMethodSearchItem selectedItem) {
 
@@ -200,14 +159,6 @@ public final class Tracker {
                 TrackingUtil.View.PATH_PAYMENT_VAULT_TICKET,
                 null);
         }
-    }
-
-    private static String getFormattedPaymentMethodsForTracking(final Context context,
-        @NonNull final PaymentMethodSearch paymentMethodSearch, final Set<String> escCardIds) {
-        final Collection<PaymentMethodPlugin> paymentMethodPluginList =
-            Session.getSession(context).getPluginRepository().getEnabledPlugins();
-        return TrackingFormatter
-            .getFormattedPaymentMethodsForTracking(paymentMethodSearch, paymentMethodPluginList, escCardIds);
     }
 
     public static void trackBusinessPaymentResultScreen(@NonNull final String paymentStatus,

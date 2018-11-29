@@ -142,8 +142,9 @@ public class PaymentMethodSearch implements Serializable {
         return groups;
     }
 
+    @NonNull
     public List<PaymentMethod> getPaymentMethods() {
-        return paymentMethods;
+        return paymentMethods == null ? new ArrayList<PaymentMethod>() : paymentMethods;
     }
 
     public boolean hasSearchItems() {
@@ -248,9 +249,9 @@ public class PaymentMethodSearch implements Serializable {
         return foundCard;
     }
 
-    @Nullable
+    @NonNull
     public List<CustomSearchItem> getCustomSearchItems() {
-        return customSearchItems;
+        return customSearchItems == null ? new ArrayList<CustomSearchItem>() : customSearchItems;
     }
 
     @Nullable

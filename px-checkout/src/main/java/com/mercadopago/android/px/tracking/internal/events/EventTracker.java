@@ -1,6 +1,7 @@
-package com.mercadopago.android.px.tracking.internal;
+package com.mercadopago.android.px.tracking.internal.events;
 
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.tracking.internal.MPTracker;
 import java.util.HashMap;
 import java.util.Map;
 

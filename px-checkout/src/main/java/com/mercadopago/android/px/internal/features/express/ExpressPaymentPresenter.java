@@ -36,6 +36,9 @@ import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
+import com.mercadopago.android.px.tracking.internal.events.ExpressConfirmEvent;
+import com.mercadopago.android.px.tracking.internal.views.OneTapView;
+import java.util.Collections;
 import java.util.List;
 
 import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorView.Model.SELECTED_PAYER_COST_NONE;
@@ -89,15 +92,19 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
     public void trackConfirmButton(final int paymentMethodSelectedIndex) {
         //Track event: confirm one tap
         final ExpressMetadata expressMetadata = expressMetadataList.get(paymentMethodSelectedIndex);
-        Tracker.trackConfirmExpress(expressMetadata, payerCostSelection.get(paymentMethodSelectedIndex),
-            configuration.getCheckoutPreference().getSite().getCurrencyId());
+        final int index = payerCostSelection.get(paymentMethodSelectedIndex);
+        //TODO fill cards with esc
+        new ExpressConfirmEvent(Collections.<String>emptySet(), expressMetadata, index).track();
     }
 
     @Override
     public void trackExpressView() {
-        Tracker.trackExpressView(amountRepository.getAmountToPay(),
-            configuration.getCheckoutPreference().getSite().getCurrencyId(), discountRepository.getDiscount(),
-            discountRepository.getCampaign(), configuration.getCheckoutPreference().getItems(), expressMetadataList);
+        new OneTapView(expressMetadataList,
+            amountRepository.getAmountToPay(),
+            discountRepository.getDiscount(),
+            discountRepository.getCampaign(),
+            configuration.getCheckoutPreference().getItems())
+            .track();
     }
 
     @Override

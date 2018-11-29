@@ -2,6 +2,7 @@ package com.mercadopago.android.px.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.mercadopago.android.px.internal.util.ParcelableUtil;
 import java.io.Serializable;
@@ -15,6 +16,15 @@ public class AccountMoneyMetadata implements Serializable, Parcelable {
     public final BigDecimal balance;
 
     public final boolean invested;
+
+    @NonNull
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public boolean isInvested() {
+        return invested;
+    }
 
     protected AccountMoneyMetadata(final Parcel in) {
         message = in.readString();
