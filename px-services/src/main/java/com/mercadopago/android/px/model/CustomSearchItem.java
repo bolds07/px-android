@@ -47,6 +47,11 @@ public class CustomSearchItem implements Serializable, Parcelable {
         return description;
     }
 
+    @Nullable
+    public String getDiscountInfo() {
+        return discountInfo;
+    }
+
     public String getId() {
         return id;
     }
@@ -91,5 +96,9 @@ public class CustomSearchItem implements Serializable, Parcelable {
     @Deprecated
     public void setPaymentMethodId(final String paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
+    }
+
+    public boolean hasDiscountInfo() {
+        return discountInfo != null;
     }
 }
