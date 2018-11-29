@@ -1,5 +1,6 @@
 package com.mercadopago.android.px.model;
 
+import android.support.annotation.NonNull;
 import java.math.BigDecimal;
 
 public class AccountMoney {
@@ -7,16 +8,13 @@ public class AccountMoney {
     private PaymentMethod paymentMethod;
     private BigDecimal availableBalance;
     private boolean invested;
-    private String token;
 
-    public String getToken() {
-        return token;
-    }
-
+    @NonNull
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
+    @NonNull
     public BigDecimal getAvailableBalance() {
         return availableBalance;
     }
