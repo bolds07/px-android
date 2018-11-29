@@ -16,6 +16,7 @@ public class ExpressConfirmEvent extends EventTracker {
         final int selectedPayerCost) {
         data = new FromSelectedExpressMetadataToAvailableMethods(cardsWithEsc,
             selectedPayerCost).map(expressMetadata).transform();
+        data.put("review_type", "one_tap");
     }
 
     @NonNull

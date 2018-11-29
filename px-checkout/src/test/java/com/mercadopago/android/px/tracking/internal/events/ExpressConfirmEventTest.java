@@ -20,7 +20,10 @@ import static org.mockito.Mockito.when;
 public class ExpressConfirmEventTest {
 
     private static final String EXPECTED_PATH = "/px_checkout/review/confirm";
-    private static final String EXPECTED_JUST_AM = "{payment_method_type=credit_card, payment_method_id=visa, extra_info={issuer_id=0, card_id=123, selected_installment={quantity=1.0, installment_amount=10.0, visible_total_price=10.0, interest_rate=10.0}, has_esc=false}}";
+    private static final String EXPECTED_JUST_CARD =
+        "{payment_method_type=credit_card, payment_method_id=visa, extra_info={issuer_id=0, card_id=123, selected_installment={quantity=1.0, installment_amount=10.0, visible_total_price=10.0, interest_rate=10.0}, has_esc=false}, review_type=one_tap}";
+    private static final String EXPECTED_JUST_AM =
+        "{payment_method_type=account_money, payment_method_id=account_money, extra_info={balance=10.0, invested=true}, review_type=one_tap}";
 
     @Mock private ExpressMetadata expressMetadata;
     @Mock private Set<String> cardIdsWithEsc;
@@ -50,7 +53,6 @@ public class ExpressConfirmEventTest {
         final PayerCost payerCost = mock(PayerCost.class);
         final CardDisplayInfo cardDisplayInfo = mock(CardDisplayInfo.class);
 
-        when(cardDisplayInfo.getIssuerId()).thenReturn(122222L);
         when(payerCost.getTotalAmount()).thenReturn(BigDecimal.TEN);
         when(payerCost.getInstallmentAmount()).thenReturn(BigDecimal.TEN);
         when(payerCost.getInstallments()).thenReturn(1);
@@ -66,6 +68,6 @@ public class ExpressConfirmEventTest {
 
         final ExpressConfirmEvent event = new ExpressConfirmEvent(cardIdsWithEsc, expressMetadata, selected);
 
-        assertEquals(EXPECTED_JUST_AM, event.getEventData().toString());
+        assertEquals(EXPECTED_JUST_CARD, event.getEventData().toString());
     }
 }

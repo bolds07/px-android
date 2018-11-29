@@ -2,9 +2,8 @@ package com.mercadopago.android.px.tracking.internal.model;
 
 import android.support.annotation.NonNull;
 
+@SuppressWarnings("unused")
 public class ExpressConfirmEventInfo extends AvailableMethod {
-
-    private String reviewType = "one_tap";
 
     public ExpressConfirmEventInfo(@NonNull final String paymentMethodType) {
         super(paymentMethodType);
