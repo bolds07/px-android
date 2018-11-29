@@ -8,8 +8,8 @@ import com.mercadopago.android.px.model.Discount;
 import com.mercadopago.android.px.model.ExpressMetadata;
 import com.mercadopago.android.px.model.Item;
 import com.mercadopago.android.px.tracking.internal.mapper.FromExpressMetadataToAvailableMethods;
+import com.mercadopago.android.px.tracking.internal.mapper.FromItemToItemInfo;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,12 +46,7 @@ public class OneTapData extends SelectMethodData {
                     campaign.getMaxCouponAmount(), campaign.getMaxRedeemPerUser());
             }
         }
-        final List<ItemInfo> itemInfoList = new ArrayList<>();
-        for (final Item item : items) {
-            final ItemInfo itemInfo =
-                new ItemInfo(item.getId(), item.getDescription(), item.getUnitPrice(), item.getQuantity());
-            itemInfoList.add(itemInfo);
-        }
+        final List<ItemInfo> itemInfoList = new FromItemToItemInfo().map(items);
 
         return new OneTapData(
             new FromExpressMetadataToAvailableMethods(Collections.<String>emptySet()).map(expressMetadataList),

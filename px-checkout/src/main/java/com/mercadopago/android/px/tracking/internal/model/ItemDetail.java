@@ -2,22 +2,20 @@ package com.mercadopago.android.px.tracking.internal.model;
 
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import com.mercadopago.android.px.model.Item;
 import java.math.BigDecimal;
 
 @SuppressWarnings("unused")
 @Keep
 public class ItemDetail extends TrackingMapModel {
 
-    private String id;
-    private String description;
-    private BigDecimal price;
+    private final String id;
+    private final String description;
+    private final BigDecimal price;
 
-    public ItemDetail(@Nullable final String id,
-        @Nullable final String description,
-        @NonNull final BigDecimal price) {
-        this.id = id;
-        this.description = description;
-        this.price = price;
+    public ItemDetail(@NonNull final Item val) {
+        id = val.getId();
+        description = val.getDescription();
+        price = val.getUnitPrice();
     }
 }

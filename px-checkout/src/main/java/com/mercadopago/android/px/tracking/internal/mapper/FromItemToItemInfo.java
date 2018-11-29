@@ -8,6 +8,6 @@ import com.mercadopago.android.px.tracking.internal.model.ItemInfo;
 public class FromItemToItemInfo extends Mapper<Item, ItemInfo> {
     @Override
     public ItemInfo map(@NonNull final Item val) {
-        return new ItemInfo(val.getId(), val.getDescription(), val.getUnitPrice(), val.getQuantity());
+        return new ItemInfo(val);
     }
 }
