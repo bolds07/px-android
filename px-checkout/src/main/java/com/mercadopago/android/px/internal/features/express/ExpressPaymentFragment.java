@@ -37,6 +37,7 @@ import com.mercadopago.android.px.internal.features.express.animations.SlideAnim
 import com.mercadopago.android.px.internal.features.express.installments.InstallmentsAdapter;
 import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodFragmentAdapter;
 import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodFragmentAdapterLowRes;
+import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodHeaderAdapter;
 import com.mercadopago.android.px.internal.features.express.slider.TitlePagerAdapter;
 import com.mercadopago.android.px.internal.features.plugins.PaymentProcessorActivity;
 import com.mercadopago.android.px.internal.tracker.Tracker;
@@ -109,7 +110,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
     private SlideAnim slideAnim;
     private InstallmentsAdapter installmentsAdapter;
     private FixedAspectRatioFrameLayout aspectRatioContainer;
-    private PaymentMethodHeaderView paymentMethodHeaderView;
+    private PaymentMethodHeaderAdapter paymentMethodHeaderAdapter;
     private TitlePagerAdapter titlePagerAdapter;
     private View recyclerContainer;
 
@@ -150,17 +151,6 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
         //Add interaction listeners.
         summaryView.setOnFitListener(this);
         summaryView.setOnAmountDescriptorListener(this);
-        paymentMethodHeaderView.setListener(new PaymentMethodHeaderView.Listener() {
-            @Override
-            public void onDescriptorViewClicked() {
-                presenter.onInstallmentsRowPressed(paymentMethodPager.getCurrentItem());
-            }
-
-            @Override
-            public void onInstallmentsSelectorCancelClicked() {
-                presenter.onInstallmentSelectionCanceled(paymentMethodPager.getCurrentItem());
-            }
-        });
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +181,6 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
         installmentsRecyclerView = view.findViewById(R.id.installments_recycler_view);
         confirmButton = view.findViewById(R.id.confirm_button);
         recyclerContainer = view.findViewById(R.id.installments_recycler_container);
-        paymentMethodHeaderView = view.findViewById(R.id.installments_header);
         installmentsAnimation = new InstallmentsAnimation(installmentsRecyclerView);
         fadeAnimation = new FadeAnim(view.getContext());
         slideAnim = new SlideAnim();
@@ -219,6 +208,21 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
                     }
                 }
             });
+
+        final PaymentMethodHeaderView paymentMethodHeaderView = view.findViewById(R.id.installments_header);
+        paymentMethodHeaderView.setListener(new PaymentMethodHeaderView.Listener() {
+            @Override
+            public void onDescriptorViewClicked() {
+                presenter.onInstallmentsRowPressed(paymentMethodPager.getCurrentItem());
+            }
+
+            @Override
+            public void onInstallmentsSelectorCancelClicked() {
+                presenter.onInstallmentSelectionCanceled(paymentMethodPager.getCurrentItem());
+            }
+        });
+        paymentMethodHeaderAdapter = new PaymentMethodHeaderAdapter(paymentMethodHeaderView);
+
         final TitlePager titlePager = view.findViewById(R.id.title_pager);
         titlePagerAdapter = new TitlePagerAdapter(titlePager);
         titlePager.setAdapter(titlePagerAdapter);
@@ -292,13 +296,13 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
     @Override
     public void configurePagerAndInstallments(@NonNull final List<DrawableFragmentItem> items, @NonNull final Site site,
         final int selectedPayerCost, @NonNull final List<PaymentMethodDescriptorView.Model> models) {
-        paymentMethodHeaderView.setInstallmentsModel(models);
         installmentsAdapter = new InstallmentsAdapter(site, new ArrayList<PayerCost>(), selectedPayerCost, this);
         installmentsRecyclerView.setAdapter(installmentsAdapter);
         paymentMethodPager.setAdapter(getAdapter(items));
         // indicator must be after paymentMethodPager adapter is set.
         indicator.attachToPager(paymentMethodPager);
         titlePagerAdapter.setModels(models);
+        paymentMethodHeaderAdapter.setModels(models);
     }
 
     private void animateViewPagerDown() {
@@ -330,7 +334,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
         installmentsAdapter.setPayerCostSelected(payerCostSelected);
         installmentsAdapter.notifyDataSetChanged();
         installmentsAnimation.expand();
-        paymentMethodHeaderView.update();
+        paymentMethodHeaderAdapter.showInstallmentsList();
     }
 
     @Override
@@ -412,7 +416,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void showInstallmentsDescriptionRow(final int paymentMethodIndex, final int payerCostSelected) {
-        paymentMethodHeaderView.update(paymentMethodIndex);
+        paymentMethodHeaderAdapter.updateData(paymentMethodIndex, payerCostSelected);
         titlePagerAdapter.updateData(paymentMethodIndex, payerCostSelected);
     }
 
@@ -559,7 +563,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-        paymentMethodHeaderView.updatePosition(positionOffset, position);
+        paymentMethodHeaderAdapter.updatePosition(positionOffset, position);
         titlePagerAdapter.updatePosition(positionOffset, position);
     }
 
