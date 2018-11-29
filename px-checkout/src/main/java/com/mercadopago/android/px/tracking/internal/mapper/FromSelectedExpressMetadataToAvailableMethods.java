@@ -7,7 +7,7 @@ import com.mercadopago.android.px.model.CardMetadata;
 import com.mercadopago.android.px.model.ExpressMetadata;
 import com.mercadopago.android.px.tracking.internal.model.AccountMoneyExtraInfo;
 import com.mercadopago.android.px.tracking.internal.model.AvailableMethod;
-import com.mercadopago.android.px.tracking.internal.model.PayerCostTrackModel;
+import com.mercadopago.android.px.tracking.internal.model.PayerCostInfo;
 import com.mercadopago.android.px.tracking.internal.model.SavedCardExtraInfo;
 import java.util.Set;
 
@@ -30,11 +30,11 @@ public class FromSelectedExpressMetadataToAvailableMethods extends Mapper<Expres
                 new SavedCardExtraInfo(card.getId(), cardsWithEsc.contains(card.getId()),
                     //TODO verify why this model is long.
                     String.valueOf(card.getDisplayInfo().issuerId),
-                    new PayerCostTrackModel(card.getPayerCost(selectedPayerCost))));
+                    new PayerCostInfo(card.getPayerCost(selectedPayerCost))).toMap());
         } else if (expressMetadata.getAccountMoney() != null) {
             final AccountMoneyMetadata accountMoney = expressMetadata.getAccountMoney();
             return new AvailableMethod(expressMetadata.getPaymentMethodId(), expressMetadata.getPaymentTypeId(),
-                new AccountMoneyExtraInfo(accountMoney.getBalance(), accountMoney.isInvested()));
+                new AccountMoneyExtraInfo(accountMoney.getBalance(), accountMoney.isInvested()).toMap());
         } else {
             return new AvailableMethod(expressMetadata.getPaymentMethodId(), expressMetadata.getPaymentTypeId());
         }

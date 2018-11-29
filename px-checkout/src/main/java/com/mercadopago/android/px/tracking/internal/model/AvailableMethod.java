@@ -9,11 +9,11 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 @Keep
-public class AvailableMethod extends TrackModel {
+public class AvailableMethod extends TrackingMapModel {
 
-    private final String paymentMethodId;
-    private final String paymentMethodType;
-    private final Map<String, Object> extraInfo;
+    protected final String paymentMethodId;
+    protected final String paymentMethodType;
+    protected final Map<String, Object> extraInfo;
 
     public AvailableMethod(@NonNull final String paymentMethodType) {
         this.paymentMethodType = paymentMethodType;
@@ -23,10 +23,10 @@ public class AvailableMethod extends TrackModel {
 
     public AvailableMethod(@NonNull final String paymentMethodId,
         @NonNull final String paymentMethodType,
-        @NonNull final TrackModel trackModel) {
+        @NonNull final Map<String, Object> extraInfo) {
         this.paymentMethodId = paymentMethodId;
         this.paymentMethodType = paymentMethodType;
-        extraInfo = trackModel.transform();
+        this.extraInfo = extraInfo;
     }
 
     public AvailableMethod(@NonNull final String paymentMethodId,

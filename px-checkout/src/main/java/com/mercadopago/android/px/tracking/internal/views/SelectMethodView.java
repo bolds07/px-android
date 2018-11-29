@@ -40,6 +40,6 @@ public class SelectMethodView extends ViewTracker {
     @NonNull
     @Override
     public Map<String, Object> getData() {
-        return new SelectMethodData(availableMethods, items).transform();
+        return new SelectMethodData(availableMethods, items).toMap();
     }
 }

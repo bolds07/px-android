@@ -23,12 +23,11 @@ public class FromCustomItemToAvailableMethod extends Mapper<CustomSearchItem, Av
         if (PaymentTypes.isAccountMoney(val.getType())) {
             return new AvailableMethod(val.getId(), val.getId(),
                 //TODO fix balance tracking when comes first class member data.
-
-                new AccountMoneyExtraInfo(null, false));
+                new AccountMoneyExtraInfo(null, false).toMap());
         } else if (PaymentTypes.isCardPaymentType(val.getType())) {
             return new AvailableMethod(val.getPaymentMethodId(), val.getType(),
                 new SavedCardExtraInfo(val.getId(),
-                    escCardIds.contains(val.getId()), null));
+                    escCardIds.contains(val.getId()), null).toMap());
         } else {
             return new AvailableMethod(val.getId(), val.getType());
         }

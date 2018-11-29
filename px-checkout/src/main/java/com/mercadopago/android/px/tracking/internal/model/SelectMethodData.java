@@ -6,7 +6,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @Keep
-public class SelectMethodData extends TrackModel {
+public class SelectMethodData extends TrackingMapModel {
 
     private final List<AvailableMethod> availableMethods;
     private final List<ItemInfo> items;

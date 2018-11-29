@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 
 @SuppressWarnings("unused")
 @Keep
-public class PayerCostTrackModel extends TrackModel {
+public class PayerCostInfo extends TrackingMapModel {
 
     @NonNull private Integer quantity;
     @NonNull private BigDecimal installmentAmount;
     @NonNull private BigDecimal visibleTotalPrice;
     @NonNull private BigDecimal interestRate;
 
-    public PayerCostTrackModel(@NonNull final PayerCost selected) {
+    public PayerCostInfo(@NonNull final PayerCost selected) {
         quantity = selected.getInstallments();
         installmentAmount = selected.getInstallmentAmount();
         visibleTotalPrice = selected.getTotalAmount();

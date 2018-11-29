@@ -249,7 +249,7 @@ public class ExplodingFragment extends Fragment {
     }
 
     /**
-     * @return the shape of the progress bar to transform
+     * @return the shape of the progress bar to toMap
      */
     private GradientDrawable getProgressBarShape(final int color, final int radius) {
         final GradientDrawable drawable = new GradientDrawable();

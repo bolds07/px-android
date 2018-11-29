@@ -25,11 +25,11 @@ public class FromExpressMetadataToAvailableMethods extends Mapper<ExpressMetadat
             return new AvailableMethod(expressMetadata.getPaymentMethodId(), expressMetadata.getPaymentTypeId(),
                 new SavedCardExtraInfo(card.getId(), cardsWithEsc.contains(card.getId()),
                     //TODO verify why this model is long.
-                    String.valueOf(card.getDisplayInfo().issuerId), null));
+                    String.valueOf(card.getDisplayInfo().issuerId), null).toMap());
         } else if (expressMetadata.getAccountMoney() != null) {
             final AccountMoneyMetadata accountMoney = expressMetadata.getAccountMoney();
             return new AvailableMethod(expressMetadata.getPaymentMethodId(), expressMetadata.getPaymentTypeId(),
-                new AccountMoneyExtraInfo(accountMoney.getBalance(), accountMoney.isInvested()));
+                new AccountMoneyExtraInfo(accountMoney.getBalance(), accountMoney.isInvested()).toMap());
         } else {
             return new AvailableMethod(expressMetadata.getPaymentMethodId(), expressMetadata.getPaymentTypeId());
         }

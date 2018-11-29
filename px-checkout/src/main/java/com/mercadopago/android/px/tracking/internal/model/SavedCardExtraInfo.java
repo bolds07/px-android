@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 
 @SuppressWarnings("unused")
 @Keep
-public class SavedCardExtraInfo extends TrackModel {
+public class SavedCardExtraInfo extends TrackingMapModel {
 
     @NonNull private final String cardId;
     private final boolean hasEsc;
-    @Nullable private final PayerCostTrackModel selectedInstallment;
+    @Nullable private final PayerCostInfo selectedInstallment;
     private final String issuerId;
 
     public SavedCardExtraInfo(@NonNull final String cardId, final boolean hasEsc,
@@ -23,7 +23,7 @@ public class SavedCardExtraInfo extends TrackModel {
 
     public SavedCardExtraInfo(@NonNull final String cardId, final boolean hasEsc,
         @Nullable final String issuerId,
-        @Nullable final PayerCostTrackModel payerCostTrackModel) {
+        @Nullable final PayerCostInfo payerCostTrackModel) {
         this.cardId = cardId;
         this.hasEsc = hasEsc;
         selectedInstallment = payerCostTrackModel;

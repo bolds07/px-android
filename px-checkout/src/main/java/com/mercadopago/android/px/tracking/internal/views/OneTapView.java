@@ -21,7 +21,7 @@ public class OneTapView extends ViewTracker {
         @Nullable final Discount discount,
         @Nullable final Campaign campaign,
         @NonNull final Iterable<Item> items) {
-        data = OneTapData.createFrom(expressMetadata, total, discount, campaign, items).transform();
+        data = OneTapData.createFrom(expressMetadata, total, discount, campaign, items).toMap();
     }
 
     @NonNull

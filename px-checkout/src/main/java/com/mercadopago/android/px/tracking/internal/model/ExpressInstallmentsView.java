@@ -15,14 +15,14 @@ public class ExpressInstallmentsView implements Serializable {
     @NonNull private Long issuerId;
     @NonNull private String cardId;
     @NonNull private BigDecimal totalAmount;
-    @NonNull private List<PayerCostTrackModel> availableInstallments;
+    @NonNull private List<PayerCostInfo> availableInstallments;
     @NonNull private String currencyId;
 
     public ExpressInstallmentsView(@NonNull final String paymentMethodType, @NonNull final String paymentMethodId,
         @NonNull final Long issuerId,
         @NonNull final String cardId,
         @NonNull final BigDecimal totalAmount,
-        @NonNull final List<PayerCostTrackModel> payerCostTrackModels, @NonNull final String currencyId) {
+        @NonNull final List<PayerCostInfo> payerCostTrackModels, @NonNull final String currencyId) {
         this.paymentMethodType = paymentMethodType;
         this.paymentMethodId = paymentMethodId;
         this.issuerId = issuerId;
@@ -38,9 +38,9 @@ public class ExpressInstallmentsView implements Serializable {
         final String paymentMethodId = expressMetadata.getPaymentMethodId();
         final String cardId = expressMetadata.getCard().getId();
         final Long issuerId = expressMetadata.getCard().getDisplayInfo().issuerId;
-        final List<PayerCostTrackModel> payerCostTrackModels = new ArrayList<>();
+        final List<PayerCostInfo> payerCostTrackModels = new ArrayList<>();
         for (final PayerCost payerCost : expressMetadata.getCard().getPayerCosts()) {
-            payerCostTrackModels.add(new PayerCostTrackModel(payerCost));
+            payerCostTrackModels.add(new PayerCostInfo(payerCost));
         }
 
         return new ExpressInstallmentsView(paymentMethodType, paymentMethodId, issuerId, cardId, totalAmount,

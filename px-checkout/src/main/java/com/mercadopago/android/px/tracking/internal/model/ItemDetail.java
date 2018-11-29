@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @SuppressWarnings("unused")
 @Keep
-public class ItemDetail extends TrackModel {
+public class ItemDetail extends TrackingMapModel {
 
     private String id;
     private String description;
