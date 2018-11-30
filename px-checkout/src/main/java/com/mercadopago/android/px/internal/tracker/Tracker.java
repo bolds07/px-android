@@ -47,11 +47,6 @@ public final class Tracker {
         MPTracker.getInstance().trackView(TrackingUtil.View.PATH_EXPRESS_INSTALLMENTS_VIEW, data);
     }
 
-    public static void trackExpressDiscountView() {
-        MPTracker.getInstance()
-            .trackView(TrackingUtil.View.PATH_EXPRESS_DISCOUNT_VIEW, new HashMap<String, Object>());
-    }
-
     public static void trackGenericError(@Nullable final String path, @NonNull final ErrorView.ErrorType errorType,
         @NonNull final MercadoPagoError mercadoPagoError, @NonNull final String visibleMessage) {
         final ErrorView errorView = ErrorView.createFrom(path, mercadoPagoError, errorType, visibleMessage);

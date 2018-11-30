@@ -15,7 +15,6 @@ public final class TrackingUtil {
         public static final String PATH_CARD_FORM = "/px_checkout/add_payment_method/";
         public static final String PATH_ISSUERS = "/px_checkout/payments/card_issuer";
         public static final String PATH_INSTALLMENTS = "/px_checkout/payments/installments";
-        public static final String PATH_APPLIED_DISCOUNT = "/px_checkout/payments/select_method/applied_discount";
         public static final String PATH_PROMOTIONS = "/px_checkout/add_payment_method/promotions";
         public static final String PATH_PROMOTIONS_TERMS_AND_CONDITIONS =
             "/px_checkout/add_payment_method/promotions/terms_and_conditions";
@@ -26,7 +25,6 @@ public final class TrackingUtil {
             "/px_checkout/review/traditional/terms_and_conditions";
         public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
-        public static final String PATH_EXPRESS_DISCOUNT_VIEW = "/px_checkout/review/one_tap/applied_discount";
         public static final String PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
         public static final String PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
         public static final String PATH_PAYMENT_RESULT_REJECTED = "/px_checkout/result/error";
