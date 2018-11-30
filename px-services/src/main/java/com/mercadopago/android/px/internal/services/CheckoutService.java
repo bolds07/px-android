@@ -16,7 +16,11 @@ public interface CheckoutService {
     String GROUPS_VERSION = "1.7";
 
 //    @GET("/{version}/px_mobile_api/payment_methods?api_version=" + GROUPS_VERSION)
-    @POST("http://private-175b69-onetapgroups.apiary-mock.com/am")
+//    @POST("http://private-eceecd-accountmoneyfcmpruebas.apiary-mock.com/am_invested_onetap")
+//    @POST("http://private-eceecd-accountmoneyfcmpruebas.apiary-mock.com/am_invested")
+//    @POST("http://private-eceecd-accountmoneyfcmpruebas.apiary-mock.com/am")
+//    @POST("http://private-eceecd-accountmoneyfcmpruebas.apiary-mock.com/am_cards")
+    @POST("http://private-eceecd-accountmoneyfcmpruebas.apiary-mock.com/am_cards_onetap")
     MPCall<PaymentMethodSearch> getPaymentMethodSearch(
         //@Path(value = "version", encoded = true) String version,
         @Header("Accept-Language") String locale,
