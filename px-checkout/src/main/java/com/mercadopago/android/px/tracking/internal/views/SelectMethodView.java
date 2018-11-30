@@ -5,7 +5,7 @@ import com.mercadopago.android.px.model.Item;
 import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.tracking.internal.mapper.FromCustomItemToAvailableMethod;
 import com.mercadopago.android.px.tracking.internal.mapper.FromItemToItemInfo;
-import com.mercadopago.android.px.tracking.internal.mapper.FromPaymentMethodToAvailableMethods;
+import com.mercadopago.android.px.tracking.internal.mapper.FromPaymentMethodSearchItemToAvailableMethod;
 import com.mercadopago.android.px.tracking.internal.model.AvailableMethod;
 import com.mercadopago.android.px.tracking.internal.model.ItemInfo;
 import com.mercadopago.android.px.tracking.internal.model.SelectMethodData;
@@ -27,7 +27,8 @@ public class SelectMethodView extends ViewTracker {
         availableMethods =
             new ArrayList<>(
                 new FromCustomItemToAvailableMethod(escCardIds).map(paymentMethodSearch.getCustomSearchItems()));
-        availableMethods.addAll(new FromPaymentMethodToAvailableMethods().map(paymentMethodSearch.getPaymentMethods()));
+        availableMethods.addAll(
+            new FromPaymentMethodSearchItemToAvailableMethod(paymentMethodSearch).map(paymentMethodSearch.getGroups()));
         this.items = new FromItemToItemInfo().map(items);
     }
 

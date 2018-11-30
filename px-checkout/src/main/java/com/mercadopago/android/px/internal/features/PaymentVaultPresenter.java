@@ -28,6 +28,7 @@ import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.PaymentPreference;
 import com.mercadopago.android.px.services.Callback;
+import com.mercadopago.android.px.tracking.internal.views.SelectMethodChildView;
 import com.mercadopago.android.px.tracking.internal.views.SelectMethodView;
 import java.util.Collection;
 import java.util.List;
@@ -150,7 +151,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     /* default */ void initPaymentMethodSearch() {
-        trackInitialScreen();
         getView().setTitle(getResourcesProvider().getTitle());
         showPaymentMethodGroup();
     }
@@ -176,10 +176,9 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         } else if (isOnlyOneItemAvailable() && !isDiscountAvailable()) {
             if (pluginRepository.hasEnabledPaymentMethodPlugin()) {
                 selectPluginPaymentMethod(pluginRepository.getFirstEnabledPlugin());
-            } else if (paymentMethodSearch.getGroups() != null && !paymentMethodSearch.getGroups().isEmpty()) {
+            } else if (!paymentMethodSearch.getGroups().isEmpty()) {
                 selectItem(paymentMethodSearch.getGroups().get(0), true);
-            } else if (paymentMethodSearch.getCustomSearchItems() != null
-                && !paymentMethodSearch.getCustomSearchItems().isEmpty()) {
+            } else if (!paymentMethodSearch.getCustomSearchItems().isEmpty()) {
                 if (PaymentTypes.CREDIT_CARD.equals(paymentMethodSearch.getCustomSearchItems().get(0).getType())) {
                     selectCard(paymentMethodSearch.getCustomSearchItems().get(0));
                 }
@@ -220,6 +219,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         if (searchItemsAvailable()) {
             getView().showSearchItems(paymentMethodSearch.getGroups(), getPaymentMethodSearchItemSelectionCallback());
         }
+
+        trackInitialScreen();
 
         getView().showPluginOptions(paymentMethodPluginList, PaymentMethodPlugin.PluginPosition.BOTTOM);
     }
@@ -407,35 +408,13 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     /* default */ void trackInitialScreen() {
-        new SelectMethodView(paymentMethodSearch, mercadoPagoESC.getESCCardIds(), configuration.getCheckoutPreference().getItems()).track();
+        new SelectMethodView(paymentMethodSearch, mercadoPagoESC.getESCCardIds(),
+            configuration.getCheckoutPreference().getItems()).track();
     }
 
-    /**
-     * When users selects option then track payment selected method.
-     * If there is no option selected by the user then track the first available.
-     */
-    public void trackChildrenScreen() {
-        if (selectedSearchItem != null) {
-            getResourcesProvider()
-                .trackChildrenScreen(selectedSearchItem, configuration.getCheckoutPreference().getSite().getId());
-        } else {
-            groupsRepository.getGroups().enqueue(new Callback<PaymentMethodSearch>() {
-                @Override
-                public void success(final PaymentMethodSearch paymentMethodSearch) {
-                    if (paymentMethodSearch.hasSearchItems()) {
-                        getResourcesProvider().trackChildrenScreen(paymentMethodSearch.getGroups().get(0),
-                            configuration.getCheckoutPreference().getSite().getId());
-                    } else {
-                        throw new IllegalStateException("No payment method available to track");
-                    }
-                }
-
-                @Override
-                public void failure(final ApiException apiException) {
-                    throw new IllegalStateException("No payment method available to track");
-                }
-            });
-        }
+    /* default */ void trackChildrenScreen() {
+        new SelectMethodChildView(paymentMethodSearch, selectedSearchItem,
+            configuration.getCheckoutPreference().getItems()).track();
     }
 
     @Override

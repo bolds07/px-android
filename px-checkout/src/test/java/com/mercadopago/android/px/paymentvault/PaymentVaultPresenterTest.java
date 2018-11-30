@@ -109,7 +109,6 @@ public class PaymentVaultPresenterTest {
         presenter.attachResourcesProvider(mockProvider);
         presenter.setSelectedSearchItem(mockPaymentOptions);
         presenter.trackChildrenScreen();
-        verify(mockProvider).trackChildrenScreen(mockPaymentOptions, mockSite.getId());
         verifyNoMoreInteractions(mockProvider);
         verifyNoMoreInteractions(mockView);
     }
@@ -136,8 +135,6 @@ public class PaymentVaultPresenterTest {
         presenter.initialize();
 
         presenter.trackChildrenScreen();
-
-        verify(mockProvider).trackChildrenScreen(paymentMethodSearchItems.get(0), mockSite.getId());
     }
 
     @Test
@@ -558,12 +555,8 @@ public class PaymentVaultPresenterTest {
             return EMPTY_PAYMENT_METHODS;
         }
 
-        @Override
-        public void trackChildrenScreen(@NonNull PaymentMethodSearchItem paymentMethodSearchItem,
-            @NonNull String siteId) {
 
         }
-    }
 
     private static class MockedView implements PaymentVaultView {
 

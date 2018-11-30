@@ -121,9 +121,8 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * It is necessary to check if we have a PostPaymentAction when we start Review and confirm
-     * so that we don't show the UI for review and confirm right away, and we can start the
-     * recover payment process
+     * It is necessary to check if we have a PostPaymentAction when we start Review and confirm so that we don't show
+     * the UI for review and confirm right away, and we can start the recover payment process
      */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -146,10 +145,10 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * This is called whenever savedInstanceState is null, that means the first time the activity is launched.
-     * When we don't have a payment yet, we don't have PostPaymentAction so we don't do anything
-     * If we have a PostPaymentAction (CheckoutActivity launches ReviewAndConfirm again to recover the payment)
-     * we need to get it and execute the recovery
+     * This is called whenever savedInstanceState is null, that means the first time the activity is launched. When we
+     * don't have a payment yet, we don't have PostPaymentAction so we don't do anything If we have a PostPaymentAction
+     * (CheckoutActivity launches ReviewAndConfirm again to recover the payment) we need to get it and execute the
+     * recovery
      */
     private void checkIntentActions() {
         if (PostPaymentAction.hasPostPaymentAction(getIntent())) {
@@ -158,9 +157,9 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * We need to save something on save instance state to cover the cases when the activity is destroyed.
-     * If there is something saved (savedInstanceState is not null), that means we already tried to
-     * recover the payment if that was necessary.
+     * We need to save something on save instance state to cover the cases when the activity is destroyed. If there is
+     * something saved (savedInstanceState is not null), that means we already tried to recover the payment if that was
+     * necessary.
      */
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
@@ -181,9 +180,9 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * On a payment recovery, when it comes back from card vault, we need the view to be initialized
-     * before we can try to make the payment again (so we can explode the button).
-     * We added the post() method to make sure the view was initialized.
+     * On a payment recovery, when it comes back from card vault, we need the view to be initialized before we can try
+     * to make the payment again (so we can explode the button). We added the post() method to make sure the view was
+     * initialized.
      */
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -356,8 +355,9 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
             final ReviewAndConfirmConfiguration reviewAndConfirmConfiguration =
                 advancedConfiguration.getReviewAndConfirmConfiguration();
 
-            Tracker.trackReviewAndConfirmScreen(getApplicationContext(),
+            Tracker.trackReviewAndConfirmScreen(
                 paymentModel);
+
             return new ReviewAndConfirmContainer.Props(termsAndConditionsModel,
                 paymentModel,
                 summaryModel,
@@ -409,8 +409,7 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * Start the Payer Information flow to modify existing
-     * payer's data
+     * Start the Payer Information flow to modify existing payer's data
      */
     private void changePayerInformation() {
         overrideTransitionIn();
@@ -418,8 +417,7 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * Called when user press back or
-     * Cancel action is dispatched.
+     * Called when user press back or Cancel action is dispatched.
      */
     @Override
     public void onBackPressed() {
@@ -428,8 +426,7 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * Exit review and confirm and notify the origin activity
-     * that payment method change button has been pressed.
+     * Exit review and confirm and notify the origin activity that payment method change button has been pressed.
      */
     private void changePaymentMethod() {
         setResult(RESULT_CHANGE_PAYMENT_METHOD);
@@ -468,10 +465,8 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * When payment needs to start the visual payment processor
-     * it won't come back to review and confirm.
-     * The result for the start activity will be delegated to
-     * Checkout activity.
+     * When payment needs to start the visual payment processor it won't come back to review and confirm. The result for
+     * the start activity will be delegated to Checkout activity.
      */
     @Override
     public void showPaymentProcessor() {
@@ -483,9 +478,8 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * When payment is shown inside congrats
-     * the user can't return to review and confirm.
-     * Result for this activity will be transferred.
+     * When payment is shown inside congrats the user can't return to review and confirm. Result for this activity will
+     * be transferred.
      */
     @Override
     public void showResult(final BusinessPaymentModel businessPaymentModel) {
@@ -497,9 +491,8 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     }
 
     /**
-     * When payment is shown inside congrats
-     * the user can't return to review and confirm.
-     * Result for this activity will be transferred.
+     * When payment is shown inside congrats the user can't return to review and confirm. Result for this activity will
+     * be transferred.
      */
     @Override
     public void showResult(@NonNull final PaymentResult paymentResult) {
