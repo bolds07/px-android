@@ -70,6 +70,7 @@ public class PaymentConfiguration {
         /**
          * Add your own payment method option to pay.
          * Deprecated on version 4.4.0 due to native support of account money feature.
+         * This method is now NOOP.
          *
          * @param paymentMethodPlugin your payment method plugin.
          * @return builder

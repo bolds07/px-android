@@ -36,9 +36,12 @@ public final class PaymentTypes {
         return PaymentTypes.ACCOUNT_MONEY.equals(type);
     }
 
-    //We don't support account money plugin since 4.4.0
+    /**
+     *  We don't support account money plugin since 4.4.0
+     */
+    @Deprecated
     public static boolean isPlugin(final String type) {
-        return PaymentTypes.PLUGIN.equals(type) && !PaymentTypes.ACCOUNT_MONEY.equals(type);
+        return PaymentTypes.PLUGIN.equals(type);
     }
 
     public static List<String> getAllPaymentTypes() {
