@@ -2,8 +2,8 @@ package com.mercadopago.android.px.tracking.internal.views;
 
 import com.mercadopago.android.px.model.CustomSearchItem;
 import com.mercadopago.android.px.model.Item;
-import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentMethodSearch;
+import com.mercadopago.android.px.model.PaymentMethodSearchItem;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,17 +32,17 @@ public class SelectMethodViewTest {
     private static final String EXPECTED_JUST_ACCOUNT_MONEY =
         "{available_methods=[{payment_method_id=account_money, payment_method_type=account_money, extra_info={balance=null, invested=false}}], items=[{quantity=1.0, item={id=1234, description=description, price=10.0}}]}";
 
-    private static final String EXPECTED_JUST_ONE_RANDOM_PM =
-        "{available_methods=[{payment_method_id=random_value, payment_method_type=random_value, extra_info=null}], items=[{quantity=1.0, item={id=1234, description=description, price=10.0}}]}";
+    private static final String EXPECTED_JUST_ONE_GROUP =
+        "{available_methods=[{payment_method_id=null, payment_method_type=cards, extra_info=null}], items=[{quantity=1.0, item={id=1234, description=description, price=10.0}}]}";
 
     private static final String CARD_ID = "123456";
 
     @Mock private Set<String> cardsWithEsc;
     @Mock private PaymentMethodSearch paymentMethodSearch;
     @Mock private CustomSearchItem customSearchItem;
-    @Mock private PaymentMethod paymentMethod;
+    @Mock private PaymentMethodSearchItem pmSearchItem;
 
-    private List<Item> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -102,13 +102,12 @@ public class SelectMethodViewTest {
 
     @Test
     public void whenGetDataOnePaymentMethodReturnFormatIsAsExpected() {
-        when(paymentMethodSearch.getPaymentMethods()).thenReturn(Collections.singletonList(paymentMethod));
-        when(paymentMethod.getId()).thenReturn("random_value");
-        when(paymentMethod.getPaymentTypeId()).thenReturn("random_value");
+        when(paymentMethodSearch.getGroups()).thenReturn(Collections.singletonList(pmSearchItem));
+        when(pmSearchItem.getId()).thenReturn("cards");
 
         final SelectMethodView selectMethodView = new SelectMethodView(paymentMethodSearch, cardsWithEsc,
             items);
 
-        assertEquals(EXPECTED_JUST_ONE_RANDOM_PM, selectMethodView.getData().toString());
+        assertEquals(EXPECTED_JUST_ONE_GROUP, selectMethodView.getData().toString());
     }
 }

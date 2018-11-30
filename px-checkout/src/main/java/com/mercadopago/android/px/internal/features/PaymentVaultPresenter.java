@@ -407,12 +407,13 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         return false;
     }
 
-    /* default */ void trackInitialScreen() {
+    /* default */
+    void trackInitialScreen() {
         new SelectMethodView(paymentMethodSearch, mercadoPagoESC.getESCCardIds(),
             configuration.getCheckoutPreference().getItems()).track();
     }
 
-    /* default */ void trackChildrenScreen() {
+    public void trackChildrenScreen() {
         new SelectMethodChildView(paymentMethodSearch, selectedSearchItem,
             configuration.getCheckoutPreference().getItems()).track();
     }

@@ -55,8 +55,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentVaultPresenterTest {
 
-    private static final String ANY_SITE_ID = "ANY_ID";
-
     private MockedView stubView = new MockedView();
     private MockedProvider stubProvider = new MockedProvider();
     private PaymentVaultPresenter presenter;
@@ -78,7 +76,6 @@ public class PaymentVaultPresenterTest {
         when(paymentSettingRepository.getCheckoutPreference()).thenReturn(checkoutPreference);
         when(checkoutPreference.getPaymentPreference()).thenReturn(new PaymentPreference());
         when(checkoutPreference.getSite()).thenReturn(mockSite);
-        when(mockSite.getId()).thenReturn(ANY_SITE_ID);
         presenter = getBasePresenter(stubView, stubProvider);
     }
 
@@ -111,30 +108,6 @@ public class PaymentVaultPresenterTest {
         presenter.trackChildrenScreen();
         verifyNoMoreInteractions(mockProvider);
         verifyNoMoreInteractions(mockView);
-    }
-
-    @Test
-    public void whenItemSelectedNotAvailableTrackFirstOfGroup() {
-        final PaymentVaultView mockView = mock(PaymentVaultView.class);
-        final PaymentVaultProvider mockProvider = mock(PaymentVaultProvider.class);
-
-        final PaymentMethodSearch mockPaymentOptions = mock(PaymentMethodSearch.class);
-        final PaymentMethodSearchItem mockPaymentOptionsItem = mock(PaymentMethodSearchItem.class);
-
-        final List<PaymentMethodSearchItem> paymentMethodSearchItems = Arrays.asList(mockPaymentOptionsItem);
-        when(mockPaymentOptions.getGroups()).thenReturn(paymentMethodSearchItems);
-        when(mockPaymentOptions.hasSearchItems()).thenReturn(true);
-
-        when(groupsRepository.getGroups()).thenReturn(new StubSuccessMpCall<>(mockPaymentOptions));
-
-        presenter = new PaymentVaultPresenter(paymentSettingRepository, userSelectionRepository,
-            pluginRepository, discountRepository, groupsRepository, mock(MercadoPagoESC.class));
-
-        presenter.attachView(mockView);
-        presenter.attachResourcesProvider(mockProvider);
-        presenter.initialize();
-
-        presenter.trackChildrenScreen();
     }
 
     @Test
@@ -477,7 +450,8 @@ public class PaymentVaultPresenterTest {
     @Test
     public void whenBoletoSelectedThenCollectPayerInformation() {
         final PaymentVaultPresenter presenter = getPresenter();
-        when(groupsRepository.getGroups()).thenReturn(new StubSuccessMpCall<>(PaymentMethodSearchs.getPaymentMethodSearchWithOnlyBolbradescoMLB()));
+        when(groupsRepository.getGroups())
+            .thenReturn(new StubSuccessMpCall<>(PaymentMethodSearchs.getPaymentMethodSearchWithOnlyBolbradescoMLB()));
 
         presenter.initialize();
 
@@ -554,9 +528,7 @@ public class PaymentVaultPresenterTest {
         public String getEmptyPaymentMethodsErrorMessage() {
             return EMPTY_PAYMENT_METHODS;
         }
-
-
-        }
+    }
 
     private static class MockedView implements PaymentVaultView {
 
