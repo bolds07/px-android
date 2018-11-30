@@ -79,7 +79,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     protected MPTextView mTimerTextView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
@@ -92,7 +92,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(final Bundle outState) {
         outState.putSerializable(CARD_INFO_BUNDLE, mSecurityCodePresenter.getCardInfo());
         outState.putSerializable(PAYMENT_RECOVERY_BUNDLE, mSecurityCodePresenter.getPaymentRecovery());
         outState.putString(REASON_BUNDLE, mReason);
@@ -276,24 +276,6 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
             mTimerTextView.setVisibility(View.VISIBLE);
             mTimerTextView.setText(CheckoutTimer.getInstance().getCurrentTime());
         }
-    }
-
-    @Override
-    public void trackScreen() {
-        final MPTracker mpTrackingContext = MPTracker.getInstance();
-        //TODO
-
-        final String screenId =
-            "/px_checkout/payments/select_method/" + mSecurityCodePresenter.getPaymentMethod().getPaymentTypeId() +
-                TrackingUtil.CARD_SECURITY_CODE;
-        final ScreenViewEvent event = new ScreenViewEvent.Builder()
-            .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(screenId)
-            .setScreenName(screenId)
-            .addProperty(TrackingUtil.PROPERTY_SECURITY_CODE_REASON, mReason)
-            .build();
-
-        mpTrackingContext.trackEvent(event);
     }
 
     @Override

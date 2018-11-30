@@ -356,13 +356,15 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
     }
 
     private void startSavedCardFlow() {
-        setCardInfo(new CardInfo(getCard()));
-        setPaymentMethod(getCard().getPaymentMethod());
-        userSelectionRepository.select(getCard().getIssuer());
+        // here is a saved card selected
+        final Card card = getCard();
+        setCardInfo(new CardInfo(card));
+        setPaymentMethod(card.getPaymentMethod());
+        userSelectionRepository.select(card.getIssuer());
         if (userSelectionRepository.getPayerCost() != null) {
             askForSecurityCodeWithoutInstallments();
         } else {
-            getInstallmentsForCardAsync(getCard());
+            getInstallmentsForCardAsync(card);
         }
     }
 
