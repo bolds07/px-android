@@ -746,11 +746,6 @@ public class SecurityCodePresenterTest {
         }
 
         @Override
-        public void trackScreen() {
-            screenTracked = true;
-        }
-
-        @Override
         public void showBackSecurityCodeCardView() {
         }
 
