@@ -6,6 +6,7 @@ import com.mercadopago.android.px.internal.base.MvpPresenter;
 import com.mercadopago.android.px.internal.callbacks.FailureRecovery;
 import com.mercadopago.android.px.internal.callbacks.OnSelectedCallback;
 import com.mercadopago.android.px.internal.datasource.CheckoutStore;
+import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
 import com.mercadopago.android.px.internal.features.hooks.Hook;
 import com.mercadopago.android.px.internal.features.hooks.HookHelper;
 import com.mercadopago.android.px.internal.features.providers.PaymentVaultProvider;
@@ -27,6 +28,7 @@ import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.PaymentPreference;
 import com.mercadopago.android.px.services.Callback;
+import com.mercadopago.android.px.tracking.internal.views.SelectMethodView;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     @NonNull
     private final GroupsRepository groupsRepository;
 
+    @NonNull private final MercadoPagoESC mercadoPagoESC;
+
     private PaymentMethodSearchItem selectedSearchItem;
     private PaymentMethodSearchItem resumeItem;
     private boolean skipHook = false;
@@ -58,12 +62,14 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         @NonNull final UserSelectionRepository userSelectionRepository,
         @NonNull final PluginRepository pluginService,
         @NonNull final DiscountRepository discountRepository,
-        @NonNull final GroupsRepository groupsRepository) {
+        @NonNull final GroupsRepository groupsRepository,
+        @NonNull final MercadoPagoESC mercadoPagoESC) {
         this.configuration = configuration;
         this.userSelectionRepository = userSelectionRepository;
         pluginRepository = pluginService;
         this.discountRepository = discountRepository;
         this.groupsRepository = groupsRepository;
+        this.mercadoPagoESC = mercadoPagoESC;
     }
 
     public void initialize() {
@@ -382,11 +388,11 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         resumeItem = null;
     }
 
-    public boolean showHook1(final String typeId) {
+    private boolean showHook1(final String typeId) {
         return showHook1(typeId, Constants.Activities.HOOK_1);
     }
 
-    public boolean showHook1(final String typeId, final int requestCode) {
+    private boolean showHook1(final String typeId, final int requestCode) {
 
         final Map<String, Object> data = CheckoutStore.getInstance().getData();
         final Hook hook = HookHelper.activateBeforePaymentMethodConfig(
@@ -400,9 +406,8 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         return false;
     }
 
-    public void trackInitialScreen() {
-        getResourcesProvider()
-            .trackInitialScreen(paymentMethodSearch, configuration.getCheckoutPreference().getSite().getId());
+    /* default */ void trackInitialScreen() {
+        new SelectMethodView(paymentMethodSearch, mercadoPagoESC.getESCCardIds(), configuration.getCheckoutPreference().getItems()).track();
     }
 
     /**

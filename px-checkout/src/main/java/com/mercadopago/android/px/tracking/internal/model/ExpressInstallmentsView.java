@@ -2,8 +2,10 @@ package com.mercadopago.android.px.tracking.internal.model;
 
 import android.support.annotation.NonNull;
 import com.mercadopago.android.px.model.ExpressMetadata;
+import com.mercadopago.android.px.model.PayerCost;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpressInstallmentsView implements Serializable {
@@ -13,20 +15,20 @@ public class ExpressInstallmentsView implements Serializable {
     @NonNull private Long issuerId;
     @NonNull private String cardId;
     @NonNull private BigDecimal totalAmount;
-    @NonNull private List<AvailableInstallment> availableInstallments;
+    @NonNull private List<PayerCostInfo> availableInstallments;
     @NonNull private String currencyId;
 
     public ExpressInstallmentsView(@NonNull final String paymentMethodType, @NonNull final String paymentMethodId,
         @NonNull final Long issuerId,
         @NonNull final String cardId,
         @NonNull final BigDecimal totalAmount,
-        @NonNull final List<AvailableInstallment> availableInstallments, @NonNull final String currencyId) {
+        @NonNull final List<PayerCostInfo> payerCostTrackModels, @NonNull final String currencyId) {
         this.paymentMethodType = paymentMethodType;
         this.paymentMethodId = paymentMethodId;
         this.issuerId = issuerId;
         this.cardId = cardId;
         this.totalAmount = totalAmount;
-        this.availableInstallments = availableInstallments;
+        availableInstallments = payerCostTrackModels;
         this.currencyId = currencyId;
     }
 
@@ -36,10 +38,12 @@ public class ExpressInstallmentsView implements Serializable {
         final String paymentMethodId = expressMetadata.getPaymentMethodId();
         final String cardId = expressMetadata.getCard().getId();
         final Long issuerId = expressMetadata.getCard().getDisplayInfo().issuerId;
-        final List<AvailableInstallment> availableInstallments =
-            AvailableInstallment.createFrom(expressMetadata.getCard().getPayerCosts(), currencyId);
+        final List<PayerCostInfo> payerCostTrackModels = new ArrayList<>();
+        for (final PayerCost payerCost : expressMetadata.getCard().getPayerCosts()) {
+            payerCostTrackModels.add(new PayerCostInfo(payerCost));
+        }
 
         return new ExpressInstallmentsView(paymentMethodType, paymentMethodId, issuerId, cardId, totalAmount,
-            availableInstallments, currencyId);
+            payerCostTrackModels, currencyId);
     }
 }

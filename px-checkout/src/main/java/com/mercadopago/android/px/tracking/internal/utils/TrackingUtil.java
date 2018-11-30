@@ -5,7 +5,7 @@ public final class TrackingUtil {
     public static final class View {
 
         //View Paths
-        public static final String PATH_PAYMENT_VAULT = "/px_checkout/payments/select_method";
+
         public static final String PATH_PAYMENT_VAULT_TICKET = "/px_checkout/payments/select_method/ticket";
         public static final String PATH_PAYMENT_VAULT_CARDS =
             "/px_checkout/payments/select_method/select_card_type";
@@ -26,7 +26,6 @@ public final class TrackingUtil {
             "/px_checkout/review/traditional/terms_and_conditions";
         public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
-        public static final String PATH_EXPRESS_REVIEW_VIEW = "/px_checkout/review/one_tap";
         public static final String PATH_EXPRESS_DISCOUNT_VIEW = "/px_checkout/review/one_tap/applied_discount";
         public static final String PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
         public static final String PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
@@ -38,7 +37,7 @@ public final class TrackingUtil {
 
     public static final class Event {
         //Event Paths
-        public static final String EVENT_PATH_REVIEW_CONFIRM = "/px_checkout/review/confirm";
+
         public static final String EVENT_PATH_SWIPE_EXPRESS = "/px_checkout/review/one_tap/swipe";
         public static final String EVENT_PATH_ABORT_EXPRESS = "/px_checkout/review/one_tap/abort";
         public static final String EVENT_PATH_FRICTION = "/friction";
@@ -90,7 +89,6 @@ public final class TrackingUtil {
     public static final String PROPERTY_CARD_ID = "card_id";
     public static final String PROPERTY_INSTALLMENTS = "installments";
     public static final String PROPERTY_PURCHASE_AMOUNT = "purchase_amount";
-    public static final String PROPERTY_REVIEW_TYPE_ONE_TAP = "one_tap";
 
     //Default values
     public static final String HAS_SHIPPING_DEFAULT_VALUE = "false";

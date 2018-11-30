@@ -62,8 +62,8 @@ public final class MPTracker {
      * Set listener to track library's screens and events in the app.
      *
      * @param pxEventListener implementing the tracking methods
-     * @deprecated Deprecated due to new tracking implementation standards.
-     * Use {@link com.mercadopago.android.px.tracking.internal.MPTracker#setPXTrackingListener(PXTrackingListener)} instead.
+     * @deprecated Deprecated due to new tracking implementation standards. Use {@link com.mercadopago.android.px.tracking.internal.MPTracker#setPXTrackingListener(PXTrackingListener)}
+     * instead.
      */
     @Deprecated
     public void setTracksListener(@Nullable final PXEventListener pxEventListener) {
