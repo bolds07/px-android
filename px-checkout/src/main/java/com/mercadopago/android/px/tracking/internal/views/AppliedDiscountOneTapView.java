@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 public class AppliedDiscountOneTapView extends ViewTracker {
 
-    private static final String PATH_EXPRESS_DISCOUNT_VIEW = BASE_VIEW_PATH + "review/one_tap/applied_discount";
+    private static final String PATH_EXPRESS_DISCOUNT_VIEW = BASE_VIEW_PATH + "/review/one_tap/applied_discount";
 
     @NonNull
     @Override
