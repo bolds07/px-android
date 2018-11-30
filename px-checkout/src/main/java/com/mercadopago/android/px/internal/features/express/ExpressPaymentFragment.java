@@ -35,10 +35,10 @@ import com.mercadopago.android.px.internal.features.express.animations.FadeAnim;
 import com.mercadopago.android.px.internal.features.express.animations.InstallmentsAnimation;
 import com.mercadopago.android.px.internal.features.express.animations.SlideAnim;
 import com.mercadopago.android.px.internal.features.express.installments.InstallmentsAdapter;
+import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodAdapter;
+import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodAdapterImpl;
 import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodFragmentAdapter;
 import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodFragmentAdapterLowRes;
-import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodHeaderAdapter;
-import com.mercadopago.android.px.internal.features.express.slider.TitlePagerAdapter;
 import com.mercadopago.android.px.internal.features.plugins.PaymentProcessorActivity;
 import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.ApiUtil;
@@ -110,8 +110,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
     private SlideAnim slideAnim;
     private InstallmentsAdapter installmentsAdapter;
     private FixedAspectRatioFrameLayout aspectRatioContainer;
-    private PaymentMethodHeaderAdapter paymentMethodHeaderAdapter;
-    private TitlePagerAdapter titlePagerAdapter;
+    private PaymentMethodAdapter paymentMethodAdapter;
     private View recyclerContainer;
 
     public static Fragment getInstance() {
@@ -221,11 +220,11 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
                 presenter.onInstallmentSelectionCanceled(paymentMethodPager.getCurrentItem());
             }
         });
-        paymentMethodHeaderAdapter = new PaymentMethodHeaderAdapter(paymentMethodHeaderView);
 
         final TitlePager titlePager = view.findViewById(R.id.title_pager);
-        titlePagerAdapter = new TitlePagerAdapter(titlePager);
-        titlePager.setAdapter(titlePagerAdapter);
+        paymentMethodAdapter = new PaymentMethodAdapterImpl(titlePager, paymentMethodHeaderView,
+            confirmButton);
+        titlePager.setAdapter(paymentMethodAdapter);
 
         configureToolbar(view);
     }
@@ -301,8 +300,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
         paymentMethodPager.setAdapter(getAdapter(items));
         // indicator must be after paymentMethodPager adapter is set.
         indicator.attachToPager(paymentMethodPager);
-        titlePagerAdapter.setModels(models);
-        paymentMethodHeaderAdapter.setModels(models);
+        paymentMethodAdapter.setModels(models);
     }
 
     private void animateViewPagerDown() {
@@ -330,26 +328,17 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
         animateViewPagerDown();
         installmentsSelectorSeparator.setVisibility(VISIBLE);
         installmentsRecyclerView.setVisibility(VISIBLE);
+        installmentsRecyclerView.scrollToPosition(payerCostSelected);
         installmentsAdapter.setPayerCosts(payerCostList);
         installmentsAdapter.setPayerCostSelected(payerCostSelected);
         installmentsAdapter.notifyDataSetChanged();
         installmentsAnimation.expand();
-        paymentMethodHeaderAdapter.showInstallmentsList();
+        paymentMethodAdapter.showInstallmentsList();
     }
 
     @Override
     public void hideInstallmentsSelection() {
         installmentsSelectorSeparator.setVisibility(INVISIBLE);
-    }
-
-    @Override
-    public void disablePaymentButton() {
-        confirmButton.setState(MeliButton.State.DISABLED);
-    }
-
-    @Override
-    public void enablePaymentButton() {
-        confirmButton.setState(MeliButton.State.NORMAL);
     }
 
     @Override
@@ -416,8 +405,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void showInstallmentsDescriptionRow(final int paymentMethodIndex, final int payerCostSelected) {
-        paymentMethodHeaderAdapter.updateData(paymentMethodIndex, payerCostSelected);
-        titlePagerAdapter.updateData(paymentMethodIndex, payerCostSelected);
+        paymentMethodAdapter.updateData(paymentMethodIndex, payerCostSelected);
     }
 
     @Override
@@ -461,6 +449,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void cancelLoading() {
+        showConfirmButton();
         final FragmentManager childFragmentManager = getChildFragmentManager();
         final ExplodingFragment fragment =
             (ExplodingFragment) childFragmentManager.findFragmentByTag(TAG_EXPLODING_FRAGMENT);
@@ -508,14 +497,12 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
         Tracker.trackAbortExpress();
     }
 
-    @Override
-    public void showConfirmButton() {
+    private void showConfirmButton() {
         confirmButton.clearAnimation();
         confirmButton.setVisibility(VISIBLE);
     }
 
-    @Override
-    public void hideConfirmButton() {
+    private void hideConfirmButton() {
         confirmButton.clearAnimation();
         confirmButton.setVisibility(INVISIBLE);
     }
@@ -532,6 +519,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void startLoadingButton(final int paymentTimeout) {
+        hideConfirmButton();
         final int[] location = new int[2];
         confirmButton.getLocationOnScreen(location);
 
@@ -563,8 +551,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-        paymentMethodHeaderAdapter.updatePosition(positionOffset, position);
-        titlePagerAdapter.updatePosition(positionOffset, position);
+        paymentMethodAdapter.updatePosition(positionOffset, position);
     }
 
     @Override
