@@ -83,6 +83,9 @@ public class GroupsService implements GroupsRepository {
 
                     @Override
                     public void failure(final ApiException apiException) {
+                        //TODO borrar
+                        ApiException apiException1 = apiException;
+
                         callback.failure(apiException);
                     }
                 };

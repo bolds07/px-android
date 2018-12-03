@@ -3,6 +3,7 @@ package com.mercadopago.android.px.services;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.mercadopago.android.px.internal.adapters.ErrorHandlingCallAdapter;
 import com.mercadopago.android.px.internal.constants.ProcessingModes;
 import com.mercadopago.android.px.internal.core.Settings;
 import com.mercadopago.android.px.internal.services.BankDealService;
@@ -12,6 +13,8 @@ import com.mercadopago.android.px.internal.services.GatewayService;
 import com.mercadopago.android.px.internal.services.IdentificationService;
 import com.mercadopago.android.px.internal.services.InstructionsClient;
 import com.mercadopago.android.px.internal.services.PaymentService;
+import com.mercadopago.android.px.internal.util.HttpClientUtil;
+import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.internal.util.LocaleUtil;
 import com.mercadopago.android.px.internal.util.RetrofitUtil;
 import com.mercadopago.android.px.model.BankDeal;
@@ -34,6 +37,8 @@ import com.mercadopago.android.px.preferences.CheckoutPreference;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * MercadoPagoServices provides an interface to access to our main API methods.
@@ -120,15 +125,27 @@ public class MercadoPagoServices {
      * @param differentialPricing
      * @param defaultInstallments
      * @param expressEnabled if your preference is compatible with express checkout.
-     * @param callback
+     * @param callback //TODO chequear
+     * express_enabled ???
+     * marketplace ???
+     * email ???
      */
     public void getPaymentMethodSearch(final BigDecimal amount, final List<String> excludedPaymentTypes,
         final List<String> excludedPaymentMethods, final List<String> cardsWithEsc, final List<String> supportedPlugins,
         final Site site, @Nullable final Integer differentialPricing,
-        @Nullable final Integer defaultInstallments,
-        final boolean expressEnabled,
+        @Nullable final Integer defaultInstallments, final boolean expressEnabled,
         final Callback<PaymentMethodSearch> callback) {
-        final CheckoutService service = RetrofitUtil.getRetrofitClient(context).create(CheckoutService.class);
+
+        //TODO descomentar
+        //final CheckoutService service = RetrofitUtil.getRetrofitClient(context).create(CheckoutService.class);
+
+        //TODO borrar
+        final CheckoutService service = new Retrofit.Builder()
+            .baseUrl("https://private-18d06-matiasromar.apiary-mock.com/")
+            .addConverterFactory(GsonConverterFactory.create(JsonUtil.getInstance().getGson()))
+            .client(HttpClientUtil.getClient(context, 10, 20, 20))
+            .addCallAdapterFactory(new ErrorHandlingCallAdapter.ErrorHandlingCallAdapterFactory())
+            .build().create(CheckoutService.class);
 
         final String separator = ",";
         final String excludedPaymentTypesAppended = getListAsString(excludedPaymentTypes, separator);
@@ -136,6 +153,7 @@ public class MercadoPagoServices {
         final String cardsWithEscAppended = getListAsString(cardsWithEsc, separator);
         final String supportedPluginsAppended = getListAsString(supportedPlugins, separator);
 
+        //TODO descomentar, agregar version
         service.getPaymentMethodSearch(Settings.servicesVersion,
             LocaleUtil.getLanguage(context), publicKey, amount,
             excludedPaymentTypesAppended, excludedPaymentMethodsAppended, site.getId(),

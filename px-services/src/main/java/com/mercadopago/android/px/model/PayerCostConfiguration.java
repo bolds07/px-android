@@ -3,6 +3,7 @@ package com.mercadopago.android.px.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.internal.util.ParcelableUtil;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -10,20 +11,31 @@ import java.util.Map;
 
 public class PayerCostConfiguration implements Serializable, Parcelable {
 
-    private final Map<String, List<PayerCost>> configuration = new HashMap<>();
-    private final int selectedPayerCostIndex;
+    private final Map<String, List<PayerCost>> configuration;
+    private final Integer selectedPayerCostIndex;
+
+    public PayerCostConfiguration(@NonNull final Integer selectedPayerCostIndex,
+        @NonNull final Map<String, List<PayerCost>> configuration) {
+        this.selectedPayerCostIndex = selectedPayerCostIndex;
+        this.configuration = configuration;
+    }
 
     public List<PayerCost> getPayerCosts(@NonNull final String key) {
         return configuration.get(key);
     }
 
-    public int getSelectedPayerCostIndex() {
+    public Map<String, List<PayerCost>> getConfiguration() {
+        return configuration;
+    }
+
+    public Integer getSelectedPayerCostIndex() {
         return selectedPayerCostIndex;
     }
 
     protected PayerCostConfiguration(final Parcel in) {
-        selectedPayerCostIndex = in.readInt();
-        in.readMap(configuration, PayerCost.class.getClassLoader());
+        configuration = new HashMap<>();
+        selectedPayerCostIndex = ParcelableUtil.getOptionalInteger(in);
+        in.readMap(configuration, PayerCostConfiguration.class.getClassLoader());
     }
 
     public static final Creator<PayerCostConfiguration> CREATOR = new Creator<PayerCostConfiguration>() {
@@ -45,7 +57,18 @@ public class PayerCostConfiguration implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeInt(selectedPayerCostIndex);
+        ParcelableUtil.writeOptional(dest, selectedPayerCostIndex);
         dest.writeMap(configuration);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o instanceof PayerCostConfiguration) {
+            final Integer selectedPayerCostIndexToCompare = ((PayerCostConfiguration) o).getSelectedPayerCostIndex();
+            final Map<String, List<PayerCost>> configurationToCompare = ((PayerCostConfiguration) o).getConfiguration();
+            return configuration.equals(configurationToCompare) &&
+                selectedPayerCostIndex.equals(selectedPayerCostIndexToCompare);
+        }
+        return false;
     }
 }

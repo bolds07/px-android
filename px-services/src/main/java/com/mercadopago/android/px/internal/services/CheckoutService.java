@@ -14,6 +14,8 @@ public interface CheckoutService {
 
     String GROUPS_VERSION = "1.7";
 
+    //TODO descomentar cuando esté productivo el wrapper
+    //@GET("/{version}/px_mobile_api/payment_methods?api_version=" + GROUPS_VERSION)
     @GET("/{version}/px_mobile_api/payment_methods?api_version=" + GROUPS_VERSION)
     MPCall<PaymentMethodSearch> getPaymentMethodSearch(@Path(value = "version", encoded = true) String version,
         @Header("Accept-Language") String locale,
@@ -29,7 +31,6 @@ public interface CheckoutService {
         @Nullable @Query("default_installments") final Integer defaultInstallments,
         @Query("express_enabled") final boolean expressEnabled,
         @Nullable @Query("access_token") String accessToken);
-
 
     @GET("/{version}/checkout/preferences/{preference_id}")
     MPCall<CheckoutPreference> getPreference(@Path(value = "version", encoded = true) String version,
