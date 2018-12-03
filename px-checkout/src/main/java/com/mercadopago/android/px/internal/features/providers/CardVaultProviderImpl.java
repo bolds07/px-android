@@ -2,7 +2,6 @@ package com.mercadopago.android.px.internal.features.providers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.callbacks.TaggedCallback;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
@@ -10,11 +9,8 @@ import com.mercadopago.android.px.internal.datasource.MercadoPagoESCImpl;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoServicesAdapter;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
-import com.mercadopago.android.px.model.Installment;
 import com.mercadopago.android.px.model.SavedESCCardToken;
 import com.mercadopago.android.px.model.Token;
-import java.math.BigDecimal;
-import java.util.List;
 
 public class CardVaultProviderImpl implements CardVaultProvider {
 
@@ -59,16 +55,6 @@ public class CardVaultProviderImpl implements CardVaultProvider {
     @Override
     public String getMissingSiteErrorMessage() {
         return context.getString(R.string.px_error_message_missing_site);
-    }
-
-    @Override
-    public void getInstallmentsAsync(final String bin,
-        final Long issuerId,
-        final String paymentMethodId,
-        final BigDecimal amount,
-        @Nullable final Integer differentialPricingId,
-        final TaggedCallback<List<Installment>> taggedCallback) {
-        mercadoPago.getInstallments(bin, amount, issuerId, paymentMethodId, differentialPricingId, taggedCallback);
     }
 
     @Override

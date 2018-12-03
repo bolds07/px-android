@@ -253,6 +253,7 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
                 selectedCard.setSecurityCode(paymentMethod.getSettings().get(0).getSecurityCode());
             }
         }
+        selectedCard.setPayerCosts(searchItem.getPayerCosts());
         return selectedCard;
     }
 

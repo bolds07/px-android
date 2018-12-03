@@ -2,6 +2,7 @@ package com.mercadopago.android.px.model;
 
 import android.support.annotation.Nullable;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("UseOfObsoleteDateTimeApi")
 public class Card implements CardInformation {
@@ -23,6 +24,7 @@ public class Card implements CardInformation {
     private String lastFourDigits;
     private PaymentMethod paymentMethod;
     private SecurityCode securityCode;
+    private List<PayerCost> payerCosts;
 
     @Override
     public Cardholder getCardHolder() {
@@ -138,6 +140,14 @@ public class Card implements CardInformation {
 
     public String getSecurityCodeLocation() {
         return securityCode != null ? securityCode.getCardLocation() : CARD_DEFAULT_SECURITY_CODE_LOCATION;
+    }
+
+    public List<PayerCost> getPayerCosts() {
+        return payerCosts;
+    }
+
+    public void setPayerCosts(final List<PayerCost> payerCosts) {
+        this.payerCosts = payerCosts;
     }
 
     @SuppressWarnings("ObjectToString")

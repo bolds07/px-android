@@ -12,12 +12,8 @@ import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.repository.UserSelectionRepository;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.util.EscUtil;
-import com.mercadopago.android.px.internal.util.TextUtil;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.CardInfo;
-import com.mercadopago.android.px.model.DifferentialPricing;
-import com.mercadopago.android.px.model.Installment;
-import com.mercadopago.android.px.model.Issuer;
 import com.mercadopago.android.px.model.PayerCost;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentRecovery;
@@ -222,53 +218,6 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
         return payerCostsList;
     }
 
-    private void getInstallmentsForCardAsync(final Card card) {
-        final String bin = TextUtil.isEmpty(cardInfo.getFirstSixDigits()) ? "" : cardInfo.getFirstSixDigits();
-        final Long issuerId = this.card.getIssuer() == null ? null : this.card.getIssuer().getId();
-        String paymentMethodId = card.getPaymentMethod() == null ? "" : card.getPaymentMethod().getId();
-        final DifferentialPricing differentialPricing =
-            paymentSettingRepository.getCheckoutPreference().getDifferentialPricing();
-        final Integer differentialPricingId = differentialPricing == null ? null : differentialPricing.getId();
-        getResourcesProvider().getInstallmentsAsync(bin, issuerId, paymentMethodId, amountRepository.getAmountToPay(),
-            differentialPricingId,
-            new TaggedCallback<List<Installment>>(ApiUtil.RequestOrigin.GET_INSTALLMENTS) {
-                @Override
-                public void onSuccess(final List<Installment> installments) {
-                    if (viewAttached()) {
-                        resolveInstallmentsList(installments);
-                    }
-                }
-
-                @Override
-                public void onFailure(final MercadoPagoError error) {
-                    if (viewAttached()) {
-                        getView().showError(error, ApiUtil.RequestOrigin.GET_INSTALLMENTS);
-
-                        setFailureRecovery(new FailureRecovery() {
-                            @Override
-                            public void recover() {
-                                getInstallmentsForCardAsync(card);
-                            }
-                        });
-                    }
-                }
-            });
-    }
-
-    private void resolveInstallmentsList(final List<Installment> installments) {
-        String errorMessage = null;
-        if (installments.size() == 0) {
-            errorMessage = getResourcesProvider().getMissingInstallmentsForIssuerErrorMessage();
-        } else if (installments.size() == 1) {
-            resolvePayerCosts(installments.get(0).getPayerCosts());
-        } else {
-            errorMessage = getResourcesProvider().getMultipleInstallmentsForIssuerErrorMessage();
-        }
-        if (errorMessage != null && isViewAttached()) {
-            getView().showError(new MercadoPagoError(errorMessage, false), "");
-        }
-    }
-
     private void resolvePayerCosts(final List<PayerCost> payerCosts) {
         final PayerCost defaultPayerCost =
             paymentSettingRepository.getCheckoutPreference().getPaymentPreference().getDefaultInstallments(payerCosts);
@@ -363,7 +312,7 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
         if (userSelectionRepository.getPayerCost() != null) {
             askForSecurityCodeWithoutInstallments();
         } else {
-            getInstallmentsForCardAsync(getCard());
+            resolvePayerCosts(card.getPayerCosts());
         }
     }
 
