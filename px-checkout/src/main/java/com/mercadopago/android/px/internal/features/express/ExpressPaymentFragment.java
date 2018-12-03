@@ -65,6 +65,7 @@ import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.model.ErrorView;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
+import com.mercadopago.android.px.tracking.internal.views.AppliedDiscountOneTapView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -578,7 +579,7 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void onAmountDescriptorClicked() {
-        Tracker.trackExpressDiscountView();
+        new AppliedDiscountOneTapView().track();
         DiscountDetailDialog.showDialog(getFragmentManager());
     }
 

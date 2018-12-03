@@ -51,7 +51,8 @@ public final class StaticMock {
     private StaticMock() {
     }
 
-    public static CardToken getCardToken() {
+    public static CardToken
+    getCardToken() {
 
         return new CardToken(DUMMY_CARD_NUMBER, DUMMY_EXPIRATION_MONTH,
             DUMMY_EXPIRATION_YEAR_SHORT, DUMMY_SECURITY_CODE, DUMMY_CARDHOLDER_NAME,

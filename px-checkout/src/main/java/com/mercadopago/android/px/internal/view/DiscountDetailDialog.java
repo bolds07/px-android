@@ -10,9 +10,7 @@ import com.mercadolibre.android.ui.widgets.MeliDialog;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.repository.DiscountRepository;
-import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.view.DiscountDetailContainer.Props.DialogTitleType;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 
 public class DiscountDetailDialog extends MeliDialog {
 
@@ -37,7 +35,6 @@ public class DiscountDetailDialog extends MeliDialog {
         } else {
             dismiss();
         }
-        Tracker.trackScreen(TrackingUtil.View.PATH_APPLIED_DISCOUNT, TrackingUtil.View.PATH_APPLIED_DISCOUNT);
     }
 
     @Override
