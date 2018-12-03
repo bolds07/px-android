@@ -2,6 +2,7 @@ package com.mercadopago.android.px.tracking.internal.model;
 
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import java.util.Map;
 
 /**
@@ -11,9 +12,9 @@ import java.util.Map;
 @Keep
 public class AvailableMethod extends TrackingMapModel {
 
-    protected final String paymentMethodId;
-    protected final String paymentMethodType;
-    protected final Map<String, Object> extraInfo;
+    @Nullable protected final String paymentMethodId;
+    @NonNull protected final String paymentMethodType;
+    @Nullable protected final Map<String, Object> extraInfo;
 
     public AvailableMethod(@NonNull final String paymentMethodType) {
         this.paymentMethodType = paymentMethodType;
@@ -29,7 +30,7 @@ public class AvailableMethod extends TrackingMapModel {
         this.extraInfo = extraInfo;
     }
 
-    public AvailableMethod(@NonNull final String paymentMethodId,
+    public AvailableMethod(@Nullable final String paymentMethodId,
         @NonNull final String paymentMethodType) {
         this.paymentMethodId = paymentMethodId;
         this.paymentMethodType = paymentMethodType;

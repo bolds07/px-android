@@ -10,8 +10,7 @@ import java.util.List;
 public class PaymentMethodSearch implements Serializable {
 
     /**
-     * express list contains the list of
-     * user related payment methods to offer inside ExpressCheckout
+     * express list contains the list of user related payment methods to offer inside ExpressCheckout
      */
     @Nullable
     private List<ExpressMetadata> express;
@@ -27,23 +26,20 @@ public class PaymentMethodSearch implements Serializable {
 
     //region deprecated
     /**
-     * old account money support that no longer exists.
-     * we will delete this attr on px v5
+     * old account money support that no longer exists. we will delete this attr on px v5
      */
     @Deprecated
     private AccountMoney accountMoney;
 
     /**
-     * @deprecated use new {{@link #express}}
-     * we will delete this method on px v5
+     * @deprecated use new {{@link #express}} we will delete this method on px v5
      */
     @Deprecated
     @SerializedName("one_tap")
     private OneTapMetadata oneTapMetadata;
 
     /**
-     * @deprecated please use new {{@link #hasExpressCheckoutMetadata()}
-     * we will delete this method on px v5
+     * @deprecated please use new {{@link #hasExpressCheckoutMetadata()} we will delete this method on px v5
      */
     @Deprecated
     public boolean hasOneTapMetadata() {
@@ -51,8 +47,7 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     /**
-     * @deprecated please use new {{@link #getExpress()}}
-     * we will delete this method on px v5
+     * @deprecated please use new {{@link #getExpress()}} we will delete this method on px v5
      */
     @Deprecated
     public OneTapMetadata getOneTapMetadata() {
@@ -60,8 +55,7 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     /**
-     * @deprecated please do not modify this information on runtime.
-     * we will delete this method on px v5
+     * @deprecated please do not modify this information on runtime. we will delete this method on px v5
      */
     @Deprecated
     public void setCards(List<Card> cards) {
@@ -69,8 +63,7 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     /**
-     * @deprecated please do not modify this information on runtime.
-     * we will delete this method on px v5
+     * @deprecated please do not modify this information on runtime. we will delete this method on px v5
      */
     @Deprecated
     public void setPaymentMethods(List<PaymentMethod> paymentMethods) {
@@ -80,8 +73,7 @@ public class PaymentMethodSearch implements Serializable {
     /**
      * old account money support that no longer exists.
      *
-     * @deprecated please do not modify this information on runtime.
-     * we will delete this method on px v5
+     * @deprecated please do not modify this information on runtime. we will delete this method on px v5
      */
     @Deprecated
     public void setAccountMoney(AccountMoney accountMoney) {
@@ -128,8 +120,7 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     /**
-     * @deprecated please do not modify this information on runtime.
-     * we will delete this method on px v5
+     * @deprecated please do not modify this information on runtime. we will delete this method on px v5
      */
     @Deprecated
     public void setGroups(List<PaymentMethodSearchItem> groups) {
@@ -138,8 +129,9 @@ public class PaymentMethodSearch implements Serializable {
 
     //endregion deprecated
 
+    @NonNull
     public List<PaymentMethodSearchItem> getGroups() {
-        return groups;
+        return groups == null ? new ArrayList<PaymentMethodSearchItem>() : groups;
     }
 
     @NonNull

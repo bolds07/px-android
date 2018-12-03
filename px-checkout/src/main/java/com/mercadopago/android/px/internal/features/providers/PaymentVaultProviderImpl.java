@@ -46,8 +46,4 @@ public class PaymentVaultProviderImpl implements PaymentVaultProvider {
         return context.getString(R.string.px_no_payment_methods_found);
     }
 
-    public void trackChildrenScreen(@NonNull final PaymentMethodSearchItem paymentMethodSearchItem,
-        @NonNull final String siteId) {
-        Tracker.trackPaymentVaultChildrenScreen(context, paymentMethodSearchItem);
-    }
 }

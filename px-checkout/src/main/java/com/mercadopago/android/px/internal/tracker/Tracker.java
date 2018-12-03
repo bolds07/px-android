@@ -85,8 +85,7 @@ public final class Tracker {
         mpTrackingContext.trackEvent(event);
     }
 
-    public static void trackReviewAndConfirmScreen(final Context context,
-        final PaymentModel paymentModel) {
+    public static void trackReviewAndConfirmScreen(final PaymentModel paymentModel) {
 
         final Collection<Pair<String, String>> properties = new ArrayList<>();
         properties.add(new Pair<>(TrackingUtil.PROPERTY_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE));
@@ -140,21 +139,6 @@ public final class Tracker {
         mpTrackingContext.trackEvent(actionEvent);
     }
 
-    public static void trackPaymentVaultChildrenScreen(@NonNull final Context context,
-        @NonNull final PaymentMethodSearchItem selectedItem) {
-
-        final String selectedItemId = selectedItem.getId();
-
-        if (TrackingUtil.GROUP_CARDS.equals(selectedItemId)) {
-            trackScreen(TrackingUtil.View.PATH_PAYMENT_VAULT_CARDS,
-                TrackingUtil.View.PATH_PAYMENT_VAULT_CARDS,
-                null);
-        } else {
-            trackScreen(TrackingUtil.View.PATH_PAYMENT_VAULT_TICKET,
-                TrackingUtil.View.PATH_PAYMENT_VAULT_TICKET,
-                null);
-        }
-    }
 
     public static void trackBusinessPaymentResultScreen(@NonNull final String paymentStatus,
         @NonNull final String paymentStatusDetail) {

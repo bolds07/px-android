@@ -1,6 +1,7 @@
 package com.mercadopago.android.px.tracking.internal.views;
 
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.internal.util.Logger;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +10,14 @@ public abstract class ViewTracker {
 
     /* default */ static final String BASE_VIEW_PATH = "/px_checkout";
 
+    private final String TAG = ViewTracker.class.toString().toUpperCase();
+
     public final void track() {
-        MPTracker.getInstance().trackView(getViewPath(), getData());
+        final String viewPath = getViewPath();
+        final Map<String, Object> data = getData();
+        Logger.debug(TAG, viewPath);
+        Logger.debug(TAG, data.toString());
+        MPTracker.getInstance().trackView(viewPath, data);
     }
 
     @NonNull
