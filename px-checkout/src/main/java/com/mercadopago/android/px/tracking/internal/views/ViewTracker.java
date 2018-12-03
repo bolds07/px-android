@@ -10,7 +10,7 @@ public abstract class ViewTracker {
 
     /* default */ static final String BASE_VIEW_PATH = "/px_checkout";
 
-    private final String TAG = ViewTracker.class.toString().toUpperCase();
+    private static final String TAG = ViewTracker.class.getSimpleName().toUpperCase();
 
     public final void track() {
         final String viewPath = getViewPath();

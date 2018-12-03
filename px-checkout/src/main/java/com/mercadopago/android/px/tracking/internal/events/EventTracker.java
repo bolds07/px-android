@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class EventTracker {
 
-    private final String TAG = EventTracker.class.toString().toUpperCase();
+    private static final String TAG = EventTracker.class.getSimpleName().toUpperCase();
 
     public final void track() {
         final String eventPath = getEventPath();
