@@ -1,14 +1,21 @@
 package com.mercadopago.android.px.tracking.internal.events;
 
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.internal.util.Logger;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class EventTracker {
 
+    private final String TAG = EventTracker.class.toString().toUpperCase();
+
     public final void track() {
-        MPTracker.getInstance().trackEvent(getEventPath(), getEventData());
+        final String eventPath = getEventPath();
+        final Map<String, Object> eventData = getEventData();
+        Logger.debug(TAG, eventPath);
+        Logger.debug(TAG, eventData.toString());
+        MPTracker.getInstance().trackEvent(eventPath, eventData);
     }
 
     @NonNull
