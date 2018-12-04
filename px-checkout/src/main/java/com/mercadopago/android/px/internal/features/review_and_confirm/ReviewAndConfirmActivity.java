@@ -132,11 +132,9 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
         final Session session = Session.getSession(this);
         presenter = new ReviewAndConfirmPresenter(session.getPaymentRepository(),
             session.getBusinessModelMapper(),
-            session.getConfigurationModule()
-                .getPaymentSettings()
-                .getAdvancedConfiguration()
-                .getDynamicDialogConfiguration(),
-            session.getConfigurationModule().getPaymentSettings().getCheckoutPreference());
+            session.getConfigurationModule().getPaymentSettings(),
+            session.getConfigurationModule().getUserSelectionRepository(),
+            session.getMercadoPagoESC());
         presenter.attachView(this);
 
         if (savedInstanceState == null) {
@@ -355,9 +353,6 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
             final ReviewAndConfirmConfiguration reviewAndConfirmConfiguration =
                 advancedConfiguration.getReviewAndConfirmConfiguration();
 
-            Tracker.trackReviewAndConfirmScreen(
-                paymentModel);
-
             return new ReviewAndConfirmContainer.Props(termsAndConditionsModel,
                 paymentModel,
                 summaryModel,
@@ -376,18 +371,6 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
             final float elevationInPixels =
                 visible ? getBaseContext().getResources().getDimension(R.dimen.px_xxs_margin) : 0;
             floatingConfirmLayout.setElevation(elevationInPixels);
-        }
-    }
-
-    @Override
-    public void trackPaymentConfirmation() {
-        final Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            final PaymentModel paymentModel = extras.getParcelable(EXTRA_PAYMENT_MODEL);
-            final SummaryModel summaryModel = extras.getParcelable(EXTRA_SUMMARY_MODEL);
-            if (paymentModel != null && summaryModel != null) {
-                Tracker.trackCheckoutConfirm(paymentModel, summaryModel);
-            }
         }
     }
 

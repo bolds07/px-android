@@ -7,13 +7,13 @@ import com.mercadopago.android.px.tracking.internal.model.ExpressConfirmEventDat
 import java.util.Map;
 import java.util.Set;
 
-public class ExpressConfirmEvent extends EventTracker {
+public class OneTapConfirmEvent extends EventTracker {
 
-    private static final String EVENT_PATH_REVIEW_CONFIRM = "/px_checkout/review/confirm";
+    private static final String EVENT_PATH_REVIEW_CONFIRM = BASE_PATH + "/review/confirm";
 
     private final Map<String, Object> data;
 
-    public ExpressConfirmEvent(@NonNull final Set<String> cardsWithEsc, @NonNull final ExpressMetadata expressMetadata,
+    public OneTapConfirmEvent(@NonNull final Set<String> cardsWithEsc, @NonNull final ExpressMetadata expressMetadata,
         final int selectedPayerCost) {
         data = new ExpressConfirmEventData(new FromSelectedExpressMetadataToAvailableMethods(cardsWithEsc,
             selectedPayerCost).map(expressMetadata))

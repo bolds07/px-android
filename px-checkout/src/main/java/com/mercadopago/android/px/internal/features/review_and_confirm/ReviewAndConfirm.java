@@ -16,8 +16,6 @@ public interface ReviewAndConfirm {
 
     interface View extends MvpView {
 
-        void trackPaymentConfirmation();
-
         void showCardCVVRequired(@NonNull final Card card);
 
         void cancelCheckoutAndInformError(@NonNull final MercadoPagoError mercadoPagoError);

@@ -36,7 +36,7 @@ import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
-import com.mercadopago.android.px.tracking.internal.events.ExpressConfirmEvent;
+import com.mercadopago.android.px.tracking.internal.events.OneTapConfirmEvent;
 import com.mercadopago.android.px.tracking.internal.views.OneTapViewTracker;
 import java.util.Collections;
 import java.util.List;
@@ -94,7 +94,7 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
         final ExpressMetadata expressMetadata = expressMetadataList.get(paymentMethodSelectedIndex);
         final int index = payerCostSelection.get(paymentMethodSelectedIndex);
         //TODO fill cards with esc
-        new ExpressConfirmEvent(Collections.<String>emptySet(), expressMetadata, index).track();
+        new OneTapConfirmEvent(Collections.<String>emptySet(), expressMetadata, index).track();
     }
 
     @Override
