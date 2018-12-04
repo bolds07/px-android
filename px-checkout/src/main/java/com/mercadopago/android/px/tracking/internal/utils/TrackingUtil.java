@@ -13,8 +13,7 @@ public final class TrackingUtil {
         public static final String PATH_PROMOTIONS = "/px_checkout/add_payment_method/promotions";
         public static final String PATH_PROMOTIONS_TERMS_AND_CONDITIONS =
             "/px_checkout/add_payment_method/promotions/terms_and_conditions";
-        public static final String PATH_EXCLUDED_CARD =
-            "/px_checkout/add_payment_method/credit_card/number/error_more_info";
+
         public static final String PATH_REVIEW_AND_CONFIRM = "/px_checkout/review/traditional";
         public static final String PATH_REVIEW_TERMS_AND_CONDITIONS =
             "/px_checkout/review/traditional/terms_and_conditions";
