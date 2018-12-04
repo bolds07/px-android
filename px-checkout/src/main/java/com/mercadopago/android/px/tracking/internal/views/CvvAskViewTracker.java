@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class CvvAskViewTracker extends ViewTracker {
 
-    private static final String PATH = BASE_VIEW_PATH + "/payments/select_method/";
+    private static final String PATH = BASE_VIEW_PATH + "/payments/select_method";
 
     @Nullable private final Card card;
     @NonNull private final String paymentMethodType;
