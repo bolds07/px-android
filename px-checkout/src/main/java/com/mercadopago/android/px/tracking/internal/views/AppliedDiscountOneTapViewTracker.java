@@ -2,7 +2,7 @@ package com.mercadopago.android.px.tracking.internal.views;
 
 import android.support.annotation.NonNull;
 
-public class AppliedDiscountOneTapView extends ViewTracker {
+public class AppliedDiscountOneTapViewTracker extends ViewTracker {
 
     private static final String PATH_EXPRESS_DISCOUNT_VIEW = BASE_VIEW_PATH + "/review/one_tap/applied_discount";
 

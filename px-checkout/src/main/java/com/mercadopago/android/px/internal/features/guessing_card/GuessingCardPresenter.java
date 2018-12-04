@@ -35,11 +35,11 @@ import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.CardTokenException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
-import com.mercadopago.android.px.tracking.internal.views.CardHolderNameView;
-import com.mercadopago.android.px.tracking.internal.views.CardNumberView;
-import com.mercadopago.android.px.tracking.internal.views.CvvGuessingView;
-import com.mercadopago.android.px.tracking.internal.views.ExpirationDateView;
-import com.mercadopago.android.px.tracking.internal.views.IdentificationView;
+import com.mercadopago.android.px.tracking.internal.views.CardHolderNameViewTracker;
+import com.mercadopago.android.px.tracking.internal.views.CardNumberViewTracker;
+import com.mercadopago.android.px.tracking.internal.views.CvvGuessingViewTracker;
+import com.mercadopago.android.px.tracking.internal.views.ExpirationDateViewTracker;
+import com.mercadopago.android.px.tracking.internal.views.IdentificationViewTracker;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,34 +121,30 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
     }
 
     /* default */ void trackCardNumber() {
-        new CardNumberView(getPaymentTypeId()).track();
+        new CardNumberViewTracker(getPaymentTypeId()).track();
     }
 
     /* default */ void trackCardIdentification() {
-        //On guessing flow, this value can be null.
         if (TextUtil.isNotEmpty(getPaymentTypeId()) && getPaymentMethod() != null) {
-            new IdentificationView(getPaymentTypeId(), getPaymentMethod().getId()).track();
+            new IdentificationViewTracker(getPaymentTypeId(), getPaymentMethod().getId()).track();
         }
     }
 
     /* default */ void trackCardHolderName() {
-        //On guessing flow, this value can be null.
         if (TextUtil.isNotEmpty(getPaymentTypeId()) && getPaymentMethod() != null) {
-            new CardHolderNameView(getPaymentTypeId(), getPaymentMethod().getId()).track();
+            new CardHolderNameViewTracker(getPaymentTypeId(), getPaymentMethod().getId()).track();
         }
     }
 
     /* default */ void trackCardExpiryDate() {
-        //On guessing flow, this value can be null.
         if (TextUtil.isNotEmpty(getPaymentTypeId()) && getPaymentMethod() != null) {
-            new ExpirationDateView(getPaymentTypeId(), getPaymentMethod().getId()).track();
+            new ExpirationDateViewTracker(getPaymentTypeId(), getPaymentMethod().getId()).track();
         }
     }
 
     /* default */ void trackCardSecurityCode() {
-        //On guessing flow, this value can be null.
         if (TextUtil.isNotEmpty(getPaymentTypeId()) && getPaymentMethod() != null) {
-            new CvvGuessingView(getPaymentTypeId(), getPaymentMethod().getId()).track();
+            new CvvGuessingViewTracker(getPaymentTypeId(), getPaymentMethod().getId()).track();
         }
     }
 

@@ -20,7 +20,7 @@ import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.CardTokenException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
-import com.mercadopago.android.px.tracking.internal.views.CvvAskView;
+import com.mercadopago.android.px.tracking.internal.views.CvvAskViewTracker;
 
 public class SecurityCodePresenter extends MvpPresenter<SecurityCodeActivityView, SecurityCodeProvider> {
 
@@ -124,7 +124,7 @@ public class SecurityCodePresenter extends MvpPresenter<SecurityCodeActivityView
             validate();
             getView().initialize();
             getView().showTimer();
-            new CvvAskView(mCard, getPaymentMethod().getPaymentTypeId()).track();
+            new CvvAskViewTracker(mCard, getPaymentMethod().getPaymentTypeId()).track();
         } catch (IllegalStateException exception) {
             String standardErrorMessage = getResourcesProvider().getStandardErrorMessageGotten();
             getView().showError(new MercadoPagoError(standardErrorMessage, false), "");

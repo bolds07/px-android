@@ -56,7 +56,7 @@ import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.PaymentPreference;
-import com.mercadopago.android.px.tracking.internal.views.AppliedDiscountView;
+import com.mercadopago.android.px.tracking.internal.views.AppliedDiscountViewTracker;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -573,7 +573,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity
 
     @Override
     public void showDetailDialog() {
-        new AppliedDiscountView().track();
+        new AppliedDiscountViewTracker().track();
         DiscountDetailDialog.showDialog(getSupportFragmentManager());
     }
 

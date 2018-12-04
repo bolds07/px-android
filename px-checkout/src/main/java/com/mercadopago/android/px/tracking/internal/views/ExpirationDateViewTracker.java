@@ -3,14 +3,14 @@ package com.mercadopago.android.px.tracking.internal.views;
 import android.support.annotation.NonNull;
 import java.util.Map;
 
-public class CvvGuessingView extends ViewTracker {
+public class ExpirationDateViewTracker extends ViewTracker {
 
-    private static final String CARD_SECURITY_CODE = "/cvv";
+    public static final String CARD_EXPIRATION_DATE = "/expiration_date";
 
     @NonNull private final String paymentMethodTypeId;
     @NonNull private final String paymentMethodId;
 
-    public CvvGuessingView(@NonNull final String paymentMethodTypeId, @NonNull final String paymentMethodId) {
+    public ExpirationDateViewTracker(@NonNull final String paymentMethodTypeId, @NonNull final String paymentMethodId) {
         this.paymentMethodTypeId = paymentMethodTypeId;
         this.paymentMethodId = paymentMethodId;
     }
@@ -26,6 +26,6 @@ public class CvvGuessingView extends ViewTracker {
     @NonNull
     @Override
     public String getViewPath() {
-        return BASE_VIEW_PATH + "/add_payment_method/" + paymentMethodTypeId + CARD_SECURITY_CODE;
+        return BASE_VIEW_PATH + "/add_payment_method/" + paymentMethodTypeId + CARD_EXPIRATION_DATE;
     }
 }

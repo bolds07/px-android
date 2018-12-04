@@ -3,14 +3,14 @@ package com.mercadopago.android.px.tracking.internal.views;
 import android.support.annotation.NonNull;
 import java.util.Map;
 
-public class CardHolderNameView extends ViewTracker {
+public class IdentificationViewTracker extends ViewTracker {
 
-    public static final String CARD_HOLDER_NAME = "/name";
+    private static final String CARD_HOLDER_IDENTIFICATION = "/document";
 
     @NonNull private final String paymentMethodTypeId;
     @NonNull private final String paymentMethodId;
 
-    public CardHolderNameView(@NonNull final String paymentMethodTypeId, @NonNull final String paymentMethodId) {
+    public IdentificationViewTracker(@NonNull final String paymentMethodTypeId, @NonNull final String paymentMethodId) {
         this.paymentMethodTypeId = paymentMethodTypeId;
         this.paymentMethodId = paymentMethodId;
     }
@@ -26,6 +26,6 @@ public class CardHolderNameView extends ViewTracker {
     @NonNull
     @Override
     public String getViewPath() {
-        return BASE_VIEW_PATH + "/add_payment_method/" + paymentMethodTypeId + CARD_HOLDER_NAME;
+        return BASE_VIEW_PATH + "/add_payment_method/" + paymentMethodTypeId + CARD_HOLDER_IDENTIFICATION;
     }
 }

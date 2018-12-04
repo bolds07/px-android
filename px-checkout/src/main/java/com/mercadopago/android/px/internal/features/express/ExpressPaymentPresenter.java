@@ -37,7 +37,7 @@ import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
 import com.mercadopago.android.px.tracking.internal.events.ExpressConfirmEvent;
-import com.mercadopago.android.px.tracking.internal.views.OneTapView;
+import com.mercadopago.android.px.tracking.internal.views.OneTapViewTracker;
 import java.util.Collections;
 import java.util.List;
 
@@ -99,7 +99,7 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
 
     @Override
     public void trackExpressView() {
-        new OneTapView(expressMetadataList,
+        new OneTapViewTracker(expressMetadataList,
             amountRepository.getAmountToPay(),
             discountRepository.getDiscount(),
             discountRepository.getCampaign(),

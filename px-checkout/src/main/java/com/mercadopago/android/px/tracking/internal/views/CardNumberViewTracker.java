@@ -4,14 +4,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.mercadopago.android.px.internal.util.TextUtil;
 
-public class CardNumberView extends ViewTracker {
+public class CardNumberViewTracker extends ViewTracker {
 
     private static final String CARD_NUMBER = "/number";
     private static final String ADD_PAYMENT_METHOD = "/add_payment_method";
 
     @Nullable private final String paymentMethodTypeId;
 
-    public CardNumberView(@Nullable final String paymentMethodTypeId) {
+    public CardNumberViewTracker(@Nullable final String paymentMethodTypeId) {
         this.paymentMethodTypeId = paymentMethodTypeId;
     }
 

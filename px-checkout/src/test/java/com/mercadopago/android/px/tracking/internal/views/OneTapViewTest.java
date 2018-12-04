@@ -21,7 +21,7 @@ public class OneTapViewTest {
 
     @Test
     public void verifyPath() {
-        assertEquals(EXPECTED_PATH, new OneTapView(Collections.EMPTY_LIST, null,
+        assertEquals(EXPECTED_PATH, new OneTapViewTracker(Collections.EMPTY_LIST, null,
             null, null, Collections.EMPTY_LIST).getViewPath());
     }
 
@@ -30,7 +30,7 @@ public class OneTapViewTest {
         final PXTrackingListener listener = mock(PXTrackingListener.class);
         PXTracker.setListener(listener);
         final Map<String, Object> data = emptyOneTapData();
-        new OneTapView(Collections.EMPTY_LIST, null, null, null, Collections.EMPTY_LIST).track();
+        new OneTapViewTracker(Collections.EMPTY_LIST, null, null, null, Collections.EMPTY_LIST).track();
         verify(listener).onView(EXPECTED_PATH, data);
     }
 
