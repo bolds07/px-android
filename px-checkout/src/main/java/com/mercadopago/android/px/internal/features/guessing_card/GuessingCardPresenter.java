@@ -121,10 +121,7 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
     }
 
     /* default */ void trackCardNumber() {
-        //On guessing flow, this value can be null.
-        if (TextUtil.isNotEmpty(getPaymentTypeId())) {
-            new CardNumberView(getPaymentTypeId()).track();
-        }
+        new CardNumberView(getPaymentTypeId()).track();
     }
 
     /* default */ void trackCardIdentification() {
