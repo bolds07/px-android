@@ -3,8 +3,11 @@ package com.mercadopago.android.px.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomSearchItem implements Serializable, Parcelable {
 
@@ -20,10 +23,11 @@ public class CustomSearchItem implements Serializable, Parcelable {
     @Nullable private String discountInfo;
 
     private String selectedAmountConfiguration;
-    private PayerCostConfiguration payerCostConfiguration;
+    private Map<String, PayerCostModel> payerCostConfigurations;
 
     @Deprecated
     public CustomSearchItem() {
+        payerCostConfigurations = new HashMap<>();
     }
 
     protected CustomSearchItem(final Parcel in) {
@@ -33,7 +37,8 @@ public class CustomSearchItem implements Serializable, Parcelable {
         paymentMethodId = in.readString();
         discountInfo = in.readString();
         selectedAmountConfiguration = in.readString();
-        payerCostConfiguration = in.readParcelable(PayerCostConfiguration.class.getClassLoader());
+        payerCostConfigurations = new HashMap<>();
+        in.readMap(payerCostConfigurations, CustomSearchItem.class.getClassLoader());
     }
 
     public static final Creator<CustomSearchItem> CREATOR = new Creator<CustomSearchItem>() {
@@ -52,6 +57,11 @@ public class CustomSearchItem implements Serializable, Parcelable {
         return description;
     }
 
+    @Nullable
+    public String getDiscountInfo() {
+        return discountInfo;
+    }
+
     public String getId() {
         return id;
     }
@@ -68,8 +78,8 @@ public class CustomSearchItem implements Serializable, Parcelable {
         return selectedAmountConfiguration;
     }
 
-    public PayerCostConfiguration getPayerCostConfiguration() {
-        return payerCostConfiguration;
+    public PayerCostModel getPayerCostConfiguration(final String key) {
+        return payerCostConfigurations.get(key);
     }
 
     @Override
@@ -85,7 +95,7 @@ public class CustomSearchItem implements Serializable, Parcelable {
         dest.writeString(paymentMethodId);
         dest.writeString(discountInfo);
         dest.writeString(selectedAmountConfiguration);
-        dest.writeParcelable(payerCostConfiguration, flags);
+        dest.writeMap(payerCostConfigurations);
     }
 
     @Deprecated
@@ -106,5 +116,9 @@ public class CustomSearchItem implements Serializable, Parcelable {
     @Deprecated
     public void setPaymentMethodId(final String paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
+    }
+
+    public boolean hasDiscountInfo() {
+        return !TextUtils.isEmpty(discountInfo);
     }
 }
