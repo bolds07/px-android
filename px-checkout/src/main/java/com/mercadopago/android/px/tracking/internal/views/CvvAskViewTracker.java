@@ -6,14 +6,14 @@ import com.mercadopago.android.px.model.Card;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CvvAskView extends ViewTracker {
+public class CvvAskViewTracker extends ViewTracker {
 
     private static final String PATH = BASE_VIEW_PATH + "/payments/select_method/";
 
     @Nullable private final Card card;
     @NonNull private final String paymentMethodType;
 
-    public CvvAskView(@Nullable final Card card, @NonNull final String paymentMethodType) {
+    public CvvAskViewTracker(@Nullable final Card card, @NonNull final String paymentMethodType) {
         this.card = card;
         this.paymentMethodType = paymentMethodType;
     }
