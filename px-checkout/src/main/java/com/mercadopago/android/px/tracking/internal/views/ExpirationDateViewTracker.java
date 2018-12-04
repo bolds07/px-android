@@ -26,6 +26,6 @@ public class ExpirationDateViewTracker extends ViewTracker {
     @NonNull
     @Override
     public String getViewPath() {
-        return BASE_VIEW_PATH + "/add_payment_method/" + paymentMethodTypeId + CARD_EXPIRATION_DATE;
+        return BASE_VIEW_PATH + ADD_PAYMENT_METHOD + "/" + paymentMethodTypeId + CARD_EXPIRATION_DATE;
     }
 }

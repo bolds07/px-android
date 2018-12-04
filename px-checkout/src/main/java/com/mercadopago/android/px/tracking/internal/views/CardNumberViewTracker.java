@@ -7,7 +7,6 @@ import com.mercadopago.android.px.internal.util.TextUtil;
 public class CardNumberViewTracker extends ViewTracker {
 
     private static final String CARD_NUMBER = "/number";
-    private static final String ADD_PAYMENT_METHOD = "/add_payment_method";
 
     @Nullable private final String paymentMethodTypeId;
 

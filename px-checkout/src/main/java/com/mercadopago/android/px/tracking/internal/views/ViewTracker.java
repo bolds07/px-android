@@ -9,6 +9,7 @@ import java.util.Map;
 public abstract class ViewTracker {
 
     /* default */ static final String BASE_VIEW_PATH = "/px_checkout";
+    /* default */ static final String ADD_PAYMENT_METHOD = "/add_payment_method";
 
     private static final String TAG = ViewTracker.class.getSimpleName().toUpperCase();
 
