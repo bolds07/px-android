@@ -519,7 +519,6 @@ public abstract class GuessingCardPresenter extends MvpPresenter<GuessingCardAct
     }
 
     protected void startGuessingForm() {
-        //
         getView().initializeTitle();
         getView().setCardNumberListeners(mPaymentMethodGuessingController);
         getView().setCardholderNameListeners();
