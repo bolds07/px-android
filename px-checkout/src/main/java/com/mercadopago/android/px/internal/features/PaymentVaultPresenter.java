@@ -30,6 +30,7 @@ import com.mercadopago.android.px.services.Callback;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, PaymentVaultProvider>
     implements AmountView.OnClick {
@@ -53,6 +54,9 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     private boolean hook1Displayed = false;
     /* default */ PaymentMethodSearch paymentMethodSearch;
     private FailureRecovery failureRecovery;
+    private static final String ADDITIONAL_INFO_NAME = "name";
+    private static final String ADDITIONAL_INFO_IDENTIFICATION_TYPE = "identification_type";
+    private static final String ADDITIONAL_INFO_IDENTIFICATION_NUMBER = "identification_number";
 
     public PaymentVaultPresenter(@NonNull final PaymentSettingRepository configuration,
         @NonNull final UserSelectionRepository userSelectionRepository,
@@ -294,8 +298,7 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
             skipHook = false;
             if (selectedPaymentMethod == null) {
                 showMismatchingPaymentMethodError();
-            } else if (PaymentMethods.BRASIL.BOLBRADESCO.equalsIgnoreCase(selectedPaymentMethod.getId())
-                || PaymentMethods.BRASIL.PEC.equalsIgnoreCase(selectedPaymentMethod.getId())) {
+            } else if (resolveAdditionalInfo(selectedPaymentMethod)) {
                 handleCollectPayerInformation();
             } else {
                 getView().finishPaymentMethodSelection(selectedPaymentMethod);
@@ -303,6 +306,14 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         } else {
             resumeItem = item;
         }
+    }
+
+    private boolean resolveAdditionalInfo(final PaymentMethod selectedPaymentMethod) {
+        final String paymentMethodId = selectedPaymentMethod.getId();
+        final List<String> additionalInfoNeeded = selectedPaymentMethod.getAdditionalInfoNeeded();
+        return additionalInfoNeeded.contains(paymentMethodId + "_" + ADDITIONAL_INFO_NAME)
+            || additionalInfoNeeded.contains(paymentMethodId + "_" + ADDITIONAL_INFO_IDENTIFICATION_TYPE)
+            || additionalInfoNeeded.contains(paymentMethodId + "_" + ADDITIONAL_INFO_IDENTIFICATION_NUMBER);
     }
 
     private void handleCollectPayerInformation() {
