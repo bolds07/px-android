@@ -8,11 +8,9 @@ public final class TrackingUtil {
         public static final String PATH_BOLBRADESCO_NAME = "/px_checkout/select_method/ticket/name";
         public static final String PATH_BOLBRADESCO_LASTNAME = "/px_checkout/select_method/ticket/lastname";
 
-        public static final String PATH_ISSUERS = "/px_checkout/payments/card_issuer";
         public static final String PATH_INSTALLMENTS = "/px_checkout/payments/installments";
         public static final String PATH_REVIEW_TERMS_AND_CONDITIONS =
             "/px_checkout/review/traditional/terms_and_conditions";
-        public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
         public static final String PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
         public static final String PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
@@ -35,7 +33,6 @@ public final class TrackingUtil {
         private Event() {
         }
     }
-
 
     //Card Association result screen
     public static final String SCREEN_ID_CARD_ASSOCIATION_SUCCESS = "/px_checkout/card_association_result/success";

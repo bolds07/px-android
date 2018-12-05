@@ -173,21 +173,6 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
         loadViews();
         hideHeader();
         showTimer();
-        trackScreen();
-    }
-
-    protected void trackScreen() {
-        final MPTracker mpTrackingContext = MPTracker.getInstance();
-
-        final ScreenViewEvent event = new ScreenViewEvent.Builder()
-            .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(TrackingUtil.View.PATH_ISSUERS)
-            .setScreenName(TrackingUtil.View.PATH_ISSUERS)
-            .addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
-            .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
-            .build();
-
-        mpTrackingContext.trackEvent(event);
     }
 
     private void loadViews() {
