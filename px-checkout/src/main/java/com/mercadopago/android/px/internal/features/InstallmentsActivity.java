@@ -29,7 +29,6 @@ import com.mercadopago.android.px.internal.features.uicontrollers.card.CardRepre
 import com.mercadopago.android.px.internal.features.uicontrollers.card.FrontCardView;
 import com.mercadopago.android.px.internal.repository.DiscountRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
-import com.mercadopago.android.px.internal.tracker.FlowHandler;
 import com.mercadopago.android.px.internal.util.ErrorUtil;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.internal.util.ScaleUtil;
@@ -40,19 +39,16 @@ import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.CardInfo;
 import com.mercadopago.android.px.model.Discount;
 import com.mercadopago.android.px.model.PayerCost;
-import com.mercadopago.android.px.model.ScreenViewEvent;
 import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.PaymentPreference;
-import com.mercadopago.android.px.tracking.internal.MPTracker;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class InstallmentsActivity extends MercadoPagoBaseActivity
-        implements InstallmentsActivityView, CodeDiscountDialog.DiscountListener {
+    implements InstallmentsActivityView, CodeDiscountDialog.DiscountListener {
 
     protected InstallmentsPresenter presenter;
 
@@ -195,19 +191,6 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity
         showTimer();
     }
 
-    protected void trackScreen() {
-        final MPTracker mTrackingContext = MPTracker.getInstance();
-
-        final ScreenViewEvent event = new ScreenViewEvent.Builder()
-            .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(TrackingUtil.View.PATH_INSTALLMENTS)
-            .setScreenName(TrackingUtil.View.PATH_INSTALLMENTS)
-            .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, presenter.getPaymentMethod().getId())
-            .build();
-
-        mTrackingContext.trackEvent(event);
-    }
-
     public void loadViews() {
         if (mLowResActive) {
             loadLowResViews();
@@ -302,11 +285,12 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity
     }
 
     private void initializeAdapter(OnSelectedCallback<Integer> onSelectedCallback) {
-        mInstallmentsAdapter = new InstallmentsAdapter(configuration.getCheckoutPreference().getSite(), onSelectedCallback);
+        mInstallmentsAdapter =
+            new InstallmentsAdapter(configuration.getCheckoutPreference().getSite(), onSelectedCallback);
         initializeAdapterListener(mInstallmentsAdapter, mInstallmentsRecyclerView);
     }
 
-    private void initializeAdapterListener(RecyclerView.Adapter adapter, RecyclerView view) {
+    private void initializeAdapterListener(final RecyclerView.Adapter adapter, final RecyclerView view) {
         view.setAdapter(adapter);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.addOnItemTouchListener(new RecyclerItemClickListener(this,
@@ -319,7 +303,7 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity
     }
 
     @Override
-    public void showError(MercadoPagoError error, String requestOrigin) {
+    public void showError(final MercadoPagoError error, final String requestOrigin) {
         if (error.isApiException()) {
             showApiException(error.getApiException(), requestOrigin);
         } else {
@@ -327,16 +311,15 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity
         }
     }
 
-    public void showApiException(ApiException apiException, String requestOrigin) {
+    public void showApiException(final ApiException apiException, final String requestOrigin) {
         if (mActivityActive) {
             ErrorUtil.showApiExceptionError(this, apiException, requestOrigin);
         }
     }
 
     @Override
-    public void showInstallments(List<PayerCost> payerCostList, OnSelectedCallback<Integer> onSelectedCallback) {
-        //We track after evaluating default installments or autoselected installments
-        trackScreen();
+    public void showInstallments(final List<PayerCost> payerCostList,
+        final OnSelectedCallback<Integer> onSelectedCallback) {
         initializeAdapter(onSelectedCallback);
         mInstallmentsAdapter.addResults(payerCostList);
     }
@@ -370,9 +353,9 @@ public class InstallmentsActivity extends MercadoPagoBaseActivity
     public void onBackPressed() {
         showInstallmentsRecyclerView();
         final Intent returnIntent = new Intent();
-            returnIntent.putExtra("backButtonPressed", true);
-            setResult(RESULT_CANCELED, returnIntent);
-            finish();
+        returnIntent.putExtra("backButtonPressed", true);
+        setResult(RESULT_CANCELED, returnIntent);
+        finish();
     }
 
     @Override
