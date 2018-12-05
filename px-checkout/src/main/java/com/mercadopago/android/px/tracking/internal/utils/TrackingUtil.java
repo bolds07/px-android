@@ -12,9 +12,6 @@ public final class TrackingUtil {
             "/px_checkout/review/traditional/terms_and_conditions";
         public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
-        public static final String PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
-        public static final String PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
-        public static final String PATH_PAYMENT_RESULT_REJECTED = "/px_checkout/result/error";
 
         private View() {
         }
@@ -46,17 +43,10 @@ public final class TrackingUtil {
     //Additional Info Keys
     public static final String PROPERTY_PAYMENT_METHOD_ID = "payment_method_id";
     public static final String PROPERTY_PAYMENT_TYPE_ID = "payment_method_type";
-    public static final String PROPERTY_ISSUER_ID = "issuer_id";
-    public static final String PROPERTY_PAYMENT_STATUS = "payment_status";
-    public static final String PROPERTY_PAYMENT_ID = "payment_id";
-    public static final String PROPERTY_PAYMENT_STATUS_DETAIL = "payment_status_detail";
-    public static final String PROPERTY_PAYMENT_IS_EXPRESS = "is_express";
     public static final String PROPERTY_ERROR_STATUS = "error_status";
     public static final String PROPERTY_ERROR_CODE = "error_code";
     public static final String PROPERTY_ERROR_REQUEST = "error_request_origin";
     public static final String PROPERTY_ERROR_MESSAGE = "error_message";
-
-    public static final String IS_EXPRESS_DEFAULT_VALUE = "false";
 
     private TrackingUtil() {
     }

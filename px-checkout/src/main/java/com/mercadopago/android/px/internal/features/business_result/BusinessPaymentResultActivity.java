@@ -7,12 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import com.mercadopago.android.px.internal.features.business_result.components.BusinessPaymentContainer;
-import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.view.ActionDispatcher;
 import com.mercadopago.android.px.internal.view.ComponentManager;
 import com.mercadopago.android.px.internal.viewmodel.BusinessPaymentModel;
 import com.mercadopago.android.px.model.Action;
 import com.mercadopago.android.px.model.ExitAction;
+import com.mercadopago.android.px.model.PaymentResult;
+import com.mercadopago.android.px.tracking.internal.views.ResultViewTrack;
 
 import static com.mercadopago.android.px.internal.features.Constants.RESULT_CUSTOM_EXIT;
 
@@ -38,9 +39,11 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
             throw new IllegalStateException("BusinessPayment can't be loaded");
         }
 
-        Tracker.trackBusinessPaymentResultScreen(
-            model.payment.getPaymentStatus(),
-            model.payment.getPaymentStatusDetail());
+        new ResultViewTrack(ResultViewTrack.Style.CUSTOM, new PaymentResult.Builder()
+            .setPaymentStatus(model.payment.getPaymentStatus())
+            .setPaymentStatusDetail(model.payment.getPaymentStatusDetail())
+            .setPaymentId(model.payment.getId())
+            .build()).track();
     }
 
     @Nullable
