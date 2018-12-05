@@ -14,59 +14,9 @@ public class PaymentMethodSearch implements Serializable {
      * user related payment methods to offer inside ExpressCheckout
      */
     @Nullable private List<ExpressMetadata> express;
-
     private List<PaymentMethod> paymentMethods;
-
-    /* Group like off, cards.
-        {
-            "id": "cards",
-            "type": "group",
-            "description": "Nueva tarjeta",
-            "children": [
-                {
-                    "id": "credit_card",
-                    "type": "payment_type",
-                    "description": "Nueva tarjeta de \ncrédito",
-                    "comment": "",
-                    "show_icon": true,
-                    "icon": 0
-                },
-                {
-                    "id": "debit_card",
-                    "type": "payment_type",
-                    "description": "Nueva tarjeta de \ndébito",
-                    "comment": "",
-                    "show_icon": true,
-                    "icon": 0
-                }
-            ],
-            "children_header": "¿Con qué tarjeta?",
-            "show_icon": true,
-            "icon": 0
-        }
-    */
     private List<PaymentMethodSearchItem> groups;
-
-    /* Node that contains card information:
-        {
-            "id": "8248XXXXXX",
-            "issuer": {
-                "id": 1,
-                "name": "Visa Argentina S.A."
-            },
-            "last_four_digits": "8XXX"
-        }
-     */
     private List<Card> cards;
-
-    /* Node that contains custom info - used for cards information:
-        {
-            "description": "Terminada en 8XXX",
-            "id": "8620XXXXXX",
-            "payment_type_id": "debit_card",
-            "payment_method_id": "debcabal"
-        }
-     */
     @SerializedName("custom_options")
     private List<CustomSearchItem> customSearchItems;
 
