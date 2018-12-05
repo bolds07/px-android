@@ -130,7 +130,8 @@ public final class Session extends ApplicationModule
             groupsRepository = new GroupsService(getAmountRepository(),
                 paymentSettings,
                 getMercadoPagoESC(),
-                getRetrofitClient().create(CheckoutService.class),
+                //TODO replace getRetrofitClientGroup() by getRetrofitClient() when wrapper is OK
+                getRetrofitClientGroup().create(CheckoutService.class),
                 LocaleUtil.getLanguage(getContext()),
                 getGroupsCache());
         }

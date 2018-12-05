@@ -1,7 +1,6 @@
 package com.mercadopago.android.px.configuration;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,11 +8,13 @@ import java.util.Set;
 public class DiscountParamsConfiguration {
 
     @NonNull private final Set<String> labels;
-    @Nullable private final String flow;
+    @NonNull private final String flow;
+    @NonNull private final String marketplace;
 
     /* default */ DiscountParamsConfiguration(@NonNull final Builder builder) {
         labels = builder.labels;
         flow = builder.flow;
+        marketplace = builder.marketplace;
     }
 
     /**
@@ -31,18 +32,33 @@ public class DiscountParamsConfiguration {
      *
      * @return flow id
      */
-    @Nullable
+    @NonNull
     public String getFlow() {
         return flow;
     }
 
+    /**
+     * Let us know what the marketplace is
+     *
+     * @return marketplace id
+     */
+    @NonNull
+    public String getMarketplace() {
+        return marketplace;
+    }
+
     public static class Builder {
+
+        public static final String DEFAULT_MARKETPLACE = "none";
+
         /* default */ Set<String> labels;
         /* default */ String flow;
+        /* default */ String marketplace;
 
         public Builder() {
             labels = new HashSet<>();
             flow = "";
+            marketplace = DEFAULT_MARKETPLACE;
         }
 
         /**
@@ -64,6 +80,17 @@ public class DiscountParamsConfiguration {
          */
         public Builder setFlow(@NonNull final String flow) {
             this.flow = flow;
+            return this;
+        }
+
+        /**
+         * Marketplace let us to enable discounts for the marketplace specified.
+         *
+         * @param marketplace marketplace id
+         * @return builder to keep operating
+         */
+        public Builder setMarketplace(@NonNull final String marketplace) {
+            this.marketplace = marketplace;
             return this;
         }
 

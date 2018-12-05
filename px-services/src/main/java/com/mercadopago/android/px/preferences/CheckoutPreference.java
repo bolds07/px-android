@@ -269,7 +269,7 @@ public class CheckoutPreference implements Serializable {
             @Size(min = 1) @NonNull final List<Item> items) {
             this.items = items;
             payer = new Payer();
-            this.payer.setEmail(payerEmail);
+            payer.setEmail(payerEmail);
             this.site = site;
             excludedPaymentMethods = new ArrayList<>();
             excludedPaymentTypes = new ArrayList<>();

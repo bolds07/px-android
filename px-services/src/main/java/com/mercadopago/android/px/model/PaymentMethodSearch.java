@@ -73,7 +73,7 @@ public class PaymentMethodSearch implements Serializable {
     /**
      * amount management
      **/
-    private int selectedAmountConfiguration;
+    private String selectedAmountConfiguration;
 
     //region deprecated
     /**
@@ -341,7 +341,7 @@ public class PaymentMethodSearch implements Serializable {
         return foundCard == null ? null : foundCard.getLastFourDigits();
     }
 
-    public int getSelectedAmountConfiguration() {
+    public String getSelectedAmountConfiguration() {
         return selectedAmountConfiguration;
     }
 }
