@@ -89,28 +89,4 @@ public final class Tracker {
 
         mpTrackingContext.trackEvent(builder.build());
     }
-
-    public static void trackBusinessPaymentResultScreen(@NonNull final String paymentStatus,
-        @NonNull final String paymentStatusDetail) {
-        final PaymentResult paymentResult =
-            new PaymentResult.Builder()
-                .setPaymentStatus(paymentStatus)
-                .setPaymentStatusDetail(paymentStatusDetail)
-                .build();
-        final String screenId = getScreenIdByPaymentResult(paymentResult);
-
-        trackScreen(screenId, screenId);
-    }
-
-    @NonNull
-    public static String getScreenIdByPaymentResult(@NonNull final PaymentResult paymentResult) {
-        if (paymentResult.isApproved() || paymentResult.isInstructions()) {
-            return TrackingUtil.View.PATH_PAYMENT_RESULT_APPROVED;
-        } else if (paymentResult.isRejected()) {
-            return TrackingUtil.View.PATH_PAYMENT_RESULT_REJECTED;
-        } else if (paymentResult.isPending()) {
-            return TrackingUtil.View.PATH_PAYMENT_RESULT_PENDING;
-        }
-        return "";
-    }
 }

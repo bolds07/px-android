@@ -14,9 +14,6 @@ public final class TrackingUtil {
             "/px_checkout/review/traditional/terms_and_conditions";
         public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
-        public static final String PATH_PAYMENT_RESULT_APPROVED = "/px_checkout/result/success";
-        public static final String PATH_PAYMENT_RESULT_PENDING = "/px_checkout/result/further_action_needed";
-        public static final String PATH_PAYMENT_RESULT_REJECTED = "/px_checkout/result/error";
 
         private View() {
         }
@@ -35,7 +32,6 @@ public final class TrackingUtil {
         private Event() {
         }
     }
-
 
     //Card Association result screen
     public static final String SCREEN_ID_CARD_ASSOCIATION_SUCCESS = "/px_checkout/card_association_result/success";

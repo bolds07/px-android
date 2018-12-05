@@ -293,12 +293,6 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     }
 
     @Override
-    public void trackScreen(final ScreenViewEvent event) {
-        final MPTracker mpTrackingContext = MPTracker.getInstance();
-        mpTrackingContext.trackEvent(event);
-    }
-
-    @Override
     public void copyToClipboard(@NonNull final String content) {
         final ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         final ClipData clip = ClipData.newPlainText("", content);
