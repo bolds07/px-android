@@ -698,17 +698,6 @@ public class CardVaultPresenterTest {
         }
 
         @Override
-        public void getInstallmentsAsync(String bin, Long issuerId, String paymentMethodId, BigDecimal amount,
-            Integer differential,
-            TaggedCallback<List<Installment>> taggedCallback) {
-            if (shouldFail) {
-                taggedCallback.onFailure(failedResponse);
-            } else {
-                taggedCallback.onSuccess(successfulResponse);
-            }
-        }
-
-        @Override
         public void createESCTokenAsync(SavedESCCardToken escCardToken, TaggedCallback<Token> taggedCallback) {
             if (shouldFail) {
                 taggedCallback.onFailure(failedResponse);
