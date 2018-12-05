@@ -78,18 +78,6 @@ public final class Tracker {
         mpTrackingContext.trackEvent(event);
     }
 
-    public static void trackReviewAndConfirmTermsAndConditions() {
-
-        final MPTracker mpTrackingContext = MPTracker.getInstance();
-
-        final ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
-            .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(TrackingUtil.View.PATH_REVIEW_TERMS_AND_CONDITIONS)
-            .setScreenName(TrackingUtil.View.PATH_REVIEW_TERMS_AND_CONDITIONS);
-
-        mpTrackingContext.trackEvent(builder.build());
-    }
-
     public static void trackBusinessPaymentResultScreen(@NonNull final String paymentStatus,
         @NonNull final String paymentStatusDetail) {
         final PaymentResult paymentResult =
