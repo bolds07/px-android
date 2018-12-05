@@ -7,9 +7,9 @@ import java.util.List;
 
 public class PayerCostInfoList extends TrackingMapModel {
 
-    private final List<PayerCostInfo> availableInstallments;
+    @NonNull private final List<PayerCostInfo> availableInstallments;
 
-    public PayerCostInfoList(@NonNull final List<PayerCost> payerCosts) {
+    public PayerCostInfoList(@NonNull final Iterable<PayerCost> payerCosts) {
         availableInstallments = new ArrayList<>();
         for (final PayerCost payerCost : payerCosts) {
             availableInstallments.add(new PayerCostInfo(payerCost));
