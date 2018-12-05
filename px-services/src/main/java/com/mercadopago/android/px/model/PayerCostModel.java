@@ -37,4 +37,12 @@ public class PayerCostModel implements Serializable, Parcelable {
         dest.writeInt(selectedPayerCostIndex);
         dest.writeTypedList(payerCosts);
     }
+
+    public int getSelectedPayerCostIndex() {
+        return selectedPayerCostIndex;
+    }
+
+    public List<PayerCost> getPayerCosts() {
+        return payerCosts;
+    }
 }

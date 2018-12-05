@@ -18,6 +18,7 @@ import com.mercadopago.android.px.internal.repository.UserSelectionRepository;
 import com.mercadopago.android.px.internal.view.AmountView;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.CustomSearchItem;
+import com.mercadopago.android.px.model.PayerCost;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentMethodSearchItem;
@@ -253,8 +254,14 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
                 selectedCard.setSecurityCode(paymentMethod.getSettings().get(0).getSecurityCode());
             }
         }
-        selectedCard.setPayerCosts(searchItem.getPayerCosts());
+        selectedCard.setPayerCosts(getPayerCosts(searchItem));
         return selectedCard;
+    }
+
+    @NonNull
+    private List<PayerCost> getPayerCosts(@NonNull final CustomSearchItem searchItem) {
+        final String selectedAmountConfiguration = searchItem.getSelectedAmountConfiguration();
+        return searchItem.getPayerCostConfiguration(selectedAmountConfiguration).getPayerCosts();
     }
 
     private Card getCardById(final Iterable<Card> savedCards, final String cardId) {
