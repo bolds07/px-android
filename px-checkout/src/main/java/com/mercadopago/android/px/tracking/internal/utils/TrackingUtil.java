@@ -7,10 +7,7 @@ public final class TrackingUtil {
         public static final String PATH_BOLBRADESCO_CPF = "/px_checkout/select_method/ticket/cpf";
         public static final String PATH_BOLBRADESCO_NAME = "/px_checkout/select_method/ticket/name";
         public static final String PATH_BOLBRADESCO_LASTNAME = "/px_checkout/select_method/ticket/lastname";
-        public static final String PATH_ISSUERS = "/px_checkout/payments/card_issuer";
-        public static final String PATH_REVIEW_TERMS_AND_CONDITIONS =
-            "/px_checkout/review/traditional/terms_and_conditions";
-        public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
+
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
 
         private View() {
@@ -41,8 +38,6 @@ public final class TrackingUtil {
     public static final String SECURITY_CODE_REASON_ESC = "invalid_esc";
 
     //Additional Info Keys
-    public static final String PROPERTY_PAYMENT_METHOD_ID = "payment_method_id";
-    public static final String PROPERTY_PAYMENT_TYPE_ID = "payment_method_type";
     public static final String PROPERTY_ERROR_STATUS = "error_status";
     public static final String PROPERTY_ERROR_CODE = "error_code";
     public static final String PROPERTY_ERROR_REQUEST = "error_request_origin";
