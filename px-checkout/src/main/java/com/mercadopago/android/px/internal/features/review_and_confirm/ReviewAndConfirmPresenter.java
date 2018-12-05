@@ -6,8 +6,11 @@ import com.mercadopago.android.px.core.DynamicDialogCreator;
 import com.mercadopago.android.px.internal.base.DefaultProvider;
 import com.mercadopago.android.px.internal.base.MvpPresenter;
 import com.mercadopago.android.px.internal.callbacks.FailureRecovery;
+import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecoratorMapper;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
+import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
+import com.mercadopago.android.px.internal.repository.UserSelectionRepository;
 import com.mercadopago.android.px.internal.viewmodel.PostPaymentAction;
 import com.mercadopago.android.px.internal.viewmodel.mappers.BusinessModelMapper;
 import com.mercadopago.android.px.model.BusinessPayment;
@@ -19,32 +22,36 @@ import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.PaymentResult;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.preferences.CheckoutPreference;
+import com.mercadopago.android.px.tracking.internal.views.ReviewAndConfirmViewTracker;
 
 /* default */ final class ReviewAndConfirmPresenter extends MvpPresenter<ReviewAndConfirm.View, DefaultProvider>
     implements ReviewAndConfirm.Action {
 
     @NonNull private final PaymentRepository paymentRepository;
     @NonNull private final BusinessModelMapper businessModelMapper;
-    @NonNull private final DynamicDialogConfiguration dynamicDialogConfiguration;
-    @NonNull private final CheckoutPreference checkoutPreference;
+    @NonNull private final PaymentSettingRepository paymentSettings;
     private final ExplodeDecoratorMapper explodeDecoratorMapper;
+    private final ReviewAndConfirmViewTracker reviewAndConfirmViewTracker;
     private FailureRecovery recovery;
 
     /* default */ ReviewAndConfirmPresenter(@NonNull final PaymentRepository paymentRepository,
         @NonNull final BusinessModelMapper businessModelMapper,
-        @NonNull final DynamicDialogConfiguration dynamicDialogConfiguration,
-        @NonNull final CheckoutPreference checkoutPreference) {
+        @NonNull final PaymentSettingRepository paymentSettings,
+        @NonNull final UserSelectionRepository userSelectionRepository,
+        @NonNull final MercadoPagoESC mercadoPagoESC) {
         this.paymentRepository = paymentRepository;
         this.businessModelMapper = businessModelMapper;
-        this.dynamicDialogConfiguration = dynamicDialogConfiguration;
-        this.checkoutPreference = checkoutPreference;
+        this.paymentSettings = paymentSettings;
         explodeDecoratorMapper = new ExplodeDecoratorMapper();
+        reviewAndConfirmViewTracker =
+            new ReviewAndConfirmViewTracker(mercadoPagoESC.getESCCardIds(), userSelectionRepository, paymentSettings);
     }
 
     @Override
     public void attachView(final ReviewAndConfirm.View view) {
         super.attachView(view);
         paymentRepository.attach(this);
+        reviewAndConfirmViewTracker.track();
     }
 
     @Override
@@ -64,6 +71,9 @@ import com.mercadopago.android.px.preferences.CheckoutPreference;
     }
 
     private void resolveDynamicDialog(@NonNull final DynamicDialogConfiguration.DialogLocation location) {
+        final CheckoutPreference checkoutPreference = paymentSettings.getCheckoutPreference();
+        final DynamicDialogConfiguration dynamicDialogConfiguration =
+            paymentSettings.getAdvancedConfiguration().getDynamicDialogConfiguration();
         final DynamicDialogCreator.CheckoutData checkoutData =
             new DynamicDialogCreator.CheckoutData(checkoutPreference, paymentRepository.getPaymentData());
         if (dynamicDialogConfiguration.hasCreatorFor(location)) {
@@ -79,7 +89,7 @@ import com.mercadopago.android.px.preferences.CheckoutPreference;
 
     @Override
     public void onPaymentConfirm() {
-        getView().trackPaymentConfirmation();
+        //TODO add event payment
         pay();
     }
 

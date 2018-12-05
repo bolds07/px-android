@@ -15,7 +15,6 @@ public final class TrackingUtil {
             "/px_checkout/add_payment_method/promotions/terms_and_conditions";
         public static final String PATH_EXCLUDED_CARD =
             "/px_checkout/add_payment_method/credit_card/number/error_more_info";
-        public static final String PATH_REVIEW_AND_CONFIRM = "/px_checkout/review/traditional";
         public static final String PATH_REVIEW_TERMS_AND_CONDITIONS =
             "/px_checkout/review/traditional/terms_and_conditions";
         public static final String PATH_EXPRESS_CHECKOUT = "/px_checkout/review/one_tap";
@@ -42,8 +41,6 @@ public final class TrackingUtil {
         }
     }
 
-    //Action IDs
-    public static final String ACTION_CHECKOUT_CONFIRMED = "/checkout_confirmed";
 
     //Card Association result screen
     public static final String SCREEN_ID_CARD_ASSOCIATION_SUCCESS = "/px_checkout/card_association_result/success";
@@ -58,7 +55,6 @@ public final class TrackingUtil {
     public static final String PROPERTY_PAYMENT_METHOD_ID = "payment_method_id";
     public static final String PROPERTY_PAYMENT_TYPE_ID = "payment_method_type";
     public static final String PROPERTY_ISSUER_ID = "issuer_id";
-    public static final String PROPERTY_SHIPPING_INFO = "has_shipping";
     public static final String PROPERTY_PAYMENT_STATUS = "payment_status";
     public static final String PROPERTY_PAYMENT_ID = "payment_id";
     public static final String PROPERTY_PAYMENT_STATUS_DETAIL = "payment_status_detail";
@@ -67,12 +63,7 @@ public final class TrackingUtil {
     public static final String PROPERTY_ERROR_CODE = "error_code";
     public static final String PROPERTY_ERROR_REQUEST = "error_request_origin";
     public static final String PROPERTY_ERROR_MESSAGE = "error_message";
-    public static final String PROPERTY_CARD_ID = "card_id";
-    public static final String PROPERTY_INSTALLMENTS = "installments";
-    public static final String PROPERTY_PURCHASE_AMOUNT = "purchase_amount";
 
-    //Default values
-    public static final String HAS_SHIPPING_DEFAULT_VALUE = "false";
     public static final String IS_EXPRESS_DEFAULT_VALUE = "false";
 
     private TrackingUtil() {

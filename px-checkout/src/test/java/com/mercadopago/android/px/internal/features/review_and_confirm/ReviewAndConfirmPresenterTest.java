@@ -1,9 +1,13 @@
 package com.mercadopago.android.px.internal.features.review_and_confirm;
 
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.configuration.AdvancedConfiguration;
 import com.mercadopago.android.px.configuration.DynamicDialogConfiguration;
+import com.mercadopago.android.px.internal.datasource.MercadoPagoESC;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecorator;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
+import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
+import com.mercadopago.android.px.internal.repository.UserSelectionRepository;
 import com.mercadopago.android.px.internal.viewmodel.BusinessPaymentModel;
 import com.mercadopago.android.px.internal.viewmodel.mappers.BusinessModelMapper;
 import com.mercadopago.android.px.model.BusinessPayment;
@@ -40,20 +44,29 @@ public class ReviewAndConfirmPresenterTest {
     @Mock
     private BusinessModelMapper businessModelMapper;
 
-    @Mock
-    private DynamicDialogConfiguration dynamicDialogConfiguration;
-
-    @Mock
-    private CheckoutPreference checkoutPreference;
-
     private ReviewAndConfirmPresenter reviewAndConfirmPresenter;
+
+    @Mock private MercadoPagoESC mercadoPagoESC;
+
+    @Mock private PaymentSettingRepository paymentSettingRepository;
+
+    @Mock private UserSelectionRepository userSelectionRepository;
+
+    @Mock private AdvancedConfiguration advancedConfiguration;
+    @Mock private CheckoutPreference checkoutPreference;
+    @Mock private DynamicDialogConfiguration dynamicDialogConfiguration;
 
     @Before
     public void setUp() {
 
+        when(paymentSettingRepository.getCheckoutPreference()).thenReturn(checkoutPreference);
+        when(paymentSettingRepository.getAdvancedConfiguration()).thenReturn(advancedConfiguration);
+        when(advancedConfiguration.getDynamicDialogConfiguration()).thenReturn(dynamicDialogConfiguration);
         reviewAndConfirmPresenter =
-            new ReviewAndConfirmPresenter(paymentRepository, businessModelMapper, dynamicDialogConfiguration,
-                checkoutPreference);
+            new ReviewAndConfirmPresenter(paymentRepository, businessModelMapper,
+                paymentSettingRepository,
+                userSelectionRepository,
+                mercadoPagoESC);
 
         verifyAttachView();
     }
@@ -181,10 +194,7 @@ public class ReviewAndConfirmPresenterTest {
     @Test
     public void whenPaymentConfirmationThenTrackItAndPay() {
         when(paymentRepository.isExplodingAnimationCompatible()).thenReturn(true);
-
         reviewAndConfirmPresenter.onPaymentConfirm();
-
-        verify(view).trackPaymentConfirmation();
         verifyPaymentExplodingCompatible();
         verifyNoMoreInteractions(view);
         verifyNoMoreInteractions(paymentRepository);

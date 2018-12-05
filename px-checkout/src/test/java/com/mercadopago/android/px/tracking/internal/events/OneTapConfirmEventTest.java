@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ExpressConfirmEventTest {
+public class OneTapConfirmEventTest {
 
     private static final String EXPECTED_PATH = "/px_checkout/review/confirm";
     private static final String EXPECTED_JUST_CARD =
@@ -30,7 +30,7 @@ public class ExpressConfirmEventTest {
 
     @Test
     public void whenGetEventPathVerifyIsCorrect() {
-        final ExpressConfirmEvent event = new ExpressConfirmEvent(cardIdsWithEsc, expressMetadata, 0);
+        final OneTapConfirmEvent event = new OneTapConfirmEvent(cardIdsWithEsc, expressMetadata, 0);
         assertEquals(EXPECTED_PATH, event.getEventPath());
     }
 
@@ -42,7 +42,7 @@ public class ExpressConfirmEventTest {
         when(expressMetadata.getAccountMoney()).thenReturn(am);
         when(am.getBalance()).thenReturn(BigDecimal.TEN);
         when(am.isInvested()).thenReturn(true);
-        final ExpressConfirmEvent event = new ExpressConfirmEvent(cardIdsWithEsc, expressMetadata, 0);
+        final OneTapConfirmEvent event = new OneTapConfirmEvent(cardIdsWithEsc, expressMetadata, 0);
         assertEquals(EXPECTED_JUST_AM, event.getEventData().toString());
     }
 
@@ -66,7 +66,7 @@ public class ExpressConfirmEventTest {
         when(expressMetadata.getCard()).thenReturn(card);
         when(expressMetadata.isCard()).thenReturn(true);
 
-        final ExpressConfirmEvent event = new ExpressConfirmEvent(cardIdsWithEsc, expressMetadata, selected);
+        final OneTapConfirmEvent event = new OneTapConfirmEvent(cardIdsWithEsc, expressMetadata, selected);
 
         assertEquals(EXPECTED_JUST_CARD, event.getEventData().toString());
     }
