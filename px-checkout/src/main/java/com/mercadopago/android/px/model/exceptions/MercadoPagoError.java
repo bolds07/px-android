@@ -91,26 +91,4 @@ public class MercadoPagoError implements Serializable {
             ", recoverable=" + recoverable +
             '}';
     }
-
-    public ScreenViewEvent.Builder getErrorEvent(@NonNull final ScreenViewEvent.Builder builder) {
-
-        if (getApiException() != null) {
-
-            builder.addProperty(TrackingUtil.PROPERTY_ERROR_STATUS, String.valueOf(apiException.getStatus()));
-
-            if (apiException.getCause() != null && !apiException.getCause().isEmpty() &&
-                apiException.getCause().get(0).getCode() != null) {
-                builder.addProperty(TrackingUtil.PROPERTY_ERROR_CODE,
-                    String.valueOf(apiException.getCause().get(0).getCode()));
-            }
-            if (!TextUtils.isEmpty(apiException.getMessage())) {
-                builder.addProperty(TrackingUtil.PROPERTY_ERROR_MESSAGE, apiException.getMessage());
-            }
-        }
-
-        if (getRequestOrigin() != null && !getRequestOrigin().isEmpty()) {
-            builder.addProperty(TrackingUtil.PROPERTY_ERROR_REQUEST, getRequestOrigin());
-        }
-        return builder;
-    }
 }

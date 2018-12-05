@@ -48,7 +48,6 @@ import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 
 public class SecurityCodeActivity extends MercadoPagoBaseActivity implements SecurityCodeActivityView {
 
-    private static final String REASON_BUNDLE = "mReason";
     private static final String CARD_INFO_BUNDLE = "cardInfoBundle";
     private static final String PAYMENT_RECOVERY_BUNDLE = "paymentRecoveryBundle";
 
@@ -56,7 +55,6 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
 
     public static final String ERROR_STATE = "textview_error";
     public static final String NORMAL_STATE = "textview_normal";
-    protected String mReason;
 
     //View controls
     protected ViewGroup mProgressLayout;
@@ -95,7 +93,6 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     public void onSaveInstanceState(final Bundle outState) {
         outState.putSerializable(CARD_INFO_BUNDLE, mSecurityCodePresenter.getCardInfo());
         outState.putSerializable(PAYMENT_RECOVERY_BUNDLE, mSecurityCodePresenter.getPaymentRecovery());
-        outState.putString(REASON_BUNDLE, mReason);
 
         super.onSaveInstanceState(outState);
     }
@@ -114,7 +111,6 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
             mSecurityCodePresenter.setCardInfo((CardInfo) savedInstanceState.getSerializable(CARD_INFO_BUNDLE));
             mSecurityCodePresenter
                 .setPaymentRecovery((PaymentRecovery) savedInstanceState.getSerializable(PAYMENT_RECOVERY_BUNDLE));
-            mReason = savedInstanceState.getString(REASON_BUNDLE);
 
             configurePresenter();
             setContentView();
@@ -146,7 +142,6 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     }
 
     private void getActivityParameters() {
-        mReason = getIntent().getStringExtra("reason");
 
         CardInfo cardInfo = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("cardInfo"), CardInfo.class);
         Card card = JsonUtil.getInstance().fromJson(getIntent().getStringExtra("card"), Card.class);

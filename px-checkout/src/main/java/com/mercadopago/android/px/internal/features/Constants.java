@@ -244,7 +244,6 @@ public final class Constants {
             private Card card;
             private Token token;
             private PaymentRecovery paymentRecovery;
-            private String reason;
 
             public SecurityCodeActivityBuilder setActivity(final Activity activity) {
                 this.activity = activity;
@@ -253,11 +252,6 @@ public final class Constants {
 
             public SecurityCodeActivityBuilder setCardInfo(final CardInfo cardInformation) {
                 this.cardInformation = cardInformation;
-                return this;
-            }
-
-            public SecurityCodeActivityBuilder setTrackingReason(final String reason) {
-                this.reason = reason;
                 return this;
             }
 
@@ -309,7 +303,6 @@ public final class Constants {
                 intent.putExtra("card", JsonUtil.getInstance().toJson(card));
                 intent.putExtra("cardInfo", JsonUtil.getInstance().toJson(cardInformation));
                 intent.putExtra("paymentRecovery", JsonUtil.getInstance().toJson(paymentRecovery));
-                intent.putExtra("reason", reason);
                 activity.startActivityForResult(intent, SECURITY_CODE_REQUEST_CODE);
             }
         }
