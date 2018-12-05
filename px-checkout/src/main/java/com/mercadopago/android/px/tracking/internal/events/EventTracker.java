@@ -8,6 +8,7 @@ import java.util.Map;
 
 public abstract class EventTracker {
 
+    /* default */ static final String BASE_PATH = "/px_checkout";
     private static final String TAG = EventTracker.class.getSimpleName().toUpperCase();
 
     public final void track() {

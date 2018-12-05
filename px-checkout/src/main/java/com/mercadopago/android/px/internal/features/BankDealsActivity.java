@@ -15,16 +15,13 @@ import com.mercadopago.android.px.internal.callbacks.TaggedCallback;
 import com.mercadopago.android.px.internal.datasource.MercadoPagoServicesAdapter;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
-import com.mercadopago.android.px.internal.tracker.FlowHandler;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.util.ErrorUtil;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.model.BankDeal;
-import com.mercadopago.android.px.model.ScreenViewEvent;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
-import com.mercadopago.android.px.tracking.internal.MPTracker;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
+import com.mercadopago.android.px.tracking.internal.views.BankDealsViewTracker;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -39,24 +36,12 @@ public class BankDealsActivity extends MercadoPagoActivity implements OnSelected
 
     @Override
     protected void onValidStart() {
+        new BankDealsViewTracker().track();
         final Session session = Session.getSession(this);
         final PaymentSettingRepository paymentSettings = session.getConfigurationModule().getPaymentSettings();
-
         mMercadoPago = new MercadoPagoServicesAdapter(getActivity(), paymentSettings.getPublicKey(),
             paymentSettings.getPrivateKey());
-        trackInitialScreen();
         getBankDeals();
-    }
-
-    protected void trackInitialScreen() {
-        final MPTracker mpTrackingContext = MPTracker.getInstance();
-        final ScreenViewEvent event = new ScreenViewEvent.Builder()
-            .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setScreenId(TrackingUtil.View.PATH_PROMOTIONS)
-            .setScreenName(TrackingUtil.View.PATH_PROMOTIONS)
-            .build();
-
-        mpTrackingContext.trackEvent(event);
     }
 
     @Override

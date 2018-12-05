@@ -26,6 +26,6 @@ public class CvvGuessingViewTracker extends ViewTracker {
     @NonNull
     @Override
     public String getViewPath() {
-        return BASE_VIEW_PATH + "/add_payment_method/" + paymentMethodTypeId + CARD_SECURITY_CODE;
+        return BASE_VIEW_PATH + ADD_PAYMENT_METHOD + "/" + paymentMethodTypeId + CARD_SECURITY_CODE;
     }
 }

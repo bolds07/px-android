@@ -1,17 +1,11 @@
 package com.mercadopago.android.px.internal.tracker;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
-import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
-import com.mercadopago.android.px.internal.features.review_and_confirm.models.SummaryModel;
 import com.mercadopago.android.px.internal.util.JsonUtil;
-import com.mercadopago.android.px.model.ActionEvent;
 import com.mercadopago.android.px.model.ExpressMetadata;
-import com.mercadopago.android.px.model.PaymentMethodSearchItem;
 import com.mercadopago.android.px.model.PaymentResult;
-import com.mercadopago.android.px.model.PaymentTypes;
 import com.mercadopago.android.px.model.ScreenViewEvent;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
@@ -20,7 +14,6 @@ import com.mercadopago.android.px.tracking.internal.model.ExpressInstallmentsVie
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,19 +78,6 @@ public final class Tracker {
         mpTrackingContext.trackEvent(event);
     }
 
-    public static void trackReviewAndConfirmScreen(final PaymentModel paymentModel) {
-
-        final Collection<Pair<String, String>> properties = new ArrayList<>();
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE));
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, paymentModel.getPaymentType()));
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.paymentMethodId));
-        properties.add(new Pair<>(TrackingUtil.PROPERTY_ISSUER_ID, String.valueOf(paymentModel.issuerId)));
-
-        trackScreen(TrackingUtil.View.PATH_REVIEW_AND_CONFIRM,
-            TrackingUtil.View.PATH_REVIEW_AND_CONFIRM,
-            properties);
-    }
-
     public static void trackReviewAndConfirmTermsAndConditions() {
 
         final MPTracker mpTrackingContext = MPTracker.getInstance();
@@ -109,36 +89,6 @@ public final class Tracker {
 
         mpTrackingContext.trackEvent(builder.build());
     }
-
-    public static void trackCheckoutConfirm(
-        final PaymentModel paymentModel,
-        final SummaryModel summaryModel) {
-
-        final MPTracker mpTrackingContext = MPTracker.getInstance();
-
-        final ActionEvent.Builder builder = new ActionEvent.Builder()
-            .setFlowId(FlowHandler.getInstance().getFlowId())
-            .setAction(TrackingUtil.ACTION_CHECKOUT_CONFIRMED)
-            .setScreenId(TrackingUtil.View.PATH_REVIEW_AND_CONFIRM)
-            .setScreenName(TrackingUtil.View.PATH_REVIEW_AND_CONFIRM)
-            .addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, paymentModel.getPaymentType())
-            .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentModel.paymentMethodId)
-            .addProperty(TrackingUtil.PROPERTY_PURCHASE_AMOUNT, summaryModel.getAmountToPay().toString());
-
-        if (PaymentTypes.isCreditCardPaymentType(summaryModel.getPaymentTypeId())) {
-            builder.addProperty(TrackingUtil.PROPERTY_INSTALLMENTS, String.valueOf(summaryModel.getInstallments()));
-        }
-
-        //If is saved card
-        final String cardId = paymentModel.getCardId();
-        if (cardId != null) {
-            builder.addProperty(TrackingUtil.PROPERTY_CARD_ID, cardId);
-        }
-
-        final ActionEvent actionEvent = builder.build();
-        mpTrackingContext.trackEvent(actionEvent);
-    }
-
 
     public static void trackBusinessPaymentResultScreen(@NonNull final String paymentStatus,
         @NonNull final String paymentStatusDetail) {
