@@ -143,7 +143,6 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     public void onBackPressed() {
         if (presenter != null && presenter.getState().isExpressCheckout) {
             new AbortOneTapEventTracker().track();
-            presenter.cancelCheckout();
         }
         super.onBackPressed();
     }
