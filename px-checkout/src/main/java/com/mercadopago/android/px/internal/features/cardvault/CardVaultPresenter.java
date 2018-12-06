@@ -24,7 +24,6 @@ import com.mercadopago.android.px.model.SavedESCCardToken;
 import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.util.List;
 
 public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultProvider> {
@@ -42,7 +41,6 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
 
     private boolean automaticSelection;
 
-    private String merchantBaseUrl;
     private boolean installmentsListShown;
     private boolean issuersListShown;
 
@@ -386,7 +384,7 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
 
     public void startSecurityCodeFlowIfNeeded() {
         if (isSecurityCodeFlowNeeded()) {
-            getView().startSecurityCodeActivity(TrackingUtil.SECURITY_CODE_REASON_SAVED_CARD);
+            getView().startSecurityCodeActivity();
         } else {
             createESCToken();
         }
@@ -436,10 +434,9 @@ public class CardVaultPresenter extends MvpPresenter<CardVaultView, CardVaultPro
 
                             getResourcesProvider().deleteESC(escCardToken.getCardId());
                             esc = null;
-
                             //Start CVV screen if fail
                             if (viewAttached()) {
-                                getView().startSecurityCodeActivity(TrackingUtil.SECURITY_CODE_REASON_ESC);
+                                getView().startSecurityCodeActivity();
                             }
                         } else {
                             //Retry with error screen

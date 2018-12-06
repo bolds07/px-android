@@ -173,7 +173,7 @@ public class SecurityCodePresenter extends MvpPresenter<SecurityCodeActivityView
         }
     }
 
-    public void saveSecurityCode(String securityCode) {
+    public void saveSecurityCode(final String securityCode) {
         mSecurityCode = securityCode;
     }
 
@@ -186,13 +186,13 @@ public class SecurityCodePresenter extends MvpPresenter<SecurityCodeActivityView
             } else if (isSavedCardWithoutESC()) {
                 createTokenWithoutESC();
             }
-        } catch (CardTokenException exception) {
+        } catch (final CardTokenException exception) {
             getView().setErrorView(exception);
         }
     }
 
     private void createTokenWithESC() throws CardTokenException {
-        SavedESCCardToken savedESCCardToken;
+        final SavedESCCardToken savedESCCardToken;
         if (mCard != null) {
             savedESCCardToken = SavedESCCardToken.createWithSecurityCode(mCard.getId(), mSecurityCode);
             getResourcesProvider().validateSecurityCodeFromToken(savedESCCardToken, mCard);

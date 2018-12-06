@@ -7,7 +7,6 @@ public final class TrackingUtil {
         public static final String PATH_BOLBRADESCO_CPF = "/px_checkout/select_method/ticket/cpf";
         public static final String PATH_BOLBRADESCO_NAME = "/px_checkout/select_method/ticket/name";
         public static final String PATH_BOLBRADESCO_LASTNAME = "/px_checkout/select_method/ticket/lastname";
-
         public static final String PATH_EXPRESS_INSTALLMENTS_VIEW = "/px_checkout/review/one_tap/installments";
 
         private View() {
@@ -27,21 +26,6 @@ public final class TrackingUtil {
         private Event() {
         }
     }
-
-    //Card Association result screen
-    public static final String SCREEN_ID_CARD_ASSOCIATION_SUCCESS = "/px_checkout/card_association_result/success";
-    public static final String SCREEN_ID_CARD_ASSOCIATION_ERROR = "/px_checkout/card_association_result/error";
-
-    //Security Code Reason
-    public static final String SECURITY_CODE_REASON_CALL = "call_for_auth";
-    public static final String SECURITY_CODE_REASON_SAVED_CARD = "saved_card";
-    public static final String SECURITY_CODE_REASON_ESC = "invalid_esc";
-
-    //Additional Info Keys
-    public static final String PROPERTY_ERROR_STATUS = "error_status";
-    public static final String PROPERTY_ERROR_CODE = "error_code";
-    public static final String PROPERTY_ERROR_REQUEST = "error_request_origin";
-    public static final String PROPERTY_ERROR_MESSAGE = "error_message";
 
     private TrackingUtil() {
     }

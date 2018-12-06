@@ -61,6 +61,7 @@ public class CardVaultPresenterTest {
     @Mock private CheckoutPreference checkoutPreference;
 
     @Mock private MercadoPagoESC mercadoPagoESC;
+
     @Before
     public void setUp() {
         //Simulation no charge - no discount
@@ -408,7 +409,6 @@ public class CardVaultPresenterTest {
         final String mockedPaymentStatus = Payment.StatusCodes.STATUS_REJECTED;
         final String mockedPaymentStatusDetail = Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE;
 
-
         final PaymentRecovery mockedPaymentRecovery =
             new PaymentRecovery(mockedToken, mockedPaymentMethod, mockedPayerCost, mockedIssuer, mockedPaymentStatus,
                 mockedPaymentStatusDetail);
@@ -752,7 +752,6 @@ public class CardVaultPresenterTest {
         private boolean cardVaultCanceled;
         private boolean errorState;
         private boolean animateSlide;
-        private boolean animateNoAnimation;
 
         @Override
         public void askForInstallments() {
@@ -783,6 +782,11 @@ public class CardVaultPresenterTest {
         @Override
         public void startIssuersActivity() {
             issuerFlowStarted = true;
+        }
+
+        @Override
+        public void startSecurityCodeActivity() {
+            securityCodeFlowStarted = true;
         }
 
         @Override
@@ -818,12 +822,6 @@ public class CardVaultPresenterTest {
 
         @Override
         public void transitionWithNoAnimation() {
-            animateNoAnimation = true;
-        }
-
-        @Override
-        public void startSecurityCodeActivity(String reason) {
-            securityCodeFlowStarted = true;
         }
     }
 }
