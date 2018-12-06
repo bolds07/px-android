@@ -53,6 +53,8 @@ public class CheckoutPreference implements Serializable {
 
     @Nullable private final Date expirationDateFrom;
 
+    @NonNull private final String marketplace;
+
     //region support external integrations - payment processor instores
     @Nullable private final BigDecimal marketplaceFee;
 
@@ -73,6 +75,7 @@ public class CheckoutPreference implements Serializable {
         expirationDateFrom = builder.expirationDateFrom;
         expirationDateTo = builder.expirationDateTo;
         siteId = builder.site.getId();
+        marketplace = builder.marketplace;
         marketplaceFee = builder.marketplaceFee;
         shippingCost = builder.shippingCost;
         operationType = builder.operationType;
@@ -219,6 +222,11 @@ public class CheckoutPreference implements Serializable {
     }
 
     @NonNull
+    public String getMarketplace() {
+        return marketplace;
+    }
+
+    @NonNull
     public PaymentPreference getPaymentPreference() {
         // If payment preference does not exists create one.
         return paymentPreference == null ? new PaymentPreference() : paymentPreference;
@@ -235,6 +243,8 @@ public class CheckoutPreference implements Serializable {
 
     public static class Builder {
 
+        private static final String DEFAULT_MARKETPLACE = "none";
+
         //region mandatory params
         /* default */ final List<Item> items;
         /* default */ final Site site;
@@ -246,6 +256,7 @@ public class CheckoutPreference implements Serializable {
         /* default */ Integer defaultInstallments;
         /* default */ Date expirationDateTo;
         /* default */ Date expirationDateFrom;
+        /* default */ String marketplace;
         /* default */ BigDecimal marketplaceFee;
         /* default */ BigDecimal shippingCost;
         /* default */ String operationType;
@@ -273,6 +284,7 @@ public class CheckoutPreference implements Serializable {
             this.site = site;
             excludedPaymentMethods = new ArrayList<>();
             excludedPaymentTypes = new ArrayList<>();
+            marketplace = DEFAULT_MARKETPLACE;
         }
 
         /**
@@ -419,6 +431,17 @@ public class CheckoutPreference implements Serializable {
          */
         public Builder setDifferentialPricing(@Nullable final DifferentialPricing differentialPricing) {
             this.differentialPricing = differentialPricing;
+            return this;
+        }
+
+        /**
+         * internal usage
+         *
+         * @param marketplace origin of the payment. Default value: NONE.
+         * @return builder
+         */
+        public Builder setMarketplace(final String marketplace) {
+            this.marketplace = marketplace;
             return this;
         }
 
