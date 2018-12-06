@@ -1,11 +1,7 @@
 package com.mercadopago.android.px.model.exceptions;
 
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.util.TextUtil;
-import com.mercadopago.android.px.model.ScreenViewEvent;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.io.Serializable;
 
 public class MercadoPagoError implements Serializable {
