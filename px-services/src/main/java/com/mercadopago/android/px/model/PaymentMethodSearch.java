@@ -25,9 +25,19 @@ public class PaymentMethodSearch implements Serializable {
 
     private List<Card> cards;
 
-    private AccountMoney accountMoney;
+    @SerializedName("account_money")
+    private MercadoPagoMoney mercadoPagoMoney;
 
     //region deprecated
+
+    /**
+     * old account money support that no longer exists.
+     *
+     * @deprecated we will delete this method on px v5
+     */
+    @Deprecated
+    @SerializedName("old_account_money")
+    private AccountMoney accountMoney;
 
     /**
      * @deprecated use new {{@link #express}}
@@ -124,8 +134,8 @@ public class PaymentMethodSearch implements Serializable {
 
     //endregion deprecated
 
-    public AccountMoney getAccountMoney() {
-        return accountMoney;
+    public MercadoPagoMoney getMercadoPagoMoney() {
+        return mercadoPagoMoney;
     }
 
     public List<PaymentMethodSearchItem> getGroups() {

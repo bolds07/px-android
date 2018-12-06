@@ -243,9 +243,9 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
             //TODO ver que pasa si selectedCard es null
             getView().startSavedCardFlow(card);
         } else if (PaymentTypes.isAccountMoney(item.getType())) {
-            final PaymentMethod paymentMethod = paymentMethodSearch.getAccountMoney().getPaymentMethod();
+            final PaymentMethod paymentMethod = paymentMethodSearch.getMercadoPagoMoney().getPaymentMethod();
             userSelectionRepository.select(paymentMethod);
-            paymentSettingRepository.configure(paymentMethodSearch.getAccountMoney());
+            paymentSettingRepository.configure(paymentMethodSearch.getMercadoPagoMoney());
             getView().finishPaymentMethodSelection(paymentMethod);
         }
     }

@@ -144,8 +144,8 @@ public class PaymentService implements PaymentRepository {
                     userSelectionRepository.select(card);
                     userSelectionRepository.select(payerCost);
                 } else if (PaymentTypes.isAccountMoney(paymentTypeId)) {
-                    userSelectionRepository.select(paymentMethodSearch.getAccountMoney().getPaymentMethod());
-                    paymentSettingRepository.configure(paymentMethodSearch.getAccountMoney());
+                    userSelectionRepository.select(paymentMethodSearch.getMercadoPagoMoney().getPaymentMethod());
+                    paymentSettingRepository.configure(paymentMethodSearch.getMercadoPagoMoney());
                 } else {
                     throw new IllegalStateException("payment method selected can not be used for express payment");
                 }

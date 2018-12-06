@@ -7,7 +7,7 @@ import com.mercadopago.android.px.configuration.AdvancedConfiguration;
 import com.mercadopago.android.px.configuration.PaymentConfiguration;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.util.JsonUtil;
-import com.mercadopago.android.px.model.AccountMoney;
+import com.mercadopago.android.px.model.MercadoPagoMoney;
 import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.commission.ChargeRule;
 import com.mercadopago.android.px.preferences.CheckoutPreference;
@@ -54,9 +54,9 @@ public class PaymentSettingService implements PaymentSettingRepository {
     }
 
     @Override
-    public void configure(@NonNull final AccountMoney accountMoney) {
+    public void configure(@NonNull final MercadoPagoMoney mercadoPagoMoney) {
         final SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putString(PREF_ACCOUNT_MONEY, jsonUtil.toJson(accountMoney));
+        edit.putString(PREF_ACCOUNT_MONEY, jsonUtil.toJson(mercadoPagoMoney));
         edit.apply();
     }
 
@@ -144,8 +144,8 @@ public class PaymentSettingService implements PaymentSettingRepository {
 
     @Nullable
     @Override
-    public AccountMoney getAccountMoney() {
-        return jsonUtil.fromJson(sharedPreferences.getString(PREF_ACCOUNT_MONEY, ""), AccountMoney.class);
+    public MercadoPagoMoney getAccountMoney() {
+        return jsonUtil.fromJson(sharedPreferences.getString(PREF_ACCOUNT_MONEY, ""), MercadoPagoMoney.class);
     }
 
     @Override
