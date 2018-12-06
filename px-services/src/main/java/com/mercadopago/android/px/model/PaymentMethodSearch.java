@@ -124,6 +124,16 @@ public class PaymentMethodSearch implements Serializable {
     }
 
     /**
+     * old account money support that no longer exists.
+     *
+     * @deprecated we will delete this method on px v5
+     */
+    @Deprecated
+    public AccountMoney getAccountMoney() {
+        return accountMoney;
+    }
+
+    /**
      * @deprecated please do not modify this information on runtime.
      * we will delete this method on px v5
      */
