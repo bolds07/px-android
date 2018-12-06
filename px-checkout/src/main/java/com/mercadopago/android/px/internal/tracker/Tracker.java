@@ -5,11 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.model.ExpressMetadata;
-import com.mercadopago.android.px.model.PaymentResult;
 import com.mercadopago.android.px.model.ScreenViewEvent;
-import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.tracking.internal.MPTracker;
-import com.mercadopago.android.px.tracking.internal.model.ErrorView;
 import com.mercadopago.android.px.tracking.internal.model.ExpressInstallmentsView;
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.math.BigDecimal;
@@ -38,13 +35,6 @@ public final class Tracker {
             ExpressInstallmentsView.createFrom(expressMetadata, currencyId, totalAmount);
         final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(expressInstallmentsView);
         MPTracker.getInstance().trackView(TrackingUtil.View.PATH_EXPRESS_INSTALLMENTS_VIEW, data);
-    }
-
-    public static void trackGenericError(@Nullable final String path, @NonNull final ErrorView.ErrorType errorType,
-        @NonNull final MercadoPagoError mercadoPagoError, @NonNull final String visibleMessage) {
-        final ErrorView errorView = ErrorView.createFrom(path, mercadoPagoError, errorType, visibleMessage);
-        final Map<String, Object> data = JsonUtil.getInstance().getMapFromObject(errorView);
-        MPTracker.getInstance().trackEvent(TrackingUtil.Event.EVENT_PATH_FRICTION, data);
     }
 
     private static void addProperties(final ScreenViewEvent.Builder builder,

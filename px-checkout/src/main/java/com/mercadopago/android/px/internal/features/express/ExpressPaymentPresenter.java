@@ -36,6 +36,7 @@ import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
+import com.mercadopago.android.px.tracking.internal.events.FrictionEventTracker;
 import com.mercadopago.android.px.tracking.internal.events.OneTapConfirmEvent;
 import com.mercadopago.android.px.tracking.internal.views.OneTapViewTracker;
 import java.util.Collections;
@@ -167,6 +168,10 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
         cancelLoading();
 
         if (error.isInternalServerError() || error.isNoConnectivityError()) {
+            new FrictionEventTracker(OneTapViewTracker.PATH_REVIEW_ONE_TAP_VIEW,
+                FrictionEventTracker.Id.GENERIC, FrictionEventTracker.Style.CUSTOM_COMPONENT,
+                error)
+                .track();
             getView().showErrorSnackBar(error);
         } else {
             getView().showErrorScreen(error);
@@ -346,6 +351,10 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
         final NoConnectivityException exception = new NoConnectivityException();
         final ApiException apiException = ApiUtil.getApiException(exception);
         final MercadoPagoError mercadoPagoError = new MercadoPagoError(apiException, null);
+        new FrictionEventTracker(OneTapViewTracker.PATH_REVIEW_ONE_TAP_VIEW,
+            FrictionEventTracker.Id.GENERIC, FrictionEventTracker.Style.CUSTOM_COMPONENT,
+            mercadoPagoError)
+            .track();
         getView().showErrorSnackBar(mercadoPagoError);
     }
 }

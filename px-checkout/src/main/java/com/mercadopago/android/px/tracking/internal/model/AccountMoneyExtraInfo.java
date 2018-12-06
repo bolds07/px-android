@@ -1,8 +1,11 @@
 package com.mercadopago.android.px.tracking.internal.model;
 
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import java.math.BigDecimal;
 
+@SuppressWarnings("unused")
+@Keep
 public class AccountMoneyExtraInfo extends TrackingMapModel {
 
     @NonNull private BigDecimal balance;

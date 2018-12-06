@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class OneTapViewTracker extends ViewTracker {
 
-    private static final String PATH_REVIEW_ONE_TAP_VIEW = BASE_VIEW_PATH + "/review/one_tap";
+    public static final String PATH_REVIEW_ONE_TAP_VIEW = BASE_VIEW_PATH + "/review/one_tap";
 
     private final Map<String, Object> data;
 

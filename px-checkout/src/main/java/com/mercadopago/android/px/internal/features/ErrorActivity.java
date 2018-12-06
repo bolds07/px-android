@@ -7,17 +7,17 @@ import android.view.View;
 import android.widget.TextView;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.controllers.CheckoutErrorHandler;
-import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.model.Cause;
-import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
-import com.mercadopago.android.px.tracking.internal.model.ErrorView;
 import com.mercadopago.android.px.model.exceptions.ApiException;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
+import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.tracking.internal.events.FrictionEventTracker;
 
 import static com.mercadopago.android.px.core.MercadoPagoCheckout.EXTRA_ERROR;
 
 public class ErrorActivity extends MercadoPagoBaseActivity {
+
+    private static final String PATH_GENERIC_ERROR = "/px_checkout/generic_error";
 
     private MercadoPagoError mMercadoPagoError;
     private TextView mErrorMessageTextView;
@@ -100,9 +100,11 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
     }
 
     private void trackScreen() {
+        // TODO screen
         final String errorMessage = titleMessageTextView.getText() + " " + message;
-        Tracker.trackGenericError(TrackingUtil.Event.EVENT_PATH_GENERIC_ERROR, ErrorView.ErrorType.SCREEN, mMercadoPagoError,
-            errorMessage);
+        new FrictionEventTracker(PATH_GENERIC_ERROR, FrictionEventTracker.Id.GENERIC, FrictionEventTracker.Style.SCREEN,
+            mMercadoPagoError)
+            .track();
     }
 
     @Override
