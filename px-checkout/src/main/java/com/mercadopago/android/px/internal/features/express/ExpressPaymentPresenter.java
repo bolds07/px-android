@@ -36,8 +36,10 @@ import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
+import com.mercadopago.android.px.tracking.internal.events.AbortOneTapEventTracker;
 import com.mercadopago.android.px.tracking.internal.events.FrictionEventTracker;
 import com.mercadopago.android.px.tracking.internal.events.OneTapConfirmEvent;
+import com.mercadopago.android.px.tracking.internal.events.SwipeOneTapEventTracker;
 import com.mercadopago.android.px.tracking.internal.views.OneTapViewTracker;
 import java.util.Collections;
 import java.util.List;
@@ -128,6 +130,7 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
 
     @Override
     public void cancel() {
+        new AbortOneTapEventTracker().track();
         getView().cancel();
     }
 
@@ -299,6 +302,7 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
      */
     @Override
     public void onSliderOptionSelected(final int paymentMethodIndex) {
+        new SwipeOneTapEventTracker().track();
         updateElementPosition(paymentMethodIndex, payerCostSelection.get(paymentMethodIndex));
     }
 

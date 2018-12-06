@@ -34,6 +34,7 @@ import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.PaymentResult;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.tracking.internal.events.AbortOneTapEventTracker;
 
 import static com.mercadopago.android.px.core.MercadoPagoCheckout.EXTRA_ERROR;
 import static com.mercadopago.android.px.core.MercadoPagoCheckout.EXTRA_PAYMENT_RESULT;
@@ -141,7 +142,8 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
     @Override
     public void onBackPressed() {
         if (presenter != null && presenter.getState().isExpressCheckout) {
-            presenter.trackAbortExpress();
+            new AbortOneTapEventTracker().track();
+            presenter.cancelCheckout();
         }
         super.onBackPressed();
     }

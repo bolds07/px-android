@@ -11,22 +11,11 @@ import com.mercadopago.android.px.tracking.internal.model.ExpressInstallmentsVie
 import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public final class Tracker {
 
     private Tracker() {
-    }
-
-    public static void trackSwipeExpress() {
-        MPTracker.getInstance()
-            .trackEvent(TrackingUtil.Event.EVENT_PATH_SWIPE_EXPRESS, new HashMap<String, Object>());
-    }
-
-    public static void trackAbortExpress() {
-        MPTracker.getInstance()
-            .trackEvent(TrackingUtil.Event.EVENT_PATH_ABORT_EXPRESS, new HashMap<String, Object>());
     }
 
     public static void trackExpressInstallmentsView(@NonNull final ExpressMetadata expressMetadata,
