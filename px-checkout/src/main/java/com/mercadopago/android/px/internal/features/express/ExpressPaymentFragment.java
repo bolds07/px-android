@@ -63,7 +63,6 @@ import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
-import com.mercadopago.android.px.tracking.internal.model.ErrorView;
 import com.mercadopago.android.px.tracking.internal.views.AppliedDiscountOneTapViewTracker;
 import java.util.ArrayList;
 import java.util.List;
@@ -406,10 +405,6 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void showErrorSnackBar(@NonNull final MercadoPagoError error) {
-        //TODO refactor
-
-        Tracker.trackGenericError("/px_checkout/review/one_tap", ErrorView.ErrorType.SNACKBAR, error,
-            error.getMessage());
         if (getView() != null && getActivity() != null) {
             MeliSnackbar.make(getView(), error.getMessage(), Snackbar.LENGTH_LONG,
                 MeliSnackbar.SnackbarType.ERROR).show();

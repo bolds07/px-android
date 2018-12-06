@@ -10,9 +10,9 @@ import com.mercadopago.android.px.model.Site;
 import com.mercadopago.android.px.model.TrackingIntent;
 import com.mercadopago.android.px.tracking.PXEventListener;
 import com.mercadopago.android.px.tracking.PXTrackingListener;
+import com.mercadopago.android.px.tracking.internal.events.FrictionEventTracker;
 import com.mercadopago.android.px.tracking.internal.services.MPTrackingService;
 import com.mercadopago.android.px.tracking.internal.services.MPTrackingServiceImpl;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,7 +164,7 @@ public final class MPTracker {
 
         if (pxTrackingListener != null) {
             // Event friction case needs to add flow detail in a different way. We ignore this case for now.
-            if (!TrackingUtil.Event.EVENT_PATH_FRICTION.equals(path)) {
+            if (!FrictionEventTracker.PATH.equals(path)) {
                 addAdditionalFlowInfo(data);
             }
             pxTrackingListener.onEvent(path, data);
