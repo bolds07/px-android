@@ -2,34 +2,29 @@ package com.mercadopago.android.px.configuration;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
+import org.json.JSONObject;
 
 @SuppressWarnings("unused")
 public class DiscountParamsConfiguration {
 
-    @NonNull private final Set<String> labels;
+    @NonNull private final JSONObject extraData;
     @Nullable private final String flow;
 
     /* default */ DiscountParamsConfiguration(@NonNull final Builder builder) {
-        labels = builder.labels;
+        extraData = builder.extraData;
         flow = builder.flow;
     }
 
     /**
-     * Let us know what the labels is
-     *
-     * @return set of labels
+     * @return extraData needed to apply a specific discount.
      */
     @NonNull
-    public Set<String> getLabels() {
-        return labels;
+    public JSONObject getExtraData() {
+        return extraData;
     }
 
     /**
-     * Let us know what the flow is
-     *
-     * @return flow id
+     * @return payments's flow identification.
      */
     @Nullable
     public String getFlow() {
@@ -37,29 +32,27 @@ public class DiscountParamsConfiguration {
     }
 
     public static class Builder {
-        /* default */ Set<String> labels;
+        /* default */ JSONObject extraData;
         /* default */ String flow;
 
         public Builder() {
-            labels = new HashSet<>();
+            extraData = new JSONObject();
             flow = "";
         }
 
         /**
-         * This are filters for enable particular discounts.
+         * Set additional data needed to apply a specific discount.
          *
-         * @param labels set of Mercado Pago filters
-         * @return builder to keep operating
+         * @param extraData additional data needed to apply a specific discount.
          */
-        public Builder setLabels(@NonNull final Set<String> labels) {
-            this.labels = labels;
-            return this;
+        public void setExtraData(@NonNull final JSONObject extraData) {
+            this.extraData = extraData;
         }
 
         /**
-         * Payment flow let us to enable discounts for the flow specified.
+         * Enable discounts for any specific payment's flow identification setting it through this method.
          *
-         * @param flow payment flow id
+         * @param flow payment's flow identification.
          * @return builder to keep operating
          */
         public Builder setFlow(@NonNull final String flow) {

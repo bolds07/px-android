@@ -7,6 +7,7 @@ import com.mercadopago.android.px.internal.base.ResourcesProvider;
 import com.mercadopago.android.px.model.Campaign;
 import com.mercadopago.android.px.model.Discount;
 import java.util.Set;
+import org.json.JSONObject;
 
 public interface DiscountRepository extends ResourcesProvider {
 
@@ -22,7 +23,7 @@ public interface DiscountRepository extends ResourcesProvider {
     Campaign getCampaign();
 
     @Nullable
-    Set<String> getLabels();
+    JSONObject getExtraData();
 
     @Nullable
     String getFlow();

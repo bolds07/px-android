@@ -10,6 +10,7 @@ import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.model.Campaign;
 import com.mercadopago.android.px.model.Discount;
 import java.util.Set;
+import org.json.JSONObject;
 
 public class DiscountServiceImp implements DiscountRepository {
 
@@ -37,7 +38,7 @@ public class DiscountServiceImp implements DiscountRepository {
     public void configureExtraData(@Nullable final DiscountParamsConfiguration discountParamsConfiguration) {
         if (discountParamsConfiguration != null) {
             discountStorageService
-                .configureExtraData(discountParamsConfiguration.getLabels(),
+                .configureExtraData(discountParamsConfiguration.getExtraData(),
                     discountParamsConfiguration.getFlow());
         }
     }
@@ -61,8 +62,8 @@ public class DiscountServiceImp implements DiscountRepository {
 
     @Nullable
     @Override
-    public Set<String> getLabels() {
-        return discountStorageService.getLabels();
+    public JSONObject getExtraData() {
+        return discountStorageService.getExtraData();
     }
 
     @Nullable
