@@ -28,6 +28,7 @@ import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.SavedCardToken;
 import com.mercadopago.android.px.model.SavedESCCardToken;
 import com.mercadopago.android.px.model.Site;
+import com.mercadopago.android.px.model.SummaryAmount;
 import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.requests.SecurityCodeIntent;
 import com.mercadopago.android.px.preferences.CheckoutPreference;
@@ -201,6 +202,11 @@ public class MercadoPagoServices {
         final PaymentService service = RetrofitUtil.getRetrofitClient(context).create(PaymentService.class);
         service.getInstallments(Settings.servicesVersion, publicKey, privateKey, bin, amount, issuerId,
             paymentMethodId, LocaleUtil.getLanguage(context), processingMode, differentialPricingId).enqueue(callback);
+    }
+
+    public void createSummaryAmount(final Map<String, Object> summaryAmountBody, final Callback<SummaryAmount> callback) {
+        final PaymentService paymentService = RetrofitUtil.getRetrofitClient(context).create(PaymentService.class);
+        paymentService.createSummaryAmount(Settings.servicesVersion, summaryAmountBody, publicKey, privateKey);
     }
 
     public void getIssuers(final String paymentMethodId, final String bin, final Callback<List<Issuer>> callback) {

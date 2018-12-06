@@ -26,6 +26,12 @@ public interface PaymentService {
     MPCall<List<PaymentMethod>> getCardPaymentMethods(@Path(value = "version", encoded = true) String version,
         @Query("access_token") String accessToken);
 
+    @POST("/{version}/px_mobile_api/summary_amount")
+    MPCall<Payment> createSummaryAmount(@Path(value = "version", encoded = true) String version,
+        @Body Map<String, Object> summaryAmountBody,
+        @Query("public_key") String publicKey,
+        @Query("access_token") String privateKey);
+
     @GET("/{version}/checkout/payment_methods/installments")
     MPCall<List<Installment>> getInstallments(@Path(value = "version", encoded = true) String version,
         @Query("public_key") String publicKey, @Query("access_token") String privateKey, @Query("bin") String bin,
