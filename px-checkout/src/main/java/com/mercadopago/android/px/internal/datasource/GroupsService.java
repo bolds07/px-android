@@ -123,7 +123,7 @@ public class GroupsService implements GroupsRepository {
             .setPrivateKey(paymentSettingRepository.getPrivateKey())
             .setPayerEmail(paymentSettingRepository.getCheckoutPreference().getPayer().getEmail())
             .setMarketplace(checkoutPreference.getMarketplace())
-            .setFlow(discountParamsConfiguration.getFlow())
+            .setFlow(discountParamsConfiguration.getProductId())
             .setLabels(discountParamsConfiguration.getLabels()).build();
 
         return checkoutService
