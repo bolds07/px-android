@@ -25,10 +25,10 @@ then
 	. gradle.properties
 	TMP_BRANCH="deploy_branch_tag_$version_to_deploy"
 	## Tag and push
-	git checkout -b $TMP_BRANCH && git push origin $TMP_BRANCH && git tag -a $version_to_deploy -m "travis deployed version $version_to_deploy" && git push origin $TMP_BRANCH --follow-tags && gradlew -Pproduction publishAar -q
+	git checkout -b $TMP_BRANCH && git push origin $TMP_BRANCH && git tag -a $version_to_deploy -m "travis deployed version $version_to_deploy" && git push origin $TMP_BRANCH --follow-tags && ./gradlew -Pproduction publishAar -q
 fi
 
 if [ "$DEPLOY_COMMAND" != "$LAST_GIT_COMMIT" ]
 then
-	gradlew publishAar -q
+	./gradlew publishAar -q
 fi
