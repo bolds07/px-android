@@ -11,15 +11,14 @@ public class PaymentMethodSearchBody {
     private final String privateKey;
     private final String email;
     private final String marketplace;
-    private final String flow;
-    @SerializedName("extra_data")
+    private final String productId;
     private final Set<String> labels;
 
     public PaymentMethodSearchBody(final Builder builder) {
         privateKey = builder.privateKey;
         email = builder.email;
         marketplace = builder.marketplace;
-        flow = builder.flow;
+        productId = builder.productId;
         labels = builder.labels;
     }
 
@@ -35,8 +34,8 @@ public class PaymentMethodSearchBody {
         return marketplace;
     }
 
-    public String getFlow() {
-        return flow;
+    public String getProductId() {
+        return productId;
     }
 
     public Set<String> getLabels() {
@@ -47,7 +46,7 @@ public class PaymentMethodSearchBody {
         /* default */ String privateKey;
         /* default */ String email;
         /* default */ String marketplace;
-        /* default */ String flow;
+        /* default */ String productId;
         /* default */ Set<String> labels;
 
         public Builder setPrivateKey(@Nullable final String privateKey) {
@@ -65,8 +64,8 @@ public class PaymentMethodSearchBody {
             return this;
         }
 
-        public Builder setFlow(@Nullable final String flow) {
-            this.flow = flow;
+        public Builder setProductId(@Nullable final String productId) {
+            this.productId = productId;
             return this;
         }
 

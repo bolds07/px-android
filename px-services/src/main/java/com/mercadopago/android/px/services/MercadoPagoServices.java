@@ -144,7 +144,7 @@ public class MercadoPagoServices {
             .setPrivateKey(privateKey)
             .setPayerEmail(payer.getEmail())
             .setMarketplace(marketplace)
-            .setFlow(flow)
+            .setProductId(flow)
             .setLabels(labels).build();
 
         service.getPaymentMethodSearch(Settings.servicesVersion,
