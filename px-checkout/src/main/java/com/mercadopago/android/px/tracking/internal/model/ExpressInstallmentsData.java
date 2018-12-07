@@ -1,39 +1,34 @@
 package com.mercadopago.android.px.tracking.internal.model;
 
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import com.mercadopago.android.px.model.ExpressMetadata;
 import com.mercadopago.android.px.model.PayerCost;
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpressInstallmentsView implements Serializable {
+@SuppressWarnings("unused")
+@Keep
+public class ExpressInstallmentsData extends TrackingMapModel {
 
-    @NonNull private String paymentMethodType;
-    @NonNull private String paymentMethodId;
-    @NonNull private Long issuerId;
-    @NonNull private String cardId;
-    @NonNull private BigDecimal totalAmount;
-    @NonNull private List<PayerCostInfo> availableInstallments;
-    @NonNull private String currencyId;
+    @NonNull private final String paymentMethodType;
+    @NonNull private final String paymentMethodId;
+    @NonNull private final Long issuerId;
+    @NonNull private final String cardId;
+    @NonNull private final List<PayerCostInfo> availableInstallments;
 
-    public ExpressInstallmentsView(@NonNull final String paymentMethodType, @NonNull final String paymentMethodId,
+    public ExpressInstallmentsData(@NonNull final String paymentMethodType, @NonNull final String paymentMethodId,
         @NonNull final Long issuerId,
         @NonNull final String cardId,
-        @NonNull final BigDecimal totalAmount,
-        @NonNull final List<PayerCostInfo> payerCostTrackModels, @NonNull final String currencyId) {
+        @NonNull final List<PayerCostInfo> payerCostTrackModels) {
         this.paymentMethodType = paymentMethodType;
         this.paymentMethodId = paymentMethodId;
         this.issuerId = issuerId;
         this.cardId = cardId;
-        this.totalAmount = totalAmount;
         availableInstallments = payerCostTrackModels;
-        this.currencyId = currencyId;
     }
 
-    public static ExpressInstallmentsView createFrom(@NonNull final ExpressMetadata expressMetadata,
-        @NonNull final String currencyId, @NonNull final BigDecimal totalAmount) {
+    public static ExpressInstallmentsData createFrom(@NonNull final ExpressMetadata expressMetadata) {
         final String paymentMethodType = expressMetadata.getPaymentTypeId();
         final String paymentMethodId = expressMetadata.getPaymentMethodId();
         final String cardId = expressMetadata.getCard().getId();
@@ -43,7 +38,6 @@ public class ExpressInstallmentsView implements Serializable {
             payerCostTrackModels.add(new PayerCostInfo(payerCost));
         }
 
-        return new ExpressInstallmentsView(paymentMethodType, paymentMethodId, issuerId, cardId, totalAmount,
-            payerCostTrackModels, currencyId);
+        return new ExpressInstallmentsData(paymentMethodType, paymentMethodId, issuerId, cardId, payerCostTrackModels);
     }
 }

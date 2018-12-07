@@ -9,7 +9,6 @@ import com.mercadopago.android.px.internal.repository.DiscountRepository;
 import com.mercadopago.android.px.internal.repository.GroupsRepository;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
-import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.util.NoConnectivityException;
 import com.mercadopago.android.px.internal.view.AmountDescriptorView;
@@ -38,6 +37,7 @@ import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
 import com.mercadopago.android.px.tracking.internal.events.AbortOneTapEventTracker;
 import com.mercadopago.android.px.tracking.internal.events.FrictionEventTracker;
+import com.mercadopago.android.px.tracking.internal.events.InstallmentsEventTrack;
 import com.mercadopago.android.px.tracking.internal.events.OneTapConfirmEvent;
 import com.mercadopago.android.px.tracking.internal.events.SwipeOneTapEventTracker;
 import com.mercadopago.android.px.tracking.internal.views.OneTapViewTracker;
@@ -265,7 +265,8 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
 
     @Override
     public void onInstallmentsRowPressed(final int currentItem) {
-        final CardMetadata cardMetadata = expressMetadataList.get(currentItem).getCard();
+        final ExpressMetadata expressMetadata = expressMetadataList.get(currentItem);
+        final CardMetadata cardMetadata = expressMetadata.getCard();
         if (currentItem <= expressMetadataList.size() && cardMetadata != null) {
             final List<PayerCost> payerCostList = cardMetadata.getPayerCosts();
             if (payerCostList != null && payerCostList.size() > 1) {
@@ -274,14 +275,9 @@ import static com.mercadopago.android.px.internal.view.InstallmentsDescriptorVie
                     selectedPayerCostIndex = cardMetadata.getDefaultPayerCostIndex();
                 }
                 getView().showInstallmentsList(payerCostList, selectedPayerCostIndex);
-                trackInstallments(expressMetadataList.get(currentItem));
+                new InstallmentsEventTrack(expressMetadata).track();
             }
         }
-    }
-
-    public void trackInstallments(@NonNull final ExpressMetadata expressMetadata) {
-        Tracker.trackExpressInstallmentsView(expressMetadata,
-            configuration.getCheckoutPreference().getSite().getCurrencyId(), amountRepository.getAmountToPay());
     }
 
     /**
