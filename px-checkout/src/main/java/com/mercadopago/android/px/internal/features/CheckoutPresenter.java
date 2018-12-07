@@ -21,7 +21,6 @@ import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.repository.PluginInitTask;
 import com.mercadopago.android.px.internal.repository.PluginRepository;
 import com.mercadopago.android.px.internal.repository.UserSelectionRepository;
-import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.viewmodel.CheckoutStateModel;
 import com.mercadopago.android.px.internal.viewmodel.PostPaymentAction;
@@ -525,8 +524,7 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     }
 
     /**
-     * Send intention to close checkout
-     * if the checkout has oneTap data then it should not close.
+     * Send intention to close checkout if the checkout has oneTap data then it should not close.
      */
     public void cancelCheckout() {
         //TODO improve this
@@ -633,9 +631,5 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     public void onChangePaymentMethodFromReviewAndConfirm() {
         state.editPaymentMethodFromReviewAndConfirm = true;
         onChangePaymentMethod();
-    }
-
-    public void trackAbortExpress() {
-        Tracker.trackAbortExpress();
     }
 }

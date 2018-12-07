@@ -38,7 +38,6 @@ import com.mercadopago.android.px.internal.features.express.installments.Install
 import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodFragmentAdapter;
 import com.mercadopago.android.px.internal.features.express.slider.PaymentMethodFragmentAdapterLowRes;
 import com.mercadopago.android.px.internal.features.plugins.PaymentProcessorActivity;
-import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.ApiUtil;
 import com.mercadopago.android.px.internal.util.ScaleUtil;
 import com.mercadopago.android.px.internal.util.StatusBarDecorator;
@@ -494,14 +493,9 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
                 @Override
                 public void onClick(final View v) {
                     presenter.cancel();
-                    trackAbortExpress();
                 }
             });
         }
-    }
-
-    void trackAbortExpress() {
-        Tracker.trackAbortExpress();
     }
 
     @Override
@@ -564,7 +558,6 @@ public class ExpressPaymentFragment extends Fragment implements ExpressPayment.V
 
     @Override
     public void onPageSelected(final int position) {
-        Tracker.trackSwipeExpress();
         presenter.onSliderOptionSelected(position);
         VibrationUtils.smallVibration(getContext());
     }
