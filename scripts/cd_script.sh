@@ -17,7 +17,7 @@ LAST_GIT_COMMIT=$(git log -2 --pretty=%B)
 echo "last git commit has $LAST_GIT_COMMIT"
 
 
-if [ "$LAST_GIT_COMMIT" == *"$DEPLOY_COMMAND"* ]
+if [[ "$LAST_GIT_COMMIT" == *"$DEPLOY_COMMAND"* ]]
 then
 	#git tag -a
 	#gradlew publishAar -q
@@ -28,7 +28,7 @@ then
 	git checkout -b $TMP_BRANCH && git push origin $TMP_BRANCH && git tag -a $version_to_deploy -m "travis deployed version $version_to_deploy" && git push origin $TMP_BRANCH --follow-tags && ./gradlew -Pproduction publishAar -q
 fi
 
-if [ "$DEPLOY_COMMAND" != "$LAST_GIT_COMMIT" ]
+if [[ "$LAST_GIT_COMMIT" !=  *"$DEPLOY_COMMAND"* ]]
 then
 	./gradlew publishAar -q
 fi
