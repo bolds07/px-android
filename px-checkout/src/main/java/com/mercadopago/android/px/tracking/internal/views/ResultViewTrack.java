@@ -2,6 +2,7 @@ package com.mercadopago.android.px.tracking.internal.views;
 
 import android.support.annotation.NonNull;
 import com.mercadopago.android.px.model.PaymentResult;
+import com.mercadopago.android.px.tracking.internal.mapper.FromPaymentMethodToAvailableMethods;
 import java.util.Locale;
 import java.util.Map;
 
@@ -57,6 +58,11 @@ public class ResultViewTrack extends ViewTracker {
         data.put(ATTR_PAYMENT_ID, payment.getPaymentId());
         data.put(ATTR_PAYMENT_STATUS, payment.getPaymentStatus());
         data.put(ATTR_PAYMENT_STATUS_DETAIL, payment.getPaymentStatusDetail());
+        if (payment.getPaymentData() != null && payment.getPaymentData().getPaymentMethod() != null) {
+            data.putAll(new FromPaymentMethodToAvailableMethods().map(payment.getPaymentData()
+                .getPaymentMethod())
+                .toMap());
+        }
         return data;
     }
 
