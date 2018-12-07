@@ -11,13 +11,13 @@ command pushd "$BASEDIR/.." > /dev/null
 
 echo "Evaluating if it was deploy command $DEPLOY_COMMAND"
 
-# Get last commit message in a variable
-LAST_GIT_COMMIT=$(git log -1 --pretty=%B)
+# Get last 2 commit messages (1 is the merge, second last real commit) in a variable
+LAST_GIT_COMMIT=$(git log -2 --pretty=%B)
 
 echo "last git commit has $LAST_GIT_COMMIT"
 
 
-if [ "$DEPLOY_COMMAND" == "$LAST_GIT_COMMIT" ]
+if [ "$LAST_GIT_COMMIT" == *"$DEPLOY_COMMAND"* ]
 then
 	#git tag -a
 	#gradlew publishAar -q
